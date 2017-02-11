@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewTaskActivity" />
-        <activity android:name=".PredictedScheduleActivity"></activity>
+        <activity android:name=".PredictedScheduleActivity" />
+        <activity android:name=".ReminderActivity" />
+        <activity android:name=".MyPlacesActivity"></activity>
     </application>
 
 </manifest>
