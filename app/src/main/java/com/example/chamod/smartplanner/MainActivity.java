@@ -1,6 +1,8 @@
 package com.example.chamod.smartplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringDef;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        //seting task list view
+        String[] items={"adb","bfgf","fgfh","fg","fhfh"};
+        ListAdapter taskListAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items);
+        ListView taskListView=(ListView)findViewById(R.id.taskListView);
+        taskListView.setAdapter(taskListAdapter);
+
     }
 
     @Override
@@ -48,5 +61,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void newTaskButtonClicked(View v){
+        Intent i=new Intent(this,NewTaskActivity.class);
+        startActivity(i);
     }
 }
