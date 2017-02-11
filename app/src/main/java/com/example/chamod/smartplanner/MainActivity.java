@@ -22,15 +22,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
 
         //seting task list view
@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void newTaskButtonClicked(View v){
         Intent i=new Intent(this,NewTaskActivity.class);
+        startActivity(i);
+    }
+
+    public void predictTasksButtonClicked(View v){
+        Intent i=new Intent(this,PredictedScheduleActivity.class);
         startActivity(i);
     }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/predicted_list_item">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox6" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                        <TextView
+                            android:text="8.00 PM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewTime"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+                        <TextView
+                            android:text="Meeting with X"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewDescription"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+
+                        <TextView
+                            android:text="At MAHARAGAMA"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewLocation"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                            android:layout_weight="0.07" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+
+</LinearLayout>
