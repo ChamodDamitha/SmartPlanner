@@ -52,7 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="?android:attr/actionModeFindDrawable"
-            app:backgroundTint="@android:color/holo_blue_light" />
+            app:backgroundTint="@android:color/holo_blue_light"
+            android:onClick="reportsButtonClicked"
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton3"

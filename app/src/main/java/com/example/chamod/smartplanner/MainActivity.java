@@ -57,10 +57,16 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i=new Intent(this,SettingsActivity.class);
+            startActivity(i);
             return true;
         }
         else if (id == R.id.action_my_places) {
             Intent i=new Intent(this,MyPlacesActivity.class);
+            startActivity(i);
+            return true;
+        }else if (id == R.id.action_repeating_tasks) {
+            Intent i=new Intent(this,RepeatingTasksActivity.class);
             startActivity(i);
             return true;
         }
@@ -73,8 +79,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void predictTasksButtonClicked(View v){
-        Intent i=new Intent(this,PredictedScheduleActivity.class);
+    public void predictTasksButtonClicked(View v) {
+        Intent i = new Intent(this, PredictedScheduleActivity.class);
         startActivity(i);
     }
+    public void reportsButtonClicked(View v){
+        Intent i=new Intent(this,ReportsActivity.class);
+        startActivity(i);
+    }
+
 }

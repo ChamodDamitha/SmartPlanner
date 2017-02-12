@@ -10,4 +10,6 @@
     <item android:title="My Places"
         android:id="@+id/action_my_places"
         android:showAsAction="never" />
+    <item android:title="Repeating Tasks"
+        android:id="@+id/action_repeating_tasks" />
 </menu>
