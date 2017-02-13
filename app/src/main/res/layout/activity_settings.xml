@@ -23,14 +23,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView8"
             android:padding="7dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <TextView
             android:text="End of the day : 8.00 PM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView9"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
             android:padding="7dp"
             />
     </LinearLayout>

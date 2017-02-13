@@ -9,7 +9,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/lgreen"
+            android:background="@drawable/layout_bg"
             android:radius="50dp"
             >
 
@@ -29,21 +29,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textViewTime"
+                            android:paddingLeft="10dp"
                             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
                         <TextView
+                            android:paddingLeft="10dp"
                             android:text="Meeting with X"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textViewDescription"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                         <TextView
+                            android:paddingLeft="10dp"
                             android:text="At MAHARAGAMA"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textViewLocation"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
                             android:layout_weight="0.07" />
 
                 </LinearLayout>

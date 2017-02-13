@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.chamod.smartplanner.ListItemModels.TaskItem;
+import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -33,10 +36,17 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        //seting task list view
-        String[] items={"adb","bfgf","fgfh","fg","fhfh"};
-        ListAdapter taskListAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items);
+
+
+
+        //set list view
+        TaskItem[] tasks=new TaskItem[3];
+        tasks[0]=new TaskItem("Meeting x","9.00 AM","Matara");
+        tasks[1]=new TaskItem("Meeting y","1.00 PM","Colombo");
+        tasks[2]=new TaskItem("Meeting z","3.00 PM","Galle");
+
         ListView taskListView=(ListView)findViewById(R.id.taskListView);
+        ArrayAdapter taskListAdapter=new TaskListAdapter(this,tasks);
         taskListView.setAdapter(taskListAdapter);
 
     }

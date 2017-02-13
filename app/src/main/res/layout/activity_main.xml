@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/lgreen"
             app:popupTheme="@style/AppTheme.PopupOverlay"
 
             />
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:paddingLeft="100dp"
+        android:gravity="center"
         >
 
         <android.support.design.widget.FloatingActionButton
@@ -44,7 +44,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:onClick="predictTasksButtonClicked"
             app:srcCompat="@android:drawable/presence_away"
-            app:backgroundTint="@android:color/holo_blue_light" />
+            app:backgroundTint="@color/lgreen" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton2"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="?android:attr/actionModeFindDrawable"
-            app:backgroundTint="@android:color/holo_blue_light"
+            app:backgroundTint="@color/lgreen"
             android:onClick="reportsButtonClicked"
             />
 
@@ -63,7 +63,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@android:drawable/ic_input_add"
             android:onClick="newTaskButtonClicked"
-            app:backgroundTint="@android:color/holo_blue_light" />
+            app:backgroundTint="@color/lgreen" />
 
 
     </LinearLayout>

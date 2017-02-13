@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lgreen"
+    android:background="@drawable/layout_bg"
     android:padding="10dp"
     >
 
@@ -17,24 +17,32 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="1">
 
         <TextView
             android:text="Meeting with X"
-            android:layout_width="336dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/textViewDescription"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_weight="0.93"
+            android:padding="2dp"
+            />
 
         <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
+            android:layout_width="29dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             app:fabSize="mini"
             app:srcCompat="@android:drawable/bottom_bar"
             android:id="@+id/floatingActionButton6"
-            android:layout_weight="0.51"
-            app:backgroundTint="@android:color/holo_blue_light" />
+            app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
+            app:rippleColor="?attr/colorAccent"
+
+            android:layout_alignParentRight="true"
+            android:tint="@color/common_google_signin_btn_text_light_disabled"
+            app:elevation="2dp" />
 
     </LinearLayout>
 
@@ -43,5 +51,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewLocation"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored" />
 </LinearLayout>
