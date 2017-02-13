@@ -10,4 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.chamod.smartplanner.SignInActivity">
 
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_google_signin_dark_normal_custom"
+        android:id="@+id/regbtn"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_weight="1"
+        android:layout_marginBottom="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

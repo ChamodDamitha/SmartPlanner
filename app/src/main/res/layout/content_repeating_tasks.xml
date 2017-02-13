@@ -18,5 +18,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/ListViewRepeatingTasks" />
+        android:id="@+id/ListViewRepeatingTasks"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10sp"
+        />
 </RelativeLayout>

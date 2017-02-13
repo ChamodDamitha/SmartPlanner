@@ -53,7 +53,10 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/ListViewPlaces" />
+            android:id="@+id/ListViewPlaces"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10sp"
+            />
     </LinearLayout>
 
 </RelativeLayout>
