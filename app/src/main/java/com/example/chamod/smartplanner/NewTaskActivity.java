@@ -1,10 +1,12 @@
 package com.example.chamod.smartplanner;
 
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +16,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.chamod.smartplanner.Fragments.TimeFragment;
+
 import java.util.Calendar;
 
-public class NewTaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends AppCompatActivity implements TimeFragment.TimeFragmentListener{
 
     EditText txtDesc;
     TimePicker timePicker;
+
+    TextView textViewTime;
+
+//    Fragments
+    View timeFragemt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +38,29 @@ public class NewTaskActivity extends AppCompatActivity {
 
         txtDesc=(EditText)findViewById(R.id.txtDesc);
         timePicker=(TimePicker)findViewById(R.id.timePicker);
+
+//        TextViews
+        textViewTime=(TextView)findViewById(R.id.textViewTime);
+
+//        Fragments
+        timeFragemt=findViewById(R.id.timeFragment);
+        timeFragemt.setVisibility(View.GONE);
+
+        android.app.FragmentManager fm=getFragmentManager();
+        fm.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out)
+                .show(new TimeFragment())
+                .commit();
     }
 
     public void saveTask(View v)
     {
         setAlarm();
         Toast.makeText(this,txtDesc.getText(),Toast.LENGTH_LONG).show();
+    }
+
+    public void TimeClicked(View v){
+        timeFragemt.setVisibility(View.VISIBLE);
     }
 
     private void setAlarm(){
@@ -59,4 +85,11 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    //Fragment listeners
+
+
+    @Override
+    public void setTime(int hour, int min) {
+        textViewTime.setText(hour+" : "+min);
+    }
 }
