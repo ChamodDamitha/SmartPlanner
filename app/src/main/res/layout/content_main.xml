@@ -50,7 +50,9 @@
                 app:srcCompat="?android:attr/actionModeWebSearchDrawable"
                 android:id="@+id/floatingActionButton"
                 android:layout_alignParentEnd="true"
-                app:backgroundTint="@color/lgreen" />
+                app:backgroundTint="@color/lgreen"
+                android:onClick="hideCalendar"
+                />
 
         </LinearLayout>
 

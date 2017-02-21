@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -18,6 +19,8 @@ import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    CalendarView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-
+        calendarView=(CalendarView)findViewById(R.id.calendarView);
 
 
 
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter taskListAdapter=new TaskListAdapter(this,tasks);
         taskListView.setAdapter(taskListAdapter);
 
+    }
+
+    public void hideCalendar(View v){
+        calendarView.setVisibility(View.GONE);
     }
 
     @Override

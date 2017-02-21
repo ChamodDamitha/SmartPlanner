@@ -19,19 +19,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.chamod.smartplanner.Fragments.DateFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
 
 import java.util.Calendar;
 
-public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener{
+public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,DateFragment.DateFragmentListener{
 
     EditText txtDesc;
     TimePicker timePicker;
 
-    TextView textViewTime;
+    TextView textViewTime,textViewDate;
 
 //    Fragments
     TimeFragment timeFragemt;
+    DateFragment dateFragment;
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -46,16 +48,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
 //        TextViews
         textViewTime=(TextView)findViewById(R.id.textViewTime);
+        textViewDate=(TextView)findViewById(R.id.textViewDate);
 
-//        Fragments
-//        timeFragemt=findViewById(R.id.timeFragment);
-//        timeFragemt.setVisibility(View.GONE);
-
-//        android.app.FragmentManager fm=getFragmentManager();
-//        fm.beginTransaction()
-//                .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out)
-//                .show(new TimeFragment())
-//                .commit();
     }
 
     public void saveTask(View v)
@@ -70,6 +64,12 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         // Show DialogFragment
         timeFragemt.show(fm,"TimeFragment");
     }
+
+    public void dateClicked(View v){
+        dateFragment=new DateFragment();
+        dateFragment.show(fm,"DateFragment");
+    }
+
 
     private void setAlarm(){
         Calendar cal=Calendar.getInstance();
@@ -101,5 +101,16 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         textViewTime.setText(hour+" : "+min);
     }
 
+    @Override
+    public void setDate(int year, int month, int day,String dayOfWeek) {
+        String m=month+"",d=day+"";
+        if(month<10){
+            m="0"+month;
+        }
+        if(day<10){
+            d="0"+day;
+        }
 
+        textViewDate.setText(dayOfWeek+", "+year+"-"+m+"-"+d);
+    }
 }
