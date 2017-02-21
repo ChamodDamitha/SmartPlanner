@@ -70,6 +70,10 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         dateFragment.show(fm,"DateFragment");
     }
 
+    public void locationClicked(View v){
+        Intent i=new Intent(this,MapsActivity.class);
+        startActivity(i);
+    }
 
     private void setAlarm(){
         Calendar cal=Calendar.getInstance();
