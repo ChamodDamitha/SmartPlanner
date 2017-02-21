@@ -5,44 +5,40 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TimePicker
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
             android:id="@+id/timePicker2"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
             >
 
             <Button
-                android:text="OK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnOKTime"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="36dp"
-                android:layout_weight="1" />
+                    android:text="OK"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnOKTime" />
 
             <Button
                 android:text="CANCEL"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnCancelTime"
+                android:layout_weight="0.08"
                 android:layout_alignBaseline="@+id/btnOKTime"
-                android:layout_alignBottom="@+id/btnOKTime"
-                android:layout_toEndOf="@+id/btnOKTime"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:layout_toEndOf="@+id/btnOKTime" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>
