@@ -21,15 +21,19 @@ import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Fragments.DateFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.Calendar;
 
 public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,DateFragment.DateFragmentListener{
 
+    int PLACE_PICKER_REQUEST = 1;
+
     EditText txtDesc;
     TimePicker timePicker;
 
-    TextView textViewTime,textViewDate;
+    TextView textViewTime,textViewDate,textViewLocation;
 
 //    Fragments
     TimeFragment timeFragemt;
@@ -49,6 +53,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 //        TextViews
         textViewTime=(TextView)findViewById(R.id.textViewTime);
         textViewDate=(TextView)findViewById(R.id.textViewDate);
+        textViewLocation=(TextView)findViewById(R.id.textViewLocation);
 
     }
 
@@ -71,9 +76,19 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 
     public void locationClicked(View v){
-        Intent i=new Intent(this,MapsActivity.class);
-        startActivity(i);
+
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        }
+        catch (Exception e){
+        }
+
+//        Intent i=new Intent(this,MapsActivity.class);
+//        startActivity(i);
     }
+
+
 
     private void setAlarm(){
         Calendar cal=Calendar.getInstance();
@@ -97,8 +112,24 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 
 
+//    google places activity result
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                setLocation(place);
+            }
+        }
+    }
+
+
     //Fragment listeners
 
+    private  void setLocation(Place place){
+        textViewLocation.setText(place.getName());
+    }
 
     @Override
     public void setTime(int hour, int min) {
