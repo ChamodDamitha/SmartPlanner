@@ -14,6 +14,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,6 +36,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     TimePicker timePicker;
 
     TextView textViewTime,textViewDate,textViewLocation;
+    AutoCompleteTextView txtViewContacts;
 
 //    Fragments
     TimeFragment timeFragemt;
@@ -54,6 +57,15 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         textViewTime=(TextView)findViewById(R.id.textViewTime);
         textViewDate=(TextView)findViewById(R.id.textViewDate);
         textViewLocation=(TextView)findViewById(R.id.textViewLocation);
+
+//        Contacts autocomplete
+        txtViewContacts=(AutoCompleteTextView)findViewById(R.id.txtViewContacts);
+
+        String[] contacts=new String[]{"Belgium", "France", "Italy", "Germany", "Spain"};
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,contacts);
+
+        txtViewContacts.setAdapter(adapter);
+        txtViewContacts.setThreshold(1);
 
     }
 

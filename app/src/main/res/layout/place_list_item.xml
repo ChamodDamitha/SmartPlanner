@@ -30,7 +30,8 @@
             android:layout_weight="3.57"
             app:backgroundTint="@android:color/background_light"
             android:layout_margin="5dp"
-            app:rippleColor="@color/lgreen" />
+            app:rippleColor="@color/lgreen"
+            app:elevation="0dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
@@ -43,6 +44,6 @@
             android:layout_margin="5dp"
             app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
             app:rippleColor="@color/lgreen"
-            app:elevation="6dp" />
+            app:elevation="0dp" />
     </LinearLayout>
 </LinearLayout>
