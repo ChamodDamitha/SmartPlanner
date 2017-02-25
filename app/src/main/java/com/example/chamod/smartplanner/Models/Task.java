@@ -11,6 +11,8 @@ public abstract class Task {
     private boolean alerted=false;
     private boolean completed=false;
 
+    protected String type;
+
     public Task(int id, String description, Date date) {
         this.id = id;
         this.description = description;
@@ -35,5 +37,9 @@ public abstract class Task {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public String getType(){
+        return type;
     }
 }

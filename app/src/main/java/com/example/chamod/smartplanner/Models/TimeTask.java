@@ -12,6 +12,7 @@ public class TimeTask extends Task {
         super(id, description, date);
         this.time=time;
         this.alert_time=alert_time;
+        this.type="TIME";
     }
 
     public Time getTime() {

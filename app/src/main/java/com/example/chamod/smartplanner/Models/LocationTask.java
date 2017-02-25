@@ -12,6 +12,7 @@ public class LocationTask extends Task {
         super(id, description, date);
         this.location=location;
         this.range=range;
+        this.type="LOCATION";
     }
 
     public Location getLocation() {

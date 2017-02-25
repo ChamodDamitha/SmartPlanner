@@ -17,6 +17,7 @@ public class FullTask extends Task {
         this.range=range;
         this.time=time;
         this.alert_time=alert_time;
+        this.type="FULL";
     }
 
     public Location getLocation() {
