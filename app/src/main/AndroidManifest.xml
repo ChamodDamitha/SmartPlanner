@@ -40,12 +40,12 @@
         <activity android:name=".SignInActivity" />
 
         <receiver
-            android:name=".TaskReceiver"
+            android:name=".BroadcastReceivers.TaskReceiver"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
-                <action android:name="call_action"></action>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="call_action"></action>-->
+            <!--</intent-filter>-->
         </receiver>
 
         <!--

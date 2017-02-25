@@ -1,9 +1,6 @@
 package com.example.chamod.smartplanner;
 
 import android.app.AlarmManager;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,19 +10,24 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
+import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Fragments.DateFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
+import com.example.chamod.smartplanner.Models.Date;
+import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Location;
+import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.Time;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
@@ -47,10 +49,24 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     FragmentManager fm = getSupportFragmentManager();
 
+//    task model references
+    Date date;
+    Location location;
+    Time time,alert_time;
+
+    TaskDB taskDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
+
+        taskDB=TaskDB.getInstance(this);
+
+        date=null;
+        time=null;
+        alert_time=null;
+        location=null;
 
 
         txtDesc=(EditText)findViewById(R.id.txtDesc);
@@ -74,66 +90,22 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     public void saveTask(View v)
     {
-        viewNotification(this,"dgkjjgk","dfg");
+//        need to replace
+        if(txtDesc.getText().toString()!="" && date!=null && location!=null && time!=null && alert_time!=null) {
 
-//        setAlarm();
-//        Toast.makeText(this,txtDesc.getText(),Toast.LENGTH_LONG).show();
+            FullTask fullTask = new FullTask(taskDB.getNextTaskId(), txtDesc.getText().toString(), date, location,
+                    0, time, alert_time);
+
+            taskDB.addFullTask(fullTask);
+
+            setAlarm(fullTask.getId(), fullTask.getType());
+
+            Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
+        }
     }
-    private void viewNotification(Context context,String desc,String info) {
-
-        Intent resultIntent = new Intent(context, NotificationActivity.class);
-
-        resultIntent.putExtra("id",122);
-
-// Because clicking the notification opens a new ("special") activity, there's
-// no need to create an artificial back stack.
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        context,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-
-
-        Intent callIntent=new Intent();
-        callIntent.putExtra("id",1212);
-        callIntent.setAction("call_action");
-        PendingIntent callPendingIntent=PendingIntent.getBroadcast(getApplicationContext(),0,callIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.notify_icon)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.notify_icon))
-                        .setContentTitle("SMART PLANNER")
-                        .setContentText(desc)
-                        .setContentInfo(info)
-                        .setPriority(Notification.PRIORITY_MAX)
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .addAction(0, "Call",callPendingIntent)
-                        .addAction(0,"More", resultPendingIntent)
-                ;
-
-
-
-
-        mBuilder.setContentIntent(resultPendingIntent);
-
-// Sets an ID for the notification
-        int mNotificationId = 122;
-// Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) context.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
-// Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
-    }
-
 
 
     public void TimeClicked(View v){
-//        timeFragemt.setVisibility(View.VISIBLE);
          timeFragemt = new TimeFragment();
         // Show DialogFragment
         timeFragemt.show(fm,"TimeFragment");
@@ -152,29 +124,28 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         }
         catch (Exception e){
         }
-
-//        Intent i=new Intent(this,MapsActivity.class);
-//        startActivity(i);
     }
 
 
 
 
-    private void setAlarm(){
+    private void setAlarm(int task_id,String task_type){
         Calendar cal=Calendar.getInstance();
-        cal.set(Calendar.YEAR,2017);
-        cal.set(Calendar.MONTH,1);
-        cal.set(Calendar.DAY_OF_MONTH,25);
-        cal.set(Calendar.HOUR_OF_DAY,8);
-        cal.set(Calendar.MINUTE,8);
+        cal.set(Calendar.YEAR,date.getYear());
+        cal.set(Calendar.MONTH,date.getMonth()-1);
+        cal.set(Calendar.DAY_OF_MONTH,date.getDay());
+        cal.set(Calendar.HOUR_OF_DAY,alert_time.get24Hour());
+        cal.set(Calendar.MINUTE,alert_time.getMinute());
 
-//        Long alertTime=new GregorianCalendar().getTimeInMillis()+5*1000;
 
         Intent intent=new Intent(this,TaskReceiver.class);
 
-        intent.putExtra("description","fh");
 
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(this.getApplicationContext(),12,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("task_id",task_id);
+        intent.putExtra("task_type",task_type);    //NEED TO REPLACE
+
+
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(this.getApplicationContext(),task_id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
@@ -198,24 +169,23 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     //Fragment listeners
 
     private  void setLocation(Place place){
+        location=new Location(place.getName().toString(),place.getLatLng().latitude,place.getLatLng().longitude);
         textViewLocation.setText(place.getName());
     }
 
     @Override
     public void setTime(int hour, int min) {
+        time=new Time(hour,min);
+//        need to replace logically
+        alert_time=new Time(hour,min);
+
         textViewTime.setText(hour+" : "+min);
     }
 
     @Override
     public void setDate(int year, int month, int day,String dayOfWeek) {
-        String m=month+"",d=day+"";
-        if(month<10){
-            m="0"+month;
-        }
-        if(day<10){
-            d="0"+day;
-        }
+        date=new Date(day,month,year,dayOfWeek);
 
-        textViewDate.setText(dayOfWeek+", "+year+"-"+m+"-"+d);
+        textViewDate.setText(dayOfWeek+", "+day+" "+date.getMonthOfYear()+" "+year);
     }
 }
