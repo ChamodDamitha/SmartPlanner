@@ -37,16 +37,20 @@ public class TaskReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        taskDB=TaskDB.getInstance(context);
+       taskDB=TaskDB.getInstance(context);
         Bundle extras=intent.getExtras();
 
         int task_id=extras.getInt("task_id");
         String task_type=extras.getString("task_type");
 
-        if(task_type=="FULL"){
+        Toast.makeText(context,"broadcast working"+task_id+"-"+task_type,Toast.LENGTH_LONG).show();
+
+
+
+//        if(task_type=="FULL"){
             FullTask fullTask=taskDB.getFullTask(task_id);
             viewNotification(context,fullTask.getDescription(),fullTask.getLocation().getName());
-        }
+//        }
     }
 
 
