@@ -1,0 +1,37 @@
+package com.example.chamod.smartplanner.Models;
+
+/**
+ * Created by chamod on 2/25/17.
+ */
+
+public class Time {
+    private int hour;
+    private int minute;
+
+    public Time(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public int get24Hour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public String getAmOrPM(){
+        if(hour>=12){
+            return "PM";
+        }
+        return "AM";
+    }
+
+    public int get12Hour(){
+        if(hour>12){
+            return hour-12;
+        }
+        return hour;
+    }
+}

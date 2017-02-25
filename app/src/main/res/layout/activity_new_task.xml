@@ -65,7 +65,7 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
 
                     android:background="@android:color/background_light"
                     android:layout_margin="2dp"
@@ -81,13 +81,12 @@
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textPersonName"
+                        android:layout_height="100dp"
+                        android:inputType="textMultiLine"
                         android:ems="10"
                         android:id="@+id/txtDesc"
-                        android:layout_alignParentEnd="true"
-                        android:padding="2dp"
                         android:hint="Enter Description"
+                        android:gravity="top"
                         />
 
                 </LinearLayout>
@@ -309,6 +308,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtViewContacts"
                     />
+
+
 
             </LinearLayout>
         </ScrollView>
