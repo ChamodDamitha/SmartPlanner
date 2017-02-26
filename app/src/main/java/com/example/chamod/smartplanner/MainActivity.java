@@ -15,12 +15,18 @@ import android.widget.CalendarView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
+import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Task;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     CalendarView calendarView;
+    TaskDB taskDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        taskDB=TaskDB.getInstance(this);
 //
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -43,10 +51,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         //set list view
-        TaskItem[] tasks=new TaskItem[3];
-        tasks[0]=new TaskItem("Meeting x","9.00 AM","Matara");
-        tasks[1]=new TaskItem("Meeting y","1.00 PM","Colombo");
-        tasks[2]=new TaskItem("Meeting z","3.00 PM","Galle");
+        ArrayList<Task> scheduledTasks=taskDB.getAllScheduledTasks();
+
+        TaskItem[] tasks=new TaskItem[scheduledTasks.size()];
+        for (int i=0;i<tasks.length;i++){
+            Task task=scheduledTasks.get(i);
+            if(task.getType().equals("FULL")) {
+                FullTask fulltask=(FullTask)task;
+                tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().get24Hour()+":"+fulltask.getTime().getMinute()+" "+fulltask.getTime().getAmOrPM() ,
+                        fulltask.getLocation().getName());
+            }
+        }
+
+
 
         ListView taskListView=(ListView)findViewById(R.id.taskListView);
         ArrayAdapter taskListAdapter=new TaskListAdapter(this,tasks);
@@ -55,7 +72,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hideCalendar(View v){
-        calendarView.setVisibility(View.GONE);
+        if(calendarView.getVisibility()==View.GONE){
+            calendarView.setVisibility(View.VISIBLE);
+        }
+        else {
+            calendarView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -104,5 +126,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i=new Intent(this,ReportsActivity.class);
         startActivity(i);
     }
+
+
 
 }

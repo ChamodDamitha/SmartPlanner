@@ -11,6 +11,8 @@ import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 
+import java.util.ArrayList;
+
 /**
  * Created by chamod on 2/25/17.
  */
@@ -76,7 +78,7 @@ public class TaskDB {
         cv2.put(DB_Helper.task_hour,fullTask.getTime().get24Hour());
         cv2.put(DB_Helper.task_minute,fullTask.getTime().getMinute());
         cv2.put(DB_Helper.task_alert_hour,fullTask.getAlert_time().get24Hour());
-        cv2.put(DB_Helper.task_hour,fullTask.getAlert_time().getMinute());
+        cv2.put(DB_Helper.task_alert_minute,fullTask.getAlert_time().getMinute());
 
         cv2.put(DB_Helper.task_location_name,fullTask.getLocation().getName());
         cv2.put(DB_Helper.task_location_latitude,fullTask.getLocation().getLatitude());
@@ -117,5 +119,46 @@ public class TaskDB {
 
         }
         return null;
+    }
+
+    public void setTaskAlerted(int task_id,boolean alerted){
+        SQLiteDatabase db=db_helper.getWritableDatabase();
+        if(alerted) {
+            db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
+                    DB_Helper.task_table,DB_Helper.task_alerted,1,DB_Helper.task_id,task_id));
+        }
+        else{
+            db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
+                    DB_Helper.task_table,DB_Helper.task_alerted,0,DB_Helper.task_id,task_id));
+        }
+    }
+
+    public void setTaskCompleted(int task_id,boolean completed){
+        SQLiteDatabase db=db_helper.getWritableDatabase();
+        if(completed) {
+            db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
+                    DB_Helper.task_table,DB_Helper.task_completed,1,DB_Helper.task_id,task_id));
+        }
+        else{
+            db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
+                    DB_Helper.task_table,DB_Helper.task_completed,0,DB_Helper.task_id,task_id));
+        }
+    }
+
+    public ArrayList<Task> getAllScheduledTasks(){
+        ArrayList<Task> tasks=new ArrayList<>();
+
+        SQLiteDatabase db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s;",DB_Helper.task_id,DB_Helper.task_type,DB_Helper.task_table,DB_Helper.task_alerted,0);
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToNext())
+        {
+            if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals("FULL")){
+                tasks.add(getFullTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+        }
+
+        return tasks;
     }
 }

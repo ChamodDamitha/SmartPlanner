@@ -101,6 +101,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             setAlarm(fullTask.getId(), fullTask.getType());
 
             Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
+
+            Intent i=new Intent(this,MainActivity.class);
+            startActivity(i);
         }
     }
 
@@ -137,7 +140,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         cal.set(Calendar.HOUR_OF_DAY,alert_time.get24Hour());
         cal.set(Calendar.MINUTE,alert_time.getMinute());
 
-        Toast.makeText(this,alert_time.get24Hour()+" "+alert_time.getMinute()+" ",Toast.LENGTH_LONG).show();
 
         Intent intent=new Intent(this,TaskReceiver.class);
 

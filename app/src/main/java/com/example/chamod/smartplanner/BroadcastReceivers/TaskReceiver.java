@@ -47,15 +47,16 @@ public class TaskReceiver extends BroadcastReceiver {
 
 
 
-//        if(task_type=="FULL"){
+        if(task_type.equals("FULL")){
             FullTask fullTask=taskDB.getFullTask(task_id);
-            viewNotification(context,fullTask.getDescription(),fullTask.getLocation().getName());
-//        }
+            viewNotification(context,task_id,fullTask.getDescription(),fullTask.getLocation().getName());
+            taskDB.setTaskAlerted(task_id,true);
+        }
     }
 
 
 
-    private void viewNotification(Context context,String desc,String info) {
+    private void viewNotification(Context context,int task_id,String desc,String info) {
         Intent resultIntent = new Intent(context, NotificationActivity.class);
 
 
@@ -64,7 +65,7 @@ public class TaskReceiver extends BroadcastReceiver {
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         context,
-                        0,
+                        task_id,
                         resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
