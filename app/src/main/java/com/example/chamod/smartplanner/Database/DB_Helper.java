@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB_Helper extends SQLiteOpenHelper {
     private static DB_Helper db_helper = null;
-    private static final int db_version = 2;
+    private static final int db_version = 3;
     protected static final String db_name = "smart_planner_db";
 
     //singleton for DB_helper class

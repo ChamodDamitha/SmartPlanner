@@ -56,6 +56,7 @@ public class TaskDB {
         cv.put(DB_Helper.task_year,fullTask.getDate().getYear());
         cv.put(DB_Helper.task_month,fullTask.getDate().getMonth());
         cv.put(DB_Helper.task_day,fullTask.getDate().getDay());
+        cv.put(DB_Helper.task_day_of_week,fullTask.getDate().getDayOfWeek());
 
         if(fullTask.isAlerted()) {
             cv.put(DB_Helper.task_alerted, 1);
@@ -114,6 +115,19 @@ public class TaskDB {
             FullTask fullTask=new FullTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
                     date,location,cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_range)),
                     time,alert_time);
+
+            if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
+                fullTask.setAlerted(false);
+            }
+            else {
+                fullTask.setAlerted(true);
+            }
+            if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_completed))==0){
+                fullTask.setCompleted(false);
+            }
+            else {
+                fullTask.setCompleted(true);
+            }
 
             return fullTask;
 
