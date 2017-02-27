@@ -6,10 +6,13 @@ import android.test.InstrumentationTestCase;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
+import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -100,7 +103,10 @@ public class TaskDBTest {
 
     @Test
     public void getAllScheduledTasks() throws Exception {
-
+//        taskDB=TaskDB.getInstance(InstrumentationRegistry.getTargetContext());
+//        ArrayList<Task> tasks=taskDB.getAllScheduledTasks();
+//
+//        assertEquals(2,tasks.size());
     }
 
 }

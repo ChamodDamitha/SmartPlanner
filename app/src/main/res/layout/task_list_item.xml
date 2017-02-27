@@ -5,14 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/layout_bg"
     android:padding="10dp"
-    >
-
-    <TextView
-        android:text="FRI, 3.00 PM"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewTime"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+    android:weightSum="1">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,36 +13,61 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
-        <TextView
-            android:text="Meeting with X"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="280dp"
+            android:layout_height="59dp"
+            android:weightSum="1">
+
+            <TextView
+                android:text="Meeting with X"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDescription"
+                android:textAppearance="@style/TextAppearance.CastMiniController.Title"
+                android:layout_weight="0.52" />
+
+            <TextView
+                android:text="At Colombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewLocation"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/textViewDescription"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_weight="0.93"
-            android:padding="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.29">
+
+
+            <TextView
+                android:text="3.00 PM"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewTime"
+                android:layout_weight="0.00"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored" />
             />
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="29dp"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:fabSize="mini"
-            app:srcCompat="@android:drawable/bottom_bar"
-            android:id="@+id/floatingActionButton6"
-            app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
-            app:rippleColor="?attr/colorAccent"
+            <android.support.design.widget.FloatingActionButton
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/delete"
+                android:id="@+id/floatingActionButton6"
+                app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
+                app:rippleColor="@android:color/holo_red_light"
 
-            android:layout_alignParentRight="true"
-            android:tint="@color/common_google_signin_btn_text_light_disabled"
-            app:elevation="2dp" />
+                android:layout_alignParentRight="true"
+                android:tint="@color/common_google_signin_btn_text_light_disabled"
+                app:elevation="0dp"
+                android:layout_width="match_parent" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:text="At Colombo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewLocation"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored" />
 </LinearLayout>

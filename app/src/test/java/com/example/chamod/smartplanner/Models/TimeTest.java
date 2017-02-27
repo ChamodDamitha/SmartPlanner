@@ -9,6 +9,16 @@ import static org.junit.Assert.*;
  */
 public class TimeTest {
     @Test
+    public void getTimeString() throws Exception {
+        String output,expect="2:37 PM";
+
+        Time time=new Time(14,37);
+        output=time.getTimeString();
+
+        assertEquals(expect,output);
+    }
+
+    @Test
     public void get24Hour() throws Exception {
         int output,expect=14;
 

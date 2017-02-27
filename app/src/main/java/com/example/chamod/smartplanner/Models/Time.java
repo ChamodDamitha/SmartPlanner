@@ -34,4 +34,14 @@ public class Time {
         }
         return hour;
     }
+
+    public String getTimeString(){
+        String time_string=get12Hour()+":";
+        if(minute<10){
+            time_string+=0;
+        }
+        time_string+=minute+" "+getAmOrPM();
+
+        return time_string;
+    }
 }

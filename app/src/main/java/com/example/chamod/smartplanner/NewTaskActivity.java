@@ -102,7 +102,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
             Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 
-            Intent i=new Intent(this,MainActivity.class);
+            Intent i=new Intent(this,NavigaterActivity.class);
             startActivity(i);
         }
     }
@@ -182,7 +182,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 //        need to replace logically
         alert_time=new Time(hour,min);
 
-        textViewTime.setText(hour+" : "+min);
+        textViewTime.setText(time.getTimeString());
     }
 
     @Override

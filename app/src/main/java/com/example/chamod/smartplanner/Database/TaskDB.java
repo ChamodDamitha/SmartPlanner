@@ -166,7 +166,7 @@ public class TaskDB {
         String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s;",DB_Helper.task_id,DB_Helper.task_type,DB_Helper.task_table,DB_Helper.task_alerted,0);
         Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor.moveToNext())
+        while (cursor.moveToNext())
         {
             if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals("FULL")){
                 tasks.add(getFullTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
