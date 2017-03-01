@@ -103,10 +103,26 @@ public class TaskDBTest {
 
     @Test
     public void getAllScheduledTasks() throws Exception {
-//        taskDB=TaskDB.getInstance(InstrumentationRegistry.getTargetContext());
-//        ArrayList<Task> tasks=taskDB.getAllScheduledTasks();
-//
-//        assertEquals(2,tasks.size());
+        taskDB=TaskDB.getInstance(InstrumentationRegistry.getTargetContext());
+
+//        add 2 tasks
+        Date date=new Date(26,1,2017,"SUN");
+        Location location=new Location("TestLocation",1.8962,45.1236);
+        Time time=new Time(14,37);
+        Time alert_time=new Time(11,30);
+
+        FullTask fullTask1=new FullTask(987,"Test Full Task 1",date,location,4.5,time,alert_time);
+
+        FullTask fullTask2=new FullTask(989,"Test Full Task 2",date,location,4.5,time,alert_time);
+
+        taskDB.addFullTask(fullTask1);
+        taskDB.addFullTask(fullTask2);
+
+
+//      check method
+        ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
+
+        assertEquals(2,tasks.size());
     }
 
 }

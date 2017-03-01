@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_my_places"
     android:layout_width="match_parent"
@@ -13,27 +14,53 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:text="Place Name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView6"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        >
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText2" />
+            android:id="@+id/editText2"
+            android:hint="Enter the place name" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:srcCompat="@drawable/location"
+                android:id="@+id/imageView9"
+                android:padding="5dp"
+                />
+
+            <TextView
+                android:text="Location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/txtViewLocName"
+                android:padding="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
 
         <Button
             android:text="SAVE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button5" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+        />
 
         <TextView
             android:text="My Places"
@@ -42,6 +69,7 @@
             android:id="@+id/textView7"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:paddingLeft="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <ListView

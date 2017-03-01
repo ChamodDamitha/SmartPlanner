@@ -39,4 +39,8 @@ public class Date {
         monthOfyear=months[month-1];
         return monthOfyear;
     }
+
+    public String getDateString(){
+        return dayOfWeek+", "+day+" "+getMonthOfYear()+" "+year;
+    }
 }

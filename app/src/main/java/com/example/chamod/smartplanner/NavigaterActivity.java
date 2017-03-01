@@ -20,15 +20,19 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
+import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Task;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class NavigaterActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -37,6 +41,11 @@ public class NavigaterActivity extends AppCompatActivity
 
 
     CalendarView calendarView;
+    ListView taskListView;
+    ArrayAdapter taskListAdapter;
+
+    TextView txtViewDate;
+
     TaskDB taskDB;
 
     @Override
@@ -44,6 +53,7 @@ public class NavigaterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigater);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,41 +81,64 @@ public class NavigaterActivity extends AppCompatActivity
 
         taskDB=TaskDB.getInstance(this);
 //
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        txtViewDate=(TextView)findViewById(R.id.txtViewDate);
+
+
+        final String[] days={"MON","TUE","WED","THU","FRI","SAT","SUN"};
 
         calendarView=(CalendarView)findViewById(R.id.calendarView);
 
+//      Selected
+//        Date util_date=new java.util.Date(calendarView.getDate());
 
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                GregorianCalendar gregorianCalendar=new GregorianCalendar(year,month,dayOfMonth-1);
+
+                Date selected_date=new Date(dayOfMonth,month+1,year,days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1]);
+                calendar_date_set(selected_date);
+
+            }
+        });
+
+        taskListView=(ListView)findViewById(R.id.taskListView);
+
+//        initial date set up
+        java.util.Date date=new java.util.Date(calendarView.getDate());
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(date);
+
+        Date today_date=new Date(calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                calendar.get(Calendar.YEAR),days[calendar.get(Calendar.DAY_OF_WEEK)-2]);
+        calendar_date_set(today_date);
+    }
+
+    private void calendar_date_set(Date date){
         //set list view
-        ArrayList<Task> scheduledTasks=taskDB.getAllScheduledTasks();
+        ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
 
-        TaskItem[] tasks=new TaskItem[scheduledTasks.size()];
-        for (int i=0;i<tasks.length;i++){
-            Task task=scheduledTasks.get(i);
+        TaskItem[] scheduled_tasks=new TaskItem[tasks.size()];
+        for (int i=0;i<scheduled_tasks.length;i++){
+            Task task=tasks.get(i);
             if(task.getType().equals("FULL")) {
 
                 FullTask fulltask=(FullTask)task;
 
 
-                tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().getTimeString() ,
+                scheduled_tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().getTimeString() ,
                         fulltask.getLocation().getName());
             }
         }
 
 
-
-        ListView taskListView=(ListView)findViewById(R.id.taskListView);
-        ArrayAdapter taskListAdapter=new TaskListAdapter(this,tasks);
+        taskListAdapter=new TaskListAdapter(NavigaterActivity.this,scheduled_tasks);
         taskListView.setAdapter(taskListAdapter);
 
+        txtViewDate.setText(date.getDateString());
     }
+
 
     @Override
     public void onBackPressed() {
