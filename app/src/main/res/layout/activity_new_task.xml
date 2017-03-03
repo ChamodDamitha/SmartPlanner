@@ -67,7 +67,7 @@
                     android:text="Schedule for every week"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/checkBox"
+                    android:id="@+id/checkBoxRepeatTask"
                     android:layout_below="@+id/timePicker"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="left"
@@ -101,19 +101,20 @@
                             android:text="Time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/checkBox2"
+                            android:id="@+id/checkBoxTime"
                             android:layout_below="@+id/textView4"
                             android:layout_alignStart="@+id/textView4"
                             android:layout_marginRight="20dp"
-                            />
+                            android:checked="true" />
 
                         <CheckBox
                             android:text="Location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/checkBox3"
+                            android:id="@+id/checkBoxLocation"
                             android:layout_below="@+id/textView4"
-                            android:layout_alignStart="@+id/btnSave" />
+                            android:layout_alignStart="@+id/btnSave"
+                            android:checked="true" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -155,7 +156,7 @@
                     android:onClick="dateClicked"
                     android:background="@android:color/background_light"
                     android:layout_margin="2dp"
-                    >
+                    android:id="@+id/time_pad">
 
                     <ImageView
                         android:layout_height="46dp"
@@ -201,6 +202,7 @@
                     android:onClick="TimeClicked"
                     android:background="@android:color/background_light"
                     android:layout_margin="2dp"
+
                     >
 
                     <ImageView
@@ -237,11 +239,17 @@
                             android:layout_alignParentEnd="true"
                             />
 
+
+
                     </LinearLayout>
 
                 </LinearLayout>
 
-
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/locationPAd">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -283,6 +291,8 @@
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             />
+
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -296,23 +306,33 @@
                     <!--android:layout_marginTop="5dp"-->
                     <!--/>-->
 
-                <TextView
-                    android:text="People"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView5"
-                    android:layout_below="@+id/checkBox2"
-                    android:layout_alignParentStart="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        >
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtViewContacts"
-                    />
+                        <TextView
+                            android:text="Range (in metres) :"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView5"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                            android:layout_weight="1" />
 
+                        <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/editTextRange"
+                        android:hint="Enter the range (in metres)"
+                            android:text="0"
+                            android:layout_weight="1" />
+                    </LinearLayout>
 
-
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 

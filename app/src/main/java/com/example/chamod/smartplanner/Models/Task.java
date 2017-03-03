@@ -10,6 +10,7 @@ public abstract class Task {
     private Date date;
     private boolean alerted=false;
     private boolean completed=false;
+    private boolean repeat=false;
 
     protected String type;
 
@@ -49,5 +50,13 @@ public abstract class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
     }
 }

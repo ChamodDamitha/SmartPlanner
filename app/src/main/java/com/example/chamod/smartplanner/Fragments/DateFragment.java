@@ -27,10 +27,8 @@ public class DateFragment extends DialogFragment {
     DatePicker datePicker;
 
 
-    String[] days={"MON","TUE","WED","THU","FRI","SAT","SUN"};
-
     public interface DateFragmentListener{
-        void setDate(int year,int month,int day,String dayOfWeek);
+        void setDate(int year,int month,int day );
     }
 
     @Override
@@ -53,12 +51,8 @@ public class DateFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                GregorianCalendar gregorianCalendar=new GregorianCalendar(datePicker.getYear(),datePicker.getMonth(),
-                        datePicker.getDayOfMonth()-1);
-
-
                 dateFragmentListener.setDate(datePicker.getYear(),datePicker.getMonth()+1,
-                        datePicker.getDayOfMonth(),days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1]);
+                        datePicker.getDayOfMonth());
                 getDialog().dismiss();
             }
         });

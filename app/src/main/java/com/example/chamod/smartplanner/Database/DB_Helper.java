@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB_Helper extends SQLiteOpenHelper {
     private static DB_Helper db_helper = null;
-    private static final int db_version = 9;
+    private static final int db_version = 12;
     protected static final String db_name = "smart_planner_db";
 
     //singleton for DB_helper class
@@ -36,10 +36,11 @@ public class DB_Helper extends SQLiteOpenHelper {
     public static final String task_year="task_year";
     public static final String task_month="task_month";
     public static final String task_day="task_day";
-    public static final String task_day_of_week="task_day_of_week";
     public static final String task_alerted="task_alerted";
     public static final String task_completed="task_completed";
     public static final String task_type="task_type";
+    public static final String task_repeat="task_repeat";
+
 
 
     public static final String task_hour="task_hour";
@@ -73,11 +74,11 @@ public class DB_Helper extends SQLiteOpenHelper {
                     "%s INT," +
                     "%s INT," +
                     "%s INT," +
-                    "%s VARCHAR(3)," +
                     "%s INT," +
                     "%s INT," +
-                    "%s VARCHAR(10)" +
-                ");",task_table,task_id,task_description,task_year,task_month,task_day,task_day_of_week,task_alerted,task_completed,task_type);
+                    "%s VARCHAR(10)," +
+                    "%s INT" +
+                ");",task_table,task_id,task_description,task_year,task_month,task_day,task_alerted,task_completed,task_type,task_repeat);
 
         String full_task_table_query=String.format("" +
                 "CREATE TABLE %s(" +
@@ -93,6 +94,24 @@ public class DB_Helper extends SQLiteOpenHelper {
                 ");",full_task_table,task_id,task_hour,task_minute,task_alert_hour,task_alert_minute,
                 task_location_name,task_location_latitude,task_location_longitude,task_location_range);
 
+        String location_task_table_query=String.format("" +
+                "CREATE TABLE %s(" +
+                "%s INTEGER PRIMARY KEY," +
+                "%s VARCHAR(100),"+
+                "%s DOUBLE,"+
+                "%s DOUBLE,"+
+                "%s DOUBLE"+
+                ");",location_task_table,task_id,task_location_name,task_location_latitude,task_location_longitude,task_location_range);
+
+        String time_task_table_query=String.format("" +
+                        "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s INT,"+
+                        "%s INT,"+
+                        "%s INT,"+
+                        "%s INT"+
+                        ");",time_task_table,task_id,task_hour,task_minute,task_alert_hour,task_alert_minute);
+
 
         String myplace_table_query=String.format("" +
                 "CREATE TABLE %s(" +
@@ -106,6 +125,8 @@ public class DB_Helper extends SQLiteOpenHelper {
 
         db.execSQL(task_table_query);
         db.execSQL(full_task_table_query);
+        db.execSQL(location_task_table_query);
+        db.execSQL(time_task_table_query);
         db.execSQL(myplace_table_query);
     }
 
@@ -113,6 +134,8 @@ public class DB_Helper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + task_table);
         db.execSQL("DROP TABLE IF EXISTS " + full_task_table);
+        db.execSQL("DROP TABLE IF EXISTS " + location_task_table);
+        db.execSQL("DROP TABLE IF EXISTS " + time_task_table);
         db.execSQL("DROP TABLE IF EXISTS " + myplaces_table);
         onCreate(db);
     }

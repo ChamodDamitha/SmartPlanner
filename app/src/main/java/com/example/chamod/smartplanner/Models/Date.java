@@ -1,5 +1,7 @@
 package com.example.chamod.smartplanner.Models;
 
+import java.util.GregorianCalendar;
+
 /**
  * Created by chamod on 2/25/17.
  */
@@ -8,14 +10,12 @@ public class Date {
     private int day;
     private int month;
     private int year;
-    private String dayOfWeek;
     private String monthOfyear;
 
-    public Date(int day, int month, int year, String dayOfWeek) {
+    public Date(int day, int month, int year) {
         this.day = day;
         this.month = month;
         this.year = year;
-        this.dayOfWeek = dayOfWeek;
     }
 
     public int getDay() {
@@ -31,7 +31,11 @@ public class Date {
     }
 
     public String getDayOfWeek() {
-        return dayOfWeek;
+        String[] days={"MON","TUE","WED","THU","FRI","SAT","SUN"};
+
+        GregorianCalendar gregorianCalendar=new GregorianCalendar(year,month-1,day-1);
+
+        return days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1];
     }
 
     public String getMonthOfYear(){
@@ -41,6 +45,6 @@ public class Date {
     }
 
     public String getDateString(){
-        return dayOfWeek+", "+day+" "+getMonthOfYear()+" "+year;
+        return getDayOfWeek()+", "+day+" "+getMonthOfYear()+" "+year;
     }
 }

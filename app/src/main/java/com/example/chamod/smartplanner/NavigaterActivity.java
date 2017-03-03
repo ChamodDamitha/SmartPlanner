@@ -90,9 +90,8 @@ public class NavigaterActivity extends AppCompatActivity
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                GregorianCalendar gregorianCalendar=new GregorianCalendar(year,month,dayOfMonth-1);
 
-                Date selected_date=new Date(dayOfMonth,month+1,year,days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1]);
+                Date selected_date=new Date(dayOfMonth,month+1,year);
                 calendar_date_set(selected_date);
 
             }
@@ -106,7 +105,7 @@ public class NavigaterActivity extends AppCompatActivity
         calendar.setTime(date);
 
         Date today_date=new Date(calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
-                calendar.get(Calendar.YEAR),days[calendar.get(Calendar.DAY_OF_WEEK)-2]);
+                calendar.get(Calendar.YEAR));
         calendar_date_set(today_date);
     }
 

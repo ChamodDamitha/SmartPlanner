@@ -14,7 +14,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -26,8 +29,10 @@ import com.example.chamod.smartplanner.Fragments.TimeFragment;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
+import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
+import com.example.chamod.smartplanner.Models.TimeTask;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
@@ -37,7 +42,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     int PLACE_PICKER_REQUEST = 1;
 
-    EditText txtDesc;
+    EditText txtDesc,txtRange;
     TimePicker timePicker;
 
     TextView textViewTime,textViewDate,textViewLocation;
@@ -50,11 +55,16 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     FragmentManager fm = getSupportFragmentManager();
 
 //    task model references
-    Date date;
-    Location location;
-    Time time,alert_time;
+    Date date=null;
+    Location location=null;
+    double range=0;
+    Time time=null,alert_time=null;
 
     TaskDB taskDB;
+
+
+    CheckBox checkBoxTime,checkBoxLocation,checkBoxRepeatTask;
+    LinearLayout timePad,locationPAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +73,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
         taskDB=TaskDB.getInstance(this);
 
-        date=null;
-        time=null;
-        alert_time=null;
-        location=null;
-
-
         txtDesc=(EditText)findViewById(R.id.txtDesc);
+        txtRange=(EditText)findViewById(R.id.editTextRange);
         timePicker=(TimePicker)findViewById(R.id.timePicker);
 
 //        TextViews
@@ -77,37 +82,104 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         textViewDate=(TextView)findViewById(R.id.textViewDate);
         textViewLocation=(TextView)findViewById(R.id.textViewLocation);
 
-//        Contacts autocomplete
-        txtViewContacts=(AutoCompleteTextView)findViewById(R.id.txtViewContacts);
 
-        String[] contacts=new String[]{"Belgium", "France", "Italy", "Germany", "Spain"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,contacts);
+        timePad=(LinearLayout)findViewById(R.id.time_pad);
+        locationPAd=(LinearLayout)findViewById(R.id.locationPAd);
+//        set check boxes
+        checkBoxTime=(CheckBox)findViewById(R.id.checkBoxTime);
+        checkBoxLocation=(CheckBox)findViewById(R.id.checkBoxLocation);
+        checkBoxRepeatTask=(CheckBox)findViewById(R.id.checkBoxRepeatTask);
 
-        txtViewContacts.setAdapter(adapter);
-        txtViewContacts.setThreshold(1);
 
+        checkBoxTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    timePad.setVisibility(View.GONE);
+                }
+                else
+                {
+                    timePad.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        checkBoxLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    locationPAd.setVisibility(View.VISIBLE);
+                }
+                else{
+                    locationPAd.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void saveTask(View v)
     {
-//        need to replace
-        if(txtDesc.getText().toString()!="" && date!=null && location!=null && time!=null && alert_time!=null) {
-
-            FullTask fullTask = new FullTask(taskDB.getNextTaskId(), txtDesc.getText().toString(), date, location,
-                    0, time, alert_time);
-
-            taskDB.addFullTask(fullTask);
-
-            setAlarm(fullTask.getId(), fullTask.getType());
-
-            Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
-
-            Intent i=new Intent(this,NavigaterActivity.class);
-            startActivity(i);
+//        not location or time ticked
+        if(!checkBoxTime.isChecked() && !checkBoxLocation.isChecked()){
+            Toast.makeText(this,"Please select the alert based on time or location or both....!",Toast.LENGTH_LONG).show();
         }
+//        only location ticked
+        else if(!checkBoxTime.isChecked()){
+//            Create a location task
+            if(isValidEntries()){
+                LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
+                        date,location,Double.valueOf(txtRange.getText().toString()));
+                taskDB.addLocationTask(locationTask);
+
+                setAlarm(locationTask);
+            }
+        }
+//        only time ticked
+        else if(!checkBoxLocation.isChecked() ){
+//            create a time task
+            if(isValidEntries()){
+                TimeTask timeTask=new TimeTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
+                        date,time,alert_time);
+                taskDB.addTimeTask(timeTask);
+
+                setAlarm(timeTask);
+            }
+        }
+//        both time and location ticked
+        else {
+            if (isValidEntries()) {
+                FullTask fullTask = new FullTask(taskDB.getNextTaskId(), txtDesc.getText().toString().trim(),
+                        date, location, 0, time, alert_time);
+
+                taskDB.addFullTask(fullTask);
+
+                setAlarm(fullTask);
+            }
+        }
+
+    }
+//validate entries
+    private boolean isValidEntries() {
+        if (txtDesc.getText().toString().trim() == "") {
+            Toast.makeText(this, "Please enter the task description...!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (checkBoxLocation.isChecked() && location == null) {
+            Toast.makeText(this, "Please select a location...!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (checkBoxLocation.isChecked() && txtRange.getText() == null) {
+            Toast.makeText(this, "Please enter a range...!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (checkBoxTime.isChecked() && time == null) {
+            Toast.makeText(this, "Please select a time...!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (checkBoxTime.isChecked() && alert_time == null) {
+            Toast.makeText(this, "Please select the alert time...!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
-
+//    Dialog Fragment showing
     public void TimeClicked(View v){
          timeFragemt = new TimeFragment();
         // Show DialogFragment
@@ -131,28 +203,40 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
 
 
+//setting alarm for a task
+    private void setAlarm(Task task){
+        if(task.getType().equals("LOCATION")){
 
-    private void setAlarm(int task_id,String task_type){
-        Calendar cal=Calendar.getInstance();
-        cal.set(Calendar.YEAR,date.getYear());
-        cal.set(Calendar.MONTH,date.getMonth()-1);
-        cal.set(Calendar.DAY_OF_MONTH,date.getDay());
-        cal.set(Calendar.HOUR_OF_DAY,alert_time.get24Hour());
-        cal.set(Calendar.MINUTE,alert_time.getMinute());
-
-
-        Intent intent=new Intent(this,TaskReceiver.class);
-
-
-        intent.putExtra("task_id",task_id);
-        intent.putExtra("task_type",task_type);    //NEED TO REPLACE
+        }
+        else {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, date.getYear());
+            cal.set(Calendar.MONTH, date.getMonth() - 1);
+            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
+            cal.set(Calendar.HOUR_OF_DAY, alert_time.get24Hour());
+            cal.set(Calendar.MINUTE, alert_time.getMinute());
 
 
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(this.getApplicationContext(),task_id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent = new Intent(this, TaskReceiver.class);
 
 
-        AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
+            intent.putExtra("task_id", task.getId());
+            intent.putExtra("task_type", task.getType());    //NEED TO REPLACE
+
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), task.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+        }
+
+
+        Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
+
+        Intent i=new Intent(this,NavigaterActivity.class);
+        startActivity(i);
     }
 
 
@@ -186,9 +270,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 
     @Override
-    public void setDate(int year, int month, int day,String dayOfWeek) {
-        date=new Date(day,month,year,dayOfWeek);
+    public void setDate(int year, int month, int day) {
+        date=new Date(day,month,year);
 
-        textViewDate.setText(dayOfWeek+", "+day+" "+date.getMonthOfYear()+" "+year);
+        textViewDate.setText(date.getDateString());
     }
 }
