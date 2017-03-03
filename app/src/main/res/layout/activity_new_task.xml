@@ -155,8 +155,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="dateClicked"
                     android:background="@android:color/background_light"
-                    android:layout_margin="2dp"
-                    android:id="@+id/time_pad">
+                    android:layout_margin="2dp">
 
                     <ImageView
                         android:layout_height="46dp"
@@ -202,7 +201,7 @@
                     android:onClick="TimeClicked"
                     android:background="@android:color/background_light"
                     android:layout_margin="2dp"
-
+                    android:id="@+id/time_pad"
                     >
 
                     <ImageView
@@ -268,8 +267,9 @@
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="19.69">
 
                         <TextView
                             android:text="LOCATION"
@@ -293,6 +293,17 @@
 
 
                     </LinearLayout>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_dialog_map"
+                        android:id="@+id/btnMyPlaces"
+                        android:layout_weight="1"
+                        android:onClick="showMyPlaces"
+                        />
 
                 </LinearLayout>
 

@@ -28,6 +28,7 @@ import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.TimeTask;
 
@@ -84,8 +85,6 @@ public class NavigaterActivity extends AppCompatActivity
 //
         txtViewDate=(TextView)findViewById(R.id.txtViewDate);
 
-        final String[] days={"MON","TUE","WED","THU","FRI","SAT","SUN"};
-
         calendarView=(CalendarView)findViewById(R.id.calendarView);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -130,6 +129,12 @@ public class NavigaterActivity extends AppCompatActivity
 
                 scheduled_tasks[i] = new TaskItem(timeTask.getDescription(), timeTask.getTime().getTimeString() ,
                         null);
+            }
+            else if(task.getType().equals("LOCATION")){
+                LocationTask locationTask=(LocationTask) task;
+
+                scheduled_tasks[i] = new TaskItem(locationTask.getDescription(), null ,
+                        locationTask.getLocation().getName());
             }
         }
 

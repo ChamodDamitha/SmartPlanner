@@ -1,10 +1,12 @@
 package com.example.chamod.smartplanner;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +25,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
+import com.example.chamod.smartplanner.Database.MyPlaceDB;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Fragments.DateFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
@@ -30,12 +33,14 @@ import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.LocationTask;
+import com.example.chamod.smartplanner.Models.MyPlace;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeTask;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,DateFragment.DateFragmentListener{
@@ -60,7 +65,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     Time time=null,alert_time=null;
 
     TaskDB taskDB;
-
+    MyPlaceDB myPlaceDB;
 
     CheckBox checkBoxTime,checkBoxLocation,checkBoxRepeatTask;
     LinearLayout timePad,locationPAd;
@@ -71,6 +76,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         setContentView(R.layout.activity_new_task);
 
         taskDB=TaskDB.getInstance(this);
+        myPlaceDB=MyPlaceDB.getInstance(this);
 
         txtDesc=(EditText)findViewById(R.id.txtDesc);
         txtRange=(EditText)findViewById(R.id.editTextRange);
@@ -127,6 +133,27 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 calendar.get(Calendar.YEAR));
 
         textViewDate.setText(date.getDateString());
+    }
+
+
+    public void showMyPlaces(View v){
+        final ArrayList<MyPlace> myPlaces_list=myPlaceDB.getAllMyPlaces();
+
+        String[] myPlaces=new String[myPlaces_list.size()];
+
+        for (int i=0;i<myPlaces.length;i++){
+            myPlaces[i]=myPlaces_list.get(i).getName();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewTaskActivity.this);
+        builder.setTitle("Pick among My Places")
+                .setItems(myPlaces, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MyPlace myPlace=myPlaces_list.get(which);
+                        setLocation(new Location(myPlace.getName(),myPlace.getLatitude(),myPlace.getLongitude()));
+                    }
+                });
+         builder.create().show();
     }
 
     public void saveTask(View v)
@@ -226,6 +253,10 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     private void setAlarm(Task task){
         if(task.getType().equals("LOCATION")){
 
+
+
+
+
         }
         else {
             Calendar cal = Calendar.getInstance();
@@ -266,7 +297,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 Place place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("MyPlace: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                setLocation(place);
+                setLocation(new Location(place.getName().toString(),place.getLatLng().latitude,place.getLatLng().longitude));
             }
         }
     }
@@ -274,9 +305,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     //Fragment listeners
 
-    private  void setLocation(Place place){
-        location=new Location(place.getName().toString(),place.getLatLng().latitude,place.getLatLng().longitude);
-        textViewLocation.setText(place.getName());
+    private  void setLocation(Location location){
+        this.location=location;
+        textViewLocation.setText(location.getName());
     }
 
     @Override
