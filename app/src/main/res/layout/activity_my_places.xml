@@ -23,13 +23,15 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/editTextPlaceName"
             android:hint="Enter the place name" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="PlacelocationClicked"
+            >
 
             <ImageView
                 android:layout_width="44dp"
@@ -40,27 +42,21 @@
                 />
 
             <TextView
-                android:text="Location"
+                android:text="Select Location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/txtViewLocAddress"
+                android:id="@+id/textViewLocAddress"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/editText"
-            android:hint="Enter Range (in metres)" />
 
         <Button
             android:text="SAVE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button5" />
+            android:id="@+id/btnSaveMyPlace"
+            android:onClick="saveMyPlace"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -77,7 +73,7 @@
             android:id="@+id/textView7"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:paddingLeft="15dp"
+            android:paddingLeft="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <ListView
@@ -85,7 +81,7 @@
             android:layout_height="match_parent"
             android:id="@+id/ListViewPlaces"
             android:divider="@android:color/transparent"
-            android:dividerHeight="10sp"
+            android:dividerHeight="1dp"
             />
     </LinearLayout>
 

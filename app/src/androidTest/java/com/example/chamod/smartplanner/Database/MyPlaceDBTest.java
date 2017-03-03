@@ -34,7 +34,23 @@ public class MyPlaceDBTest {
         assertEquals(myPlace.getLongitude(),myPlace1.getLongitude(),0.1);
 
 //        check getAllMyPlaces
-        assertEquals(1,myPlaceDB.getAllMyPlaces().size());
+//        assertEquals(1,myPlaceDB.getAllMyPlaces().size());
+
+//        check change name
+
+        assertEquals(true,myPlaceDB.changePlaceName(myPlace1.getPlace_id(),"test_changed_name2"));
+
+        MyPlace myPlace2=myPlaceDB.getMyPlace("test_changed_name2");
+
+        assertEquals(myPlace1.getPlace_id(),myPlace2.getPlace_id());
+
+//        check delete place
+
+        myPlaceDB.removeMyPlace(myPlace2.getPlace_id());
+
+        MyPlace myPlace3=myPlaceDB.getMyPlace("test_changed_name2");
+
+        assertEquals(myPlace3,null);
     }
 
 

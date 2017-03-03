@@ -31,16 +31,20 @@ public class MyPlaceDB {
 
 
     public void addMyPlace(MyPlace myPlace){
-        SQLiteDatabase db=db_helper.getWritableDatabase();
+        if(!isPlaceNameTaken(myPlace.getName()))
+        {
 
-        ContentValues cv=new ContentValues();
+            SQLiteDatabase db=db_helper.getWritableDatabase();
 
-        cv.put(DB_Helper.place_name,myPlace.getName());
-        cv.put(DB_Helper.place_address,myPlace.getAddress());
-        cv.put(DB_Helper.place_latitude,myPlace.getLatitude());
-        cv.put(DB_Helper.place_longitude,myPlace.getLongitude());
+            ContentValues cv=new ContentValues();
 
-        db.insert(DB_Helper.myplaces_table,null,cv);
+            cv.put(DB_Helper.place_name,myPlace.getName());
+            cv.put(DB_Helper.place_address,myPlace.getAddress());
+            cv.put(DB_Helper.place_latitude,myPlace.getLatitude());
+            cv.put(DB_Helper.place_longitude,myPlace.getLongitude());
+
+            db.insert(DB_Helper.myplaces_table,null,cv);
+        }
     }
 
     public ArrayList<MyPlace> getAllMyPlaces(){
@@ -89,5 +93,23 @@ public class MyPlaceDB {
             myPlace.setPlace_id(cursor.getInt(cursor.getColumnIndex(DB_Helper.place_id)));
         }
         return myPlace;
+    }
+
+    public boolean changePlaceName(int place_id,String new_name){
+        if(!isPlaceNameTaken(new_name)){
+            SQLiteDatabase db=db_helper.getWritableDatabase();
+            String query=String.format("UPDATE %s SET %s='%s' WHERE %s=%s;",DB_Helper.myplaces_table,
+                    DB_Helper.place_name,new_name,DB_Helper.place_id,place_id);
+            db.execSQL(query);
+            return true;
+        }
+        return false;
+    }
+
+    public void removeMyPlace(int place_id){
+        SQLiteDatabase db=db_helper.getWritableDatabase();
+        String query=String.format("DELETE FROM %s WHERE %s=%s ;",DB_Helper.myplaces_table,
+                DB_Helper.place_id,place_id);
+        db.execSQL(query);
     }
 }

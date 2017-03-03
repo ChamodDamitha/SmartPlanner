@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+   >
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_bg">
+        android:background="@drawable/layout_bg"
+        android:layout_margin="1dp"
+        android:padding="5dp"
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="61dp"
-            android:layout_weight="7.04">
+            android:layout_width="240dp"
+            android:layout_height="44dp"
+            android:layout_weight="0.28">
 
             <TextView
                 android:text="Campus"
@@ -37,11 +40,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             app:fabSize="mini"
-            app:srcCompat="@android:drawable/ic_menu_edit"
-            android:id="@+id/floatingActionButton5"
-            android:layout_weight="3.57"
+            app:srcCompat="@drawable/edit"
+            android:id="@+id/btnEditPlace"
             app:backgroundTint="@android:color/background_light"
-            android:layout_margin="5dp"
             app:rippleColor="@color/lgreen"
             app:elevation="0dp" />
 
@@ -50,10 +51,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             app:fabSize="mini"
-            app:srcCompat="@android:drawable/button_onoff_indicator_off"
-            android:id="@+id/floatingActionButton4"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
+            app:srcCompat="@drawable/delete"
+            android:id="@+id/btnDelPlace"
             app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
             app:rippleColor="@color/lgreen"
             app:elevation="0dp" />
