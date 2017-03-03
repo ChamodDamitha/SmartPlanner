@@ -34,8 +34,6 @@ public class PlacesListAdapter extends ArrayAdapter<MyPlace> {
         textViewPlaceName.setText(myPlace.getName());
         TextView textViewPlaceAddress=(TextView)customView.findViewById(R.id.textViewPlaceAddress);
         textViewPlaceAddress.setText(myPlace.getAddress());
-        TextView textViewPlaceRange=(TextView)customView.findViewById(R.id.textViewPlaceRange);
-        textViewPlaceRange.setText("Range~"+myPlace.getRange()+"m");
 
         return customView;
     }

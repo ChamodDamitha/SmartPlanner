@@ -30,11 +30,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewPlaceAddress" />
 
-            <TextView
-                android:text="(Range~5m)"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textViewPlaceRange" />
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

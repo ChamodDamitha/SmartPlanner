@@ -40,7 +40,7 @@ public class MyPlaceDB {
         cv.put(DB_Helper.place_latitude,myPlace.getLatitude());
         cv.put(DB_Helper.place_longitude,myPlace.getLongitude());
 
-        db.insert(db_helper.myplaces_table,null,cv);
+        db.insert(DB_Helper.myplaces_table,null,cv);
     }
 
     public ArrayList<MyPlace> getAllMyPlaces(){
@@ -54,7 +54,8 @@ public class MyPlaceDB {
             MyPlace myPlace=new MyPlace(cursor.getString(cursor.getColumnIndex(DB_Helper.place_name)),
                     cursor.getString(cursor.getColumnIndex(DB_Helper.place_address)),
                     cursor.getDouble(cursor.getColumnIndex(DB_Helper.place_latitude)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.place_longitude)));
+                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.place_longitude))
+            );
             myPlace.setPlace_id(cursor.getInt(cursor.getColumnIndex(DB_Helper.place_id)));
 
             myPlaces.add(myPlace);
@@ -64,7 +65,7 @@ public class MyPlaceDB {
 
     public boolean isPlaceNameTaken(String place_name){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query=String.format("SELECT %s FROM %s WHERE %s=%s",DB_Helper.place_name,
+        String query=String.format("SELECT %s FROM %s WHERE %s='%s'",DB_Helper.place_name,
                 DB_Helper.myplaces_table,DB_Helper.place_name,place_name);
         Cursor cursor=db.rawQuery(query,null);
         while (cursor.moveToNext()){
@@ -76,7 +77,7 @@ public class MyPlaceDB {
     public MyPlace getMyPlace(String place_name){
         MyPlace myPlace=null;
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query=String.format("SELECT * FROM %s WHERE %s=%s",
+        String query=String.format("SELECT * FROM %s WHERE %s='%s'",
                 DB_Helper.myplaces_table,DB_Helper.place_name,place_name);
         Cursor cursor=db.rawQuery(query,null);
 
