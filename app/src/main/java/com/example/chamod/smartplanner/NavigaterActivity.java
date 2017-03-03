@@ -74,7 +74,7 @@ public class NavigaterActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+//........................................................................................................................................................
 
         mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
@@ -83,14 +83,9 @@ public class NavigaterActivity extends AppCompatActivity
 //
         txtViewDate=(TextView)findViewById(R.id.txtViewDate);
 
-
         final String[] days={"MON","TUE","WED","THU","FRI","SAT","SUN"};
 
         calendarView=(CalendarView)findViewById(R.id.calendarView);
-
-//      Selected
-//        Date util_date=new java.util.Date(calendarView.getDate());
-
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -209,14 +204,7 @@ public class NavigaterActivity extends AppCompatActivity
     }
 
 
-    public void hideCalendar(View v){
-        if(calendarView.getVisibility()==View.GONE){
-            calendarView.setVisibility(View.VISIBLE);
-        }
-        else {
-            calendarView.setVisibility(View.GONE);
-        }
-    }
+//    .........................Button action handling...............................................
 
     public void newTaskButtonClicked(View v){
         Intent i=new Intent(this,NewTaskActivity.class);
@@ -252,12 +240,6 @@ public class NavigaterActivity extends AppCompatActivity
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";
-
-//        @Override
-//        public boolean onDown(MotionEvent event) {
-//            Toast.makeText(NavigaterActivity.this,"down",Toast.LENGTH_LONG).show();
-//            return true;
-//        }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2,

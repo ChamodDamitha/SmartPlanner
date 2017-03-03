@@ -2,23 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/layout_bg"
-        >
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg">
 
-        <TextView
-            android:text="Campus"
-            android:layout_width="223dp"
-            android:layout_height="42dp"
-            android:id="@+id/textViewPlace"
-            android:layout_margin="5dp"
-            android:padding="10dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_weight="7.04">
+
+            <TextView
+                android:text="Campus"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:id="@+id/textViewPlaceName"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+            <TextView
+                android:text="Matara,Sri Lanka"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewPlaceAddress" />
+
+            <TextView
+                android:text="(Range~5m)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewPlaceRange" />
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
@@ -45,5 +62,7 @@
             app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
             app:rippleColor="@color/lgreen"
             app:elevation="0dp" />
+
     </LinearLayout>
+
 </LinearLayout>

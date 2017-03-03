@@ -43,10 +43,18 @@
                 android:text="Location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/txtViewLocName"
+                android:id="@+id/txtViewLocAddress"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:hint="Enter Range (in metres)" />
 
         <Button
             android:text="SAVE"

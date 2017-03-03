@@ -15,11 +15,11 @@ public class MyPlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_places);
 
-        String[] places={"Campus","Boarding","Seminar room","Home"};
-
-        ListView listViewPlaces=(ListView)findViewById(R.id.ListViewPlaces);
-        ArrayAdapter placesListAdapter=new PlacesListAdapter(this,places);
-        listViewPlaces.setAdapter(placesListAdapter);
+//        String[] places={"Campus","Boarding","Seminar room","Home"};
+//
+//        ListView listViewPlaces=(ListView)findViewById(R.id.ListViewPlaces);
+//        ArrayAdapter placesListAdapter=new PlacesListAdapter(this,places);
+//        listViewPlaces.setAdapter(placesListAdapter);
 
     }
 }

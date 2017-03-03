@@ -161,7 +161,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
+                String toastMsg = String.format("MyPlace: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 setLocation(place);
             }

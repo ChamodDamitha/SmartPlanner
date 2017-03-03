@@ -53,6 +53,14 @@ public class DB_Helper extends SQLiteOpenHelper {
     public static final String task_location_range="task_location_range";
 
 
+//      MyPlaces table
+    public static final String myplaces_table="myplaces";
+    public static final String place_id="place_id";
+    public static final String place_name="place_name";
+    public static final String place_address="place_address";
+    public static final String place_latitude="place_latitude";
+    public static final String place_longitude="place_longitude";
+
 
 
 
@@ -85,14 +93,27 @@ public class DB_Helper extends SQLiteOpenHelper {
                 ");",full_task_table,task_id,task_hour,task_minute,task_alert_hour,task_alert_minute,
                 task_location_name,task_location_latitude,task_location_longitude,task_location_range);
 
+
+        String myplace_table_query=String.format("" +
+                "CREATE TABLE %s(" +
+                "%s INTEGER PRIMARY KEY," +
+                "%s VARCHAR(20) UNIQUE," +
+                "%s VARCHAR(100)," +
+                "%S DOUBLE," +
+                "%S DOUBLE" +
+                ");",
+                myplaces_table,place_id,place_name,place_address,place_latitude,place_longitude);
+
         db.execSQL(task_table_query);
         db.execSQL(full_task_table_query);
+        db.execSQL(myplace_table_query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + task_table);
         db.execSQL("DROP TABLE IF EXISTS " + full_task_table);
+        db.execSQL("DROP TABLE IF EXISTS " + myplaces_table);
         onCreate(db);
     }
 }
