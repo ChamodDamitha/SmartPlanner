@@ -32,8 +32,15 @@ public class TaskListAdapter extends ArrayAdapter<TaskItem> {
 
         TaskItem item=getItem(position);
         textViewTime.setText(item.getTime());
+
         textViewDescription.setText(item.getDescription());
-        textViewLocation.setText("At "+item.getLocation());
+
+        if(item.getLocation()!=null) {
+            textViewLocation.setText("At " + item.getLocation());
+        }
+        else{
+            textViewLocation.setText(null);
+        }
         return customView;
     }
 }

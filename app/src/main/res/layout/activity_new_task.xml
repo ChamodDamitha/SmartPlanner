@@ -230,7 +230,6 @@
 
 
                         <TextView
-                            android:text="8:00 AM"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:id="@+id/textViewTime"

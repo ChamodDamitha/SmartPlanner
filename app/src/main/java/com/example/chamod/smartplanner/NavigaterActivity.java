@@ -29,6 +29,7 @@ import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.TimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -123,6 +124,12 @@ public class NavigaterActivity extends AppCompatActivity
 
                 scheduled_tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().getTimeString() ,
                         fulltask.getLocation().getName());
+            }
+            else if(task.getType().equals("TIME")){
+                TimeTask timeTask=(TimeTask)task;
+
+                scheduled_tasks[i] = new TaskItem(timeTask.getDescription(), timeTask.getTime().getTimeString() ,
+                        null);
             }
         }
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.TimeTask;
 import com.example.chamod.smartplanner.NotificationActivity;
 import com.example.chamod.smartplanner.R;
 
@@ -37,6 +38,11 @@ public class TaskReceiver extends BroadcastReceiver {
         if(task_type.equals("FULL")){
             FullTask fullTask=taskDB.getFullTask(task_id);
             viewNotification(context,task_id,fullTask.getDescription(),fullTask.getLocation().getName());
+            taskDB.setTaskAlerted(task_id,true);
+        }
+        else if(task_type.equals("TIME")){
+            TimeTask timeTask=taskDB.getTimeTask(task_id);
+            viewNotification(context,task_id,timeTask.getDescription(),null);
             taskDB.setTaskAlerted(task_id,true);
         }
     }

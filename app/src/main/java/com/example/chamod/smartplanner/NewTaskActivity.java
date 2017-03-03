@@ -57,7 +57,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 //    task model references
     Date date=null;
     Location location=null;
-    double range=0;
     Time time=null,alert_time=null;
 
     TaskDB taskDB;
@@ -115,6 +114,19 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 }
             }
         });
+
+
+
+
+//        initial date set up
+        java.util.Date util_date=new java.util.Date(System.currentTimeMillis());
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(util_date);
+
+        date=new Date(calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                calendar.get(Calendar.YEAR));
+
+        textViewDate.setText(date.getDateString());
     }
 
     public void saveTask(View v)
@@ -129,8 +141,10 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             if(isValidEntries()){
                 LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
                         date,location,Double.valueOf(txtRange.getText().toString()));
+                if(checkBoxRepeatTask.isChecked()){
+                    locationTask.setRepeat(true);
+                }
                 taskDB.addLocationTask(locationTask);
-
                 setAlarm(locationTask);
             }
         }
@@ -140,6 +154,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             if(isValidEntries()){
                 TimeTask timeTask=new TimeTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
                         date,time,alert_time);
+                if(checkBoxRepeatTask.isChecked()){
+                    timeTask.setRepeat(true);
+                }
                 taskDB.addTimeTask(timeTask);
 
                 setAlarm(timeTask);
@@ -150,7 +167,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             if (isValidEntries()) {
                 FullTask fullTask = new FullTask(taskDB.getNextTaskId(), txtDesc.getText().toString().trim(),
                         date, location, 0, time, alert_time);
-
+                if(checkBoxRepeatTask.isChecked()){
+                    fullTask.setRepeat(true);
+                }
                 taskDB.addFullTask(fullTask);
 
                 setAlarm(fullTask);
@@ -160,7 +179,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 //validate entries
     private boolean isValidEntries() {
-        if (txtDesc.getText().toString().trim() == "") {
+        if (txtDesc.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Please enter the task description...!", Toast.LENGTH_SHORT).show();
             return false;
         } else if (checkBoxLocation.isChecked() && location == null) {
