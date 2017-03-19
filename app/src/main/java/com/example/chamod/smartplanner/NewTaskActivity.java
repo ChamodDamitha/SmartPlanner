@@ -29,6 +29,7 @@ import com.example.chamod.smartplanner.Database.MyPlaceDB;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Fragments.DateFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
+import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
@@ -44,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,DateFragment.DateFragmentListener{
+
+    TaskHandler taskHandler;
 
     int PLACE_PICKER_REQUEST = 1;
 
@@ -64,7 +67,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     Location location=null;
     Time time=null,alert_time=null;
 
-    TaskDB taskDB;
     MyPlaceDB myPlaceDB;
 
     CheckBox checkBoxTime,checkBoxLocation,checkBoxRepeatTask;
@@ -75,7 +77,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        taskDB=TaskDB.getInstance(this);
+        taskHandler=TaskHandler.getInstance(this);
+
         myPlaceDB=MyPlaceDB.getInstance(this);
 
         txtDesc=(EditText)findViewById(R.id.txtDesc);
@@ -251,42 +254,17 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
 //setting alarm for a task
     private void setAlarm(Task task){
-        if(task.getType().equals("LOCATION")){
 
+        if(taskHandler.setTaskAlarm(task)) {
 
+            Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 
-
-
+            Intent i = new Intent(this, NavigaterActivity.class);
+            startActivity(i);
         }
-        else {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, date.getYear());
-            cal.set(Calendar.MONTH, date.getMonth() - 1);
-            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
-            cal.set(Calendar.HOUR_OF_DAY, alert_time.get24Hour());
-            cal.set(Calendar.MINUTE, alert_time.getMinute());
-
-
-            Intent intent = new Intent(this, TaskReceiver.class);
-
-
-            intent.putExtra("task_id", task.getId());
-            intent.putExtra("task_type", task.getType());    //NEED TO REPLACE
-
-
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), task.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
+        else{
+            Toast.makeText(this, "ALARM WAS NOT SET ...", Toast.LENGTH_LONG).show();
         }
-
-
-        Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
-
-        Intent i=new Intent(this,NavigaterActivity.class);
-        startActivity(i);
     }
 
 

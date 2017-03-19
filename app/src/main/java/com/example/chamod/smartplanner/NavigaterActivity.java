@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
+import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
@@ -48,7 +49,7 @@ public class NavigaterActivity extends AppCompatActivity
 
     TextView txtViewDate;
 
-    TaskDB taskDB;
+    TaskHandler taskHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class NavigaterActivity extends AppCompatActivity
         mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
 
-        taskDB=TaskDB.getInstance(this);
+        taskHandler=TaskHandler.getInstance(this);
 //
         txtViewDate=(TextView)findViewById(R.id.txtViewDate);
 
@@ -111,37 +112,8 @@ public class NavigaterActivity extends AppCompatActivity
 
     private void calendar_date_set(Date date){
         //set list view
-        ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
-
-        TaskItem[] scheduled_tasks=new TaskItem[tasks.size()];
-        for (int i=0;i<scheduled_tasks.length;i++){
-            Task task=tasks.get(i);
-            if(task.getType().equals("FULL")) {
-
-                FullTask fulltask=(FullTask)task;
-
-
-                scheduled_tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().getTimeString() ,
-                        fulltask.getLocation().getName());
-            }
-            else if(task.getType().equals("TIME")){
-                TimeTask timeTask=(TimeTask)task;
-
-                scheduled_tasks[i] = new TaskItem(timeTask.getDescription(), timeTask.getTime().getTimeString() ,
-                        null);
-            }
-            else if(task.getType().equals("LOCATION")){
-                LocationTask locationTask=(LocationTask) task;
-
-                scheduled_tasks[i] = new TaskItem(locationTask.getDescription(), null ,
-                        locationTask.getLocation().getName());
-            }
-        }
-
-
-        taskListAdapter=new TaskListAdapter(NavigaterActivity.this,scheduled_tasks);
+        taskListAdapter=new TaskListAdapter(NavigaterActivity.this,taskHandler.getAllScheduledTaskItems(date));
         taskListView.setAdapter(taskListAdapter);
-
         txtViewDate.setText(date.getDateString());
     }
 
