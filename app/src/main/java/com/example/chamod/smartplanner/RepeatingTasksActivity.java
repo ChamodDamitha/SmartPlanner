@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
+import com.example.chamod.smartplanner.Models.Task;
 
 public class RepeatingTasksActivity extends AppCompatActivity {
 
@@ -31,10 +31,7 @@ public class RepeatingTasksActivity extends AppCompatActivity {
         });
 
         //set list view
-        TaskItem[] tasks=new TaskItem[3];
-        tasks[0]=new TaskItem("Meeting x","9.00 AM","Matara");
-        tasks[1]=new TaskItem("Meeting y","1.00 PM","Colombo");
-        tasks[2]=new TaskItem("Meeting z","3.00 PM","Galle");
+        Task[] tasks=new Task[0];
 
         ListView listViewRepeatingTasks=(ListView)findViewById(R.id.ListViewRepeatingTasks);
         ArrayAdapter taskListAdapter=new TaskListAdapter(this,tasks);

@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
 import com.example.chamod.smartplanner.Database.TaskDB;
-import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
@@ -107,32 +106,13 @@ public class TaskHandler {
     }
 
 
-    public TaskItem[] getAllScheduledTaskItems(Date date){
+    public Task[] getAllScheduledTaskItems(Date date){
         ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
 
-        TaskItem[] scheduled_tasks=new TaskItem[tasks.size()];
+        Task[] scheduled_tasks=new Task[tasks.size()];
         for (int i=0;i<scheduled_tasks.length;i++){
-            Task task=tasks.get(i);
-            if(task.getType().equals("FULL")) {
+            scheduled_tasks[i]=tasks.get(i);
 
-                FullTask fulltask=(FullTask)task;
-
-
-                scheduled_tasks[i] = new TaskItem(fulltask.getDescription(), fulltask.getTime().getTimeString() ,
-                        fulltask.getLocation().getName());
-            }
-            else if(task.getType().equals("TIME")){
-                TimeTask timeTask=(TimeTask)task;
-
-                scheduled_tasks[i] = new TaskItem(timeTask.getDescription(), timeTask.getTime().getTimeString() ,
-                        null);
-            }
-            else if(task.getType().equals("LOCATION")){
-                LocationTask locationTask=(LocationTask) task;
-
-                scheduled_tasks[i] = new TaskItem(locationTask.getDescription(), null ,
-                        locationTask.getLocation().getName());
-            }
         }
         return scheduled_tasks;
     }

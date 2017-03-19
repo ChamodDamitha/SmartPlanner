@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.LocationTask;
+import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.TimeTask;
 import com.example.chamod.smartplanner.R;
 
 /**
  * Created by chamod on 2/12/17.
  */
 
-public class TaskListAdapter extends ArrayAdapter<TaskItem> {
+public class TaskListAdapter extends ArrayAdapter<Task> {
 
-    public TaskListAdapter(Context context, TaskItem[] items) {
+    public TaskListAdapter(Context context, Task[] items) {
         super(context, R.layout.task_list_item,items);
     }
 
@@ -30,17 +34,23 @@ public class TaskListAdapter extends ArrayAdapter<TaskItem> {
         TextView textViewDescription=(TextView)customView.findViewById(R.id.textViewDescription);
         TextView textViewLocation=(TextView)customView.findViewById(R.id.textViewLocation);
 
-        TaskItem item=getItem(position);
-        textViewTime.setText(item.getTime());
+        Task task=getItem(position);
+        textViewDescription.setText(task.getDescription());
 
-        textViewDescription.setText(item.getDescription());
-
-        if(item.getLocation()!=null) {
-            textViewLocation.setText("At " + item.getLocation());
-        }
-        else{
+        if(task.getType().equals("TIME")){
+            textViewTime.setText(((TimeTask)task).getTime().getTimeString());
             textViewLocation.setText(null);
         }
+        else if(task.getType().equals("LOCATION")){
+            textViewLocation.setText("At " + ((LocationTask)task).getLocation().getName());
+            textViewTime.setText(null);
+        }
+        else {
+            FullTask fullTask=(FullTask)task;
+            textViewTime.setText(fullTask.getTime().getTimeString());
+            textViewLocation.setText("At " + fullTask.getLocation().getName());
+        }
+
         return customView;
     }
 }

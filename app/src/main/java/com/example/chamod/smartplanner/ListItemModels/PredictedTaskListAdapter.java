@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.LocationTask;
+import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.TimeTask;
 import com.example.chamod.smartplanner.R;
 
 /**
  * Created by chamod on 2/11/17.
  */
 
-public class PredictedTaskListAdapter extends ArrayAdapter<TaskItem> {
+public class PredictedTaskListAdapter extends ArrayAdapter<Task> {
 
-    public PredictedTaskListAdapter(Context context, TaskItem[] items) {
+    public PredictedTaskListAdapter(Context context, Task[] items) {
         super(context, R.layout.predicted_list_item,items);
     }
 
@@ -29,11 +33,24 @@ public class PredictedTaskListAdapter extends ArrayAdapter<TaskItem> {
         TextView textViewDescription=(TextView)customView.findViewById(R.id.textViewDescription);
         TextView textViewLocation=(TextView)customView.findViewById(R.id.textViewLocation);
 
-        TaskItem taskItem=getItem(position);
 
-        textViewTime.setText(taskItem.getTime());
-        textViewDescription.setText(taskItem.getDescription());
-        textViewLocation.setText("At "+taskItem.getLocation());
+        Task task=getItem(position);
+        textViewDescription.setText(task.getDescription());
+
+        if(task.getType().equals("TIME")){
+            textViewTime.setText(((TimeTask)task).getTime().getTimeString());
+            textViewLocation.setText(null);
+        }
+        else if(task.getType().equals("LOCATION")){
+            textViewLocation.setText("At " + ((LocationTask)task).getLocation().getName());
+            textViewTime.setText(null);
+        }
+        else {
+            FullTask fullTask=(FullTask)task;
+            textViewTime.setText(fullTask.getTime().getTimeString());
+            textViewLocation.setText("At " + fullTask.getLocation().getName());
+        }
+
         return customView;
     }
 }

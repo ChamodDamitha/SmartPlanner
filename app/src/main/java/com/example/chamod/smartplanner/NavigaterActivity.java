@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,21 +20,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
-import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
-import com.example.chamod.smartplanner.Models.FullTask;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.Models.Task;
-import com.example.chamod.smartplanner.Models.TimeTask;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class NavigaterActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
