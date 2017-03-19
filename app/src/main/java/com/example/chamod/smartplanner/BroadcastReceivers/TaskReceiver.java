@@ -25,13 +25,12 @@ public class TaskReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-       taskDB=TaskDB.getInstance(context);
+        taskDB=TaskDB.getInstance(context);
         Bundle extras=intent.getExtras();
 
         int task_id=extras.getInt("task_id");
         String task_type=extras.getString("task_type");
 
-        Toast.makeText(context,"broadcast working"+task_id+"-"+task_type,Toast.LENGTH_LONG).show();
 
 
 
@@ -65,10 +64,17 @@ public class TaskReceiver extends BroadcastReceiver {
 
 
 
-        Intent callIntent=new Intent();
-        callIntent.putExtra("id",1212);
-        callIntent.setAction("call_action");
-        PendingIntent callPendingIntent=PendingIntent.getBroadcast(context.getApplicationContext(),0,callIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent completeIntent=new Intent();
+        completeIntent.putExtra("task_id",task_id);
+        completeIntent.setAction("complete_action");
+        PendingIntent completePendingIntent=PendingIntent.getBroadcast(context.getApplicationContext(),0,completeIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent forgetIntent=new Intent();
+        forgetIntent.putExtra("task_id",task_id);
+        forgetIntent.setAction("forget_action");
+        PendingIntent forgetPendingIntent=PendingIntent.getBroadcast(context.getApplicationContext(),0,forgetIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
 
 
         NotificationCompat.Builder mBuilder =
@@ -80,8 +86,8 @@ public class TaskReceiver extends BroadcastReceiver {
                         .setContentInfo(info)
                         .setPriority(Notification.PRIORITY_MAX)
                         .setDefaults(Notification.DEFAULT_ALL)
-                        .addAction(0, "Call",callPendingIntent)
-                        .addAction(0,"More", resultPendingIntent)
+                        .addAction(0, "COMPLETE",completePendingIntent)
+                        .addAction(0,"FORGET", forgetPendingIntent)
                 ;
 
 
@@ -90,7 +96,7 @@ public class TaskReceiver extends BroadcastReceiver {
         mBuilder.setContentIntent(resultPendingIntent);
 
 // Sets an ID for the notification
-        int mNotificationId = 122;
+        int mNotificationId = task_id;
 // Gets an instance of the NotificationManager service
         NotificationManager mNotifyMgr =
                 (NotificationManager) context.getSystemService(android.content.Context.NOTIFICATION_SERVICE);

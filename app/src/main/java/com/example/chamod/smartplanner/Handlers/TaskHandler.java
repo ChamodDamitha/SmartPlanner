@@ -116,4 +116,8 @@ public class TaskHandler {
         }
         return scheduled_tasks;
     }
+
+    public void completeTask(int task_id,boolean complete){
+        taskDB.setTaskCompleted(task_id,complete);
+    }
 }
