@@ -161,51 +161,41 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     public void saveTask(View v)
     {
+        String task_type;
 //        not location or time ticked
         if(!checkBoxTime.isChecked() && !checkBoxLocation.isChecked()){
             Toast.makeText(this,"Please select the alert based on time or location or both....!",Toast.LENGTH_LONG).show();
         }
 //        only location ticked
-        else if(!checkBoxTime.isChecked()){
-//            Create a location task
-            if(isValidEntries()){
-                LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
-                        date,location,Double.valueOf(txtRange.getText().toString()));
-                if(checkBoxRepeatTask.isChecked()){
-                    locationTask.setRepeat(true);
-                }
-                taskDB.addLocationTask(locationTask);
-                setAlarm(locationTask);
-            }
-        }
-//        only time ticked
-        else if(!checkBoxLocation.isChecked() ){
-//            create a time task
-            if(isValidEntries()){
-                TimeTask timeTask=new TimeTask(taskDB.getNextTaskId(),txtDesc.getText().toString().trim(),
-                        date,time,alert_time);
-                if(checkBoxRepeatTask.isChecked()){
-                    timeTask.setRepeat(true);
-                }
-                taskDB.addTimeTask(timeTask);
-
-                setAlarm(timeTask);
-            }
-        }
-//        both time and location ticked
         else {
-            if (isValidEntries()) {
-                FullTask fullTask = new FullTask(taskDB.getNextTaskId(), txtDesc.getText().toString().trim(),
-                        date, location, 0, time, alert_time);
-                if(checkBoxRepeatTask.isChecked()){
-                    fullTask.setRepeat(true);
-                }
-                taskDB.addFullTask(fullTask);
+            if (!checkBoxTime.isChecked()) {
+                //            Create a location task
+                task_type="LOCATION";
+            }
+            //        only time ticked
+            else if (!checkBoxLocation.isChecked()) {
+                //            create a time task
+                task_type="TIME";
+            }
+            //        both time and location ticked
+            else {
+                task_type="FULL";
+            }
+            if(isValidEntries()) {
+                boolean success=taskHandler.saveNewTask(task_type, txtDesc.getText().toString().trim(), date, location,
+                        Double.valueOf(txtRange.getText().toString().trim()), time, alert_time, checkBoxRepeatTask.isChecked());
+                if(success){
+                    Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 
-                setAlarm(fullTask);
+                    Intent i = new Intent(this, NavigaterActivity.class);
+                    startActivity(i);
+                }
+                else{
+                    Toast.makeText(this, "ALARM WAS NOT SET ...", Toast.LENGTH_LONG).show();
+                }
+
             }
         }
-
     }
 //validate entries
     private boolean isValidEntries() {
@@ -252,20 +242,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
 
 
-//setting alarm for a task
-    private void setAlarm(Task task){
-
-        if(taskHandler.setTaskAlarm(task)) {
-
-            Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
-
-            Intent i = new Intent(this, NavigaterActivity.class);
-            startActivity(i);
-        }
-        else{
-            Toast.makeText(this, "ALARM WAS NOT SET ...", Toast.LENGTH_LONG).show();
-        }
-    }
 
 
 //    google places activity result

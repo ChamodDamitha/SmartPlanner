@@ -10,6 +10,7 @@ import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.ListItemModels.TaskItem;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
@@ -41,24 +42,44 @@ public class TaskHandler {
     }
 
 
-    public boolean setTaskAlarm(Task task) {
+    public boolean saveNewTask(String type, String desc, Date date, Location location, Double range,Time time,Time alert_time,boolean repeat ){
+        Task task;
+        if(type.equals("LOCATION")){
+            LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),desc,date,location,range);
+            locationTask.setRepeat(repeat);
+            taskDB.addLocationTask(locationTask);
+            task=locationTask;
+        }
+        else if(type.equals("TIME")){
+            TimeTask timeTask=new TimeTask(taskDB.getNextTaskId(),desc,date,time,alert_time);
+            timeTask.setRepeat(repeat);
+            taskDB.addTimeTask(timeTask);
+            task=timeTask;
+        }
+        else{
+            FullTask fullTask=new FullTask(taskDB.getNextTaskId(),desc,date,location,range,time,alert_time);
+            fullTask.setRepeat(repeat);
+            taskDB.addFullTask(fullTask);
+            task=fullTask;
+        }
+        setTaskAlarm(task);
+        return true;
+    }
+
+
+    private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
 
 
         }
         else if(task.getType().equals("TIME")){
             TimeTask timeTask=(TimeTask)task;
-
             setTimeAlarm(timeTask.getId(),timeTask.getType(),timeTask.getDate(),timeTask.getAlert_time());
         }
         else {
             FullTask fullTask=(FullTask) task;
-
             setTimeAlarm(fullTask.getId(),fullTask.getType(),fullTask.getDate(),fullTask.getAlert_time());
-
         }
-
-        return true;
     }
 
     private void setTimeAlarm(int task_id,String task_type,Date date,Time alert_time){
