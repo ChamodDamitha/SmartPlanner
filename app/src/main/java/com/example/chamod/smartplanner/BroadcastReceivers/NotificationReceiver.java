@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 
 public class NotificationReceiver extends BroadcastReceiver {
@@ -26,5 +27,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(task_id);
+
+        TaskEvent.getInstance().taskChangedEventOccured();
     }
 }

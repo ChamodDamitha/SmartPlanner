@@ -15,13 +15,29 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            >
+            <ImageView
+            android:layout_width="40dp"
+                android:src="@drawable/pending"
+            android:id="@+id/taskStateView"
+                android:layout_height="40dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="213dp"
             android:layout_height="59dp"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_marginLeft="5dp"
+            >
 
             <TextView
                 android:text="Meeting with X"
-                android:layout_width="match_parent"
+                android:layout_width="251dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewDescription"
                 android:textAppearance="@style/TextAppearance.CastMiniController.Title"
@@ -29,7 +45,7 @@
 
             <TextView
                 android:text="At Colombo"
-                android:layout_width="match_parent"
+                android:layout_width="254dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewLocation"
                 />

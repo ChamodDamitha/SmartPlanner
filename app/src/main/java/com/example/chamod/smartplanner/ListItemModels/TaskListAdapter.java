@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
@@ -45,6 +46,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         FloatingActionButton btnDelTask = (FloatingActionButton)customView.findViewById(R.id.btnDelTask);
 
+        ImageView taskStateView=(ImageView)customView.findViewById(R.id.taskStateView);
 
         final Task task=getItem(position);
         textViewDescription.setText(task.getDescription());
@@ -63,6 +65,15 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             textViewLocation.setText("At " + fullTask.getLocation().getName());
         }
 
+        if(task.isAlerted()){
+            btnDelTask.setVisibility(View.GONE);
+           if(task.isCompleted()){
+                taskStateView.setImageDrawable(customView.getResources().getDrawable(R.drawable.tick_green));
+           }
+           else{
+               taskStateView.setImageDrawable(customView.getResources().getDrawable(R.drawable.cross));
+           }
+        }
 
 
         btnDelTask.setOnClickListener(new View.OnClickListener() {

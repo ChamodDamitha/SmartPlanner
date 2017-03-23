@@ -1,7 +1,6 @@
 package com.example.chamod.smartplanner.Database;
 
 import android.support.test.InstrumentationRegistry;
-import android.test.InstrumentationTestCase;
 
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
@@ -11,7 +10,6 @@ import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeTask;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -227,7 +225,7 @@ public class TaskDBTest {
 
 
 //      check method
-        ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
+        ArrayList<Task> tasks=taskDB.getAllTasks(date);
 
         assertEquals(2,tasks.size());
     }

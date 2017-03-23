@@ -112,7 +112,7 @@ public class NavigaterActivity extends AppCompatActivity
 
     private void calendar_date_set(Date date){
         //set list view
-        taskListAdapter=new TaskListAdapter(NavigaterActivity.this,taskHandler.getAllScheduledTaskItems(date));
+        taskListAdapter=new TaskListAdapter(NavigaterActivity.this,taskHandler.getAllTasks(date));
         taskListView.setAdapter(taskListAdapter);
         txtViewDate.setText(date.getDateString());
     }

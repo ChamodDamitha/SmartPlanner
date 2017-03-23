@@ -15,7 +15,6 @@ import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeTask;
-import com.example.chamod.smartplanner.NavigaterActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -110,8 +109,8 @@ public class TaskHandler {
 
 
 //.............get all scheduled tasks for a date...................................................
-    public Task[] getAllScheduledTaskItems(Date date){
-        ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
+    public Task[] getAllTasks(Date date){
+        ArrayList<Task> tasks=taskDB.getAllTasks(date);
 
         Task[] scheduled_tasks=new Task[tasks.size()];
         for (int i=0;i<scheduled_tasks.length;i++){

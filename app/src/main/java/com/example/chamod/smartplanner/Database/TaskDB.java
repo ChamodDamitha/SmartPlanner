@@ -280,12 +280,12 @@ public class TaskDB {
         return null;
     }
 
-    public ArrayList<Task> getAllScheduledTasks(Date date){
+    public ArrayList<Task> getAllTasks(Date date){
         ArrayList<Task> tasks=new ArrayList<>();
 
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s AND %s=%s AND %s=%s AND %s=%s;",
-                DB_Helper.task_id,DB_Helper.task_type,DB_Helper.task_table,DB_Helper.task_alerted,0,
+        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s AND %s=%s AND %s=%s;",
+                DB_Helper.task_id,DB_Helper.task_type,DB_Helper.task_table,
                 DB_Helper.task_year,date.getYear(),DB_Helper.task_month,date.getMonth(),DB_Helper.task_day,date.getDay());
 
         Cursor cursor = db.rawQuery(query, null);
