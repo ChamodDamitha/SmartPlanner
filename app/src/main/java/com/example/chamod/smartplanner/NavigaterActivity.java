@@ -90,14 +90,24 @@ public class NavigaterActivity extends AppCompatActivity
 
         taskListView=(ListView)findViewById(R.id.taskListView);
 
-//        initial date set up
-        java.util.Date date=new java.util.Date(calendarView.getDate());
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(date);
 
-        Date today_date=new Date(calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
-                calendar.get(Calendar.YEAR));
-        calendar_date_set(today_date);
+//.....................set initial date on calendar............................................
+        Date selected_date=(Date) getIntent().getSerializableExtra("selected_date");
+        if(selected_date!=null){
+            calendar_date_set(selected_date);
+            java.util.Date date =new java.util.Date(selected_date.getYear()-1900,selected_date.getMonth()-1,selected_date.getDay());
+            calendarView.setDate(date.getTime());
+        }
+        else {
+            //        initial date set up
+            java.util.Date date=new java.util.Date(calendarView.getDate());
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(date);
+
+            Date today_date = new Date(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.YEAR));
+            calendar_date_set(today_date);
+        }
     }
 
     private void calendar_date_set(Date date){

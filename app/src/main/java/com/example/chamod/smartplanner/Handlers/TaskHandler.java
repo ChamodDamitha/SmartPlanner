@@ -14,6 +14,7 @@ import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeTask;
+import com.example.chamod.smartplanner.NavigaterActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,8 +41,9 @@ public class TaskHandler {
         return taskHandler;
     }
 
-
-    public boolean saveNewTask(String type, String desc, Date date, Location location, Double range,Time time,Time alert_time,boolean repeat ){
+//..............Save a new task.....................................................................
+    public boolean saveNewTask(String type, String desc, Date date, Location location, Double range,
+                               Time time,Time alert_time,boolean repeat ){
         Task task;
         if(type.equals("LOCATION")){
             LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),desc,date,location,range);
@@ -64,7 +66,6 @@ public class TaskHandler {
         setTaskAlarm(task);
         return true;
     }
-
 
     private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
@@ -106,6 +107,8 @@ public class TaskHandler {
     }
 
 
+
+//.............get all scheduled tasks for a date...................................................
     public Task[] getAllScheduledTaskItems(Date date){
         ArrayList<Task> tasks=taskDB.getAllScheduledTasks(date);
 
@@ -116,8 +119,26 @@ public class TaskHandler {
         }
         return scheduled_tasks;
     }
-
+//...................Complete a task................................................................
     public void completeTask(int task_id,boolean complete){
         taskDB.setTaskCompleted(task_id,complete);
+    }
+
+//..................Remove a scheduled task...................................................................
+    public boolean removeTask(Task task){
+        taskDB.removeTask(task.getId());
+        cancelTimeAlarm(task.getId());
+        Intent i=new Intent(context, NavigaterActivity.class);
+        i.putExtra("selected_date",task.getDate());
+        context.startActivity(i);
+        return true;
+    }
+
+//................Cancel Time alarm
+    private void cancelTimeAlarm(int task_id){
+        Intent intent=new Intent(context,TaskReceiver.class);
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,task_id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

@@ -22,8 +22,38 @@ import static org.junit.Assert.*;
  * Created by chamod on 2/26/17.
  */
 public class TaskDBTest {
-
     TaskDB taskDB;
+
+    @Test
+    public void removeTask() throws Exception {
+        taskDB=TaskDB.getInstance(InstrumentationRegistry.getTargetContext());
+
+        final int task_id=561;
+
+        Date date=new Date(26,2,2017);
+        Location location=new Location("TestLocation",1.8962,45.1236);
+        Time time=new Time(14,37);
+        Time alert_time=new Time(11,30);
+
+        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5,time,alert_time);
+
+        taskDB.addFullTask(fullTask);
+        taskDB.removeTask(task_id);
+        FullTask fullTask_back=taskDB.getFullTask(task_id);
+        assertEquals(null,fullTask_back);
+
+
+        LocationTask locationTask=new LocationTask(task_id+1,"Test Full Task",date,location,4.5);
+        taskDB.addLocationTask(locationTask);
+        LocationTask locationTask_back=taskDB.getLocationTask(task_id);
+        assertEquals(null,locationTask_back);
+
+        TimeTask timeTask=new TimeTask(task_id+2,"Test Full Task",date,time,alert_time);
+        taskDB.addTimeTask(timeTask);
+        TimeTask timeTask_back=taskDB.getTimeTask(task_id);
+        assertEquals(null,timeTask_back);
+    }
+
 
 
     @Test

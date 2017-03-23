@@ -57,7 +57,7 @@
                 android:clickable="true"
                 app:fabSize="normal"
                 app:srcCompat="@drawable/delete"
-                android:id="@+id/floatingActionButton6"
+                android:id="@+id/btnDelTask"
                 app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
                 app:rippleColor="@android:color/holo_red_light"
 

@@ -343,5 +343,13 @@ public class TaskDB {
         }
     }
 
+//      remove a task
+    public void removeTask(int task_id){
+        SQLiteDatabase db=db_helper.getWritableDatabase();
+        db.delete(DB_Helper.task_table,DB_Helper.task_id+"="+task_id,null);
+        db.delete(DB_Helper.full_task_table,DB_Helper.task_id+"="+task_id,null);
+        db.delete(DB_Helper.time_task_table,DB_Helper.task_id+"="+task_id,null);
+        db.delete(DB_Helper.location_task_table,DB_Helper.task_id+"="+task_id,null);
+    }
 
 }

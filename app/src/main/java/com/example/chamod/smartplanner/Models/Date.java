@@ -1,12 +1,13 @@
 package com.example.chamod.smartplanner.Models;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 /**
  * Created by chamod on 2/25/17.
  */
 
-public class Date {
+public class Date implements Serializable{
     private int day;
     private int month;
     private int year;

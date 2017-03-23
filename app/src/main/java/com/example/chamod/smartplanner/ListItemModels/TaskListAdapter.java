@@ -1,13 +1,17 @@
 package com.example.chamod.smartplanner.ListItemModels;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.Task;
@@ -20,8 +24,13 @@ import com.example.chamod.smartplanner.R;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
 
+    TaskHandler taskHandler;
+    Context context;
+
     public TaskListAdapter(Context context, Task[] items) {
         super(context, R.layout.task_list_item,items);
+        taskHandler=TaskHandler.getInstance(context);
+        this.context=context;
     }
 
     @NonNull
@@ -34,7 +43,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         TextView textViewDescription=(TextView)customView.findViewById(R.id.textViewDescription);
         TextView textViewLocation=(TextView)customView.findViewById(R.id.textViewLocation);
 
-        Task task=getItem(position);
+        FloatingActionButton btnDelTask = (FloatingActionButton)customView.findViewById(R.id.btnDelTask);
+
+
+        final Task task=getItem(position);
         textViewDescription.setText(task.getDescription());
 
         if(task.getType().equals("TIME")){
@@ -50,6 +62,32 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             textViewTime.setText(fullTask.getTime().getTimeString());
             textViewLocation.setText("At " + fullTask.getLocation().getName());
         }
+
+
+
+        btnDelTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Alert")
+                        .setMessage("Are you sure you want to remove the task ?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                taskHandler.removeTask(task);
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+            }
+        });
 
         return customView;
     }
