@@ -21,6 +21,8 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
+import com.example.chamod.smartplanner.EventHandlers.TaskEventListner;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
@@ -28,7 +30,7 @@ import com.example.chamod.smartplanner.Models.Date;
 import java.util.Calendar;
 
 public class NavigaterActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,TaskEventListner{
 
     private GestureDetectorCompat mDetector;
 
@@ -48,6 +50,10 @@ public class NavigaterActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+
+//      Start listening to task change event
+        TaskEvent.getInstance().addNewTaskEventListner(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +98,7 @@ public class NavigaterActivity extends AppCompatActivity
 
 
 //.....................set initial date on calendar............................................
-        Date selected_date=(Date) getIntent().getSerializableExtra("selected_date");
-        if(selected_date!=null){
-            calendar_date_set(selected_date);
-            java.util.Date date =new java.util.Date(selected_date.getYear()-1900,selected_date.getMonth()-1,selected_date.getDay());
-            calendarView.setDate(date.getTime());
-        }
-        else {
+
             //        initial date set up
             java.util.Date date=new java.util.Date(calendarView.getDate());
             Calendar calendar=Calendar.getInstance();
@@ -107,7 +107,7 @@ public class NavigaterActivity extends AppCompatActivity
             Date today_date = new Date(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1,
                     calendar.get(Calendar.YEAR));
             calendar_date_set(today_date);
-        }
+
     }
 
     private void calendar_date_set(Date date){
@@ -218,6 +218,19 @@ public class NavigaterActivity extends AppCompatActivity
     public boolean onTouchEvent(MotionEvent event){
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+//    ...........................................Custom event handling.................................
+//    handle task change event
+    @Override
+    public void taskChanged() {
+        java.util.Date date=new java.util.Date(calendarView.getDate());
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(date);
+
+        Date today_date = new Date(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.YEAR));
+        calendar_date_set(today_date);
     }
 
 

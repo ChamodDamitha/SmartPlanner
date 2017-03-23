@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
 import com.example.chamod.smartplanner.Database.TaskDB;
+import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
@@ -128,9 +129,7 @@ public class TaskHandler {
     public boolean removeTask(Task task){
         taskDB.removeTask(task.getId());
         cancelTimeAlarm(task.getId());
-        Intent i=new Intent(context, NavigaterActivity.class);
-        i.putExtra("selected_date",task.getDate());
-        context.startActivity(i);
+        TaskEvent.getInstance().taskChangedEventOccured();
         return true;
     }
 

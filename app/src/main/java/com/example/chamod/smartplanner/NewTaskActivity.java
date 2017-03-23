@@ -159,6 +159,11 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
          builder.create().show();
     }
 
+    public void cancelTask(View v){
+        Intent i=new Intent(this,NavigaterActivity.class);
+        startActivity(i);
+    }
+
     public void saveTask(View v)
     {
         String task_type;

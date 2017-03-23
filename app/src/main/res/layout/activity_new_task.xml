@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:background="@color/lgreen"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-
+                android:onClick="cancelTask"
                 />
 
         </LinearLayout>
