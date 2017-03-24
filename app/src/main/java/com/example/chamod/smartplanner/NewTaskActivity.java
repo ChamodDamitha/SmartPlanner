@@ -1,5 +1,7 @@
 package com.example.chamod.smartplanner;
 
+import android.*;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -8,7 +10,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
@@ -136,7 +141,12 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 calendar.get(Calendar.YEAR));
 
         textViewDate.setText(date.getDateString());
+
+
     }
+
+
+
 
 
     public void showMyPlaces(View v){
@@ -188,7 +198,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             }
             if(isValidEntries()) {
                 boolean success=taskHandler.saveNewTask(task_type, txtDesc.getText().toString().trim(), date, location,
-                        Double.valueOf(txtRange.getText().toString().trim()), time, alert_time, checkBoxRepeatTask.isChecked());
+                        Float.valueOf(txtRange.getText().toString().trim()), time, alert_time, checkBoxRepeatTask.isChecked());
                 if(success){
                     Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 
@@ -284,4 +294,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
         textViewDate.setText(date.getDateString());
     }
+
+
 }

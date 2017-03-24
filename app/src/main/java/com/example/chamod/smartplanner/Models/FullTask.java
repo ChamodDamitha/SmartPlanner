@@ -6,11 +6,11 @@ package com.example.chamod.smartplanner.Models;
 
 public class FullTask extends Task {
     private Location location;
-    private double range;
+    private float range;
     private Time time;
     private Time alert_time;
 
-    public FullTask(int id, String description, Date date, Location location, double range, Time time,Time alert_time) {
+    public FullTask(int id, String description, Date date, Location location, float range, Time time,Time alert_time) {
         super(id, description, date);
 
         this.location=location;
@@ -24,7 +24,7 @@ public class FullTask extends Task {
         return location;
     }
 
-    public double getRange() {
+    public float getRange() {
         return range;
     }
 

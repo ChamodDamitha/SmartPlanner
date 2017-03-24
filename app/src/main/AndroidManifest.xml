@@ -32,9 +32,7 @@
         <receiver
             android:name=".BroadcastReceivers.TaskReceiver"
             android:enabled="true"
-            android:exported="true">
-
-        </receiver>
+            android:exported="true"></receiver>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -50,7 +48,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".NotificationActivity" />
         <activity
             android:name=".NavigaterActivity"
@@ -67,11 +65,18 @@
             android:name=".BroadcastReceivers.NotificationReceiver"
             android:enabled="true"
             android:exported="true">
-
-             <intent-filter>
-                 <action android:name="complete_action"></action>
-                 <action android:name="forget_action"></action>
-             </intent-filter>
+            <intent-filter>
+                <action android:name="complete_action" />
+                <action android:name="forget_action" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".BroadcastReceivers.LocationReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ACTION_PROXIMITY_ALERT" />
+            </intent-filter>
         </receiver>
     </application>
 

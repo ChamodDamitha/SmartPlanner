@@ -161,7 +161,7 @@ public class TaskDB {
 
 
             FullTask fullTask=new FullTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,location,cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_range)),
+                    date,location,cursor.getFloat(cursor.getColumnIndex(DB_Helper.task_location_range)),
                     time,alert_time);
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
@@ -205,7 +205,7 @@ public class TaskDB {
 
 
             LocationTask locationTask=new LocationTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,location,cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_range)));
+                    date,location,cursor.getFloat(cursor.getColumnIndex(DB_Helper.task_location_range)));
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
                 locationTask.setAlerted(false);

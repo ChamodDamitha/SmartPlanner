@@ -6,9 +6,9 @@ package com.example.chamod.smartplanner.Models;
 
 public class LocationTask extends Task {
     private Location location;
-    private double range;
+    private float range;
 
-    public LocationTask(int id, String description, Date date, Location location, double range) {
+    public LocationTask(int id, String description, Date date, Location location, float range) {
         super(id, description, date);
         this.location=location;
         this.range=range;
@@ -19,7 +19,7 @@ public class LocationTask extends Task {
         return location;
     }
 
-    public double getRange() {
+    public float getRange() {
         return range;
     }
 }

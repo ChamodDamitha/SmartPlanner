@@ -1,11 +1,19 @@
 package com.example.chamod.smartplanner.Handlers;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.provider.SyncStateContract;
+import android.support.v4.app.ActivityCompat;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
+import com.example.chamod.smartplanner.Calculaters.TimeCompare;
+import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.Models.Date;
@@ -26,42 +34,40 @@ import java.util.Calendar;
 public class TaskHandler {
     private Context context;
 
-    private static TaskHandler taskHandler=null;
+    private static TaskHandler taskHandler = null;
     private TaskDB taskDB;
 
-    private TaskHandler(Context context){
-        taskDB=TaskDB.getInstance(context);
-        this.context=context;
+    private TaskHandler(Context context) {
+        taskDB = TaskDB.getInstance(context);
+        this.context = context;
     }
 
-    public static TaskHandler getInstance(Context context){
-        if(taskHandler==null){
-            taskHandler=new TaskHandler(context);
+    public static TaskHandler getInstance(Context context) {
+        if (taskHandler == null) {
+            taskHandler = new TaskHandler(context);
         }
         return taskHandler;
     }
 
-//..............Save a new task.....................................................................
-    public boolean saveNewTask(String type, String desc, Date date, Location location, Double range,
-                               Time time,Time alert_time,boolean repeat ){
+    //..............Save a new task.....................................................................
+    public boolean saveNewTask(String type, String desc, Date date, Location location, float range,
+                               Time time, Time alert_time, boolean repeat) {
         Task task;
-        if(type.equals("LOCATION")){
-            LocationTask locationTask=new LocationTask(taskDB.getNextTaskId(),desc,date,location,range);
+        if (type.equals("LOCATION")) {
+            LocationTask locationTask = new LocationTask(taskDB.getNextTaskId(), desc, date, location, range);
             locationTask.setRepeat(repeat);
             taskDB.addLocationTask(locationTask);
-            task=locationTask;
-        }
-        else if(type.equals("TIME")){
-            TimeTask timeTask=new TimeTask(taskDB.getNextTaskId(),desc,date,time,alert_time);
+            task = locationTask;
+        } else if (type.equals("TIME")) {
+            TimeTask timeTask = new TimeTask(taskDB.getNextTaskId(), desc, date, time, alert_time);
             timeTask.setRepeat(repeat);
             taskDB.addTimeTask(timeTask);
-            task=timeTask;
-        }
-        else{
-            FullTask fullTask=new FullTask(taskDB.getNextTaskId(),desc,date,location,range,time,alert_time);
+            task = timeTask;
+        } else {
+            FullTask fullTask = new FullTask(taskDB.getNextTaskId(), desc, date, location, range, time, alert_time);
             fullTask.setRepeat(repeat);
             taskDB.addFullTask(fullTask);
-            task=fullTask;
+            task = fullTask;
         }
         setTaskAlarm(task);
         return true;
@@ -69,20 +75,20 @@ public class TaskHandler {
 
     private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
+            LocationTask locationTask=(LocationTask)task;
+            setLocationAlarm(locationTask.getId(),locationTask.getType(),locationTask.getLocation(),locationTask.getRange());
 
-
-        }
-        else if(task.getType().equals("TIME")){
-            TimeTask timeTask=(TimeTask)task;
-            setTimeAlarm(timeTask.getId(),timeTask.getType(),timeTask.getDate(),timeTask.getAlert_time());
-        }
-        else {
-            FullTask fullTask=(FullTask) task;
-            setTimeAlarm(fullTask.getId(),fullTask.getType(),fullTask.getDate(),fullTask.getAlert_time());
+        } else if (task.getType().equals("TIME")) {
+            TimeTask timeTask = (TimeTask) task;
+            setTimeAlarm(timeTask.getId(), timeTask.getType(), timeTask.getDate(), timeTask.getAlert_time());
+        } else {
+            FullTask fullTask = (FullTask) task;
+            setTimeAlarm(fullTask.getId(), fullTask.getType(), fullTask.getDate(), fullTask.getAlert_time());
+            setLocationAlarm(fullTask.getId(),fullTask.getType(),fullTask.getLocation(),fullTask.getRange());
         }
     }
 
-    private void setTimeAlarm(int task_id,String task_type,Date date,Time alert_time){
+    private void setTimeAlarm(int task_id, String task_type, Date date, Time alert_time) {
         Calendar cal = Calendar.getInstance();
 
         cal.set(Calendar.YEAR, date.getYear());
@@ -106,6 +112,31 @@ public class TaskHandler {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
+    private void setLocationAlarm(int task_id, String task_type, Location location, float range) {
+
+        Intent intent = new Intent(Constants.ACTION_PROXIMITY_ALERT);
+
+        intent.putExtra("task_id", task_id);
+        intent.putExtra("task_type", task_type);
+
+
+        PendingIntent pendingIntent = PendingIntent.getService(context, task_id, intent, 0);
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions((Activity)context, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+            ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+
+            return;
+        }
+        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), range, -1, pendingIntent);
+    }
+
+
 
 
 //.............get all scheduled tasks for a date...................................................
@@ -114,8 +145,7 @@ public class TaskHandler {
 
         Task[] scheduled_tasks=new Task[tasks.size()];
         for (int i=0;i<scheduled_tasks.length;i++){
-            scheduled_tasks[i]=tasks.get(i);
-
+            scheduled_tasks[i]=tasks.get(scheduled_tasks.length-i-1);
         }
         return scheduled_tasks;
     }

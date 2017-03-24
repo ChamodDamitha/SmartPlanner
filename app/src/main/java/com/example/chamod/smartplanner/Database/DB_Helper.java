@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB_Helper extends SQLiteOpenHelper {
     private static DB_Helper db_helper = null;
-    private static final int db_version = 12;
+    private static final int db_version = 13;
     protected static final String db_name = "smart_planner_db";
 
     //singleton for DB_helper class
@@ -90,7 +90,7 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "%s VARCHAR(100),"+
                 "%s DOUBLE,"+
                 "%s DOUBLE,"+
-                "%s DOUBLE"+
+                "%s FLOAT"+
                 ");",full_task_table,task_id,task_hour,task_minute,task_alert_hour,task_alert_minute,
                 task_location_name,task_location_latitude,task_location_longitude,task_location_range);
 
@@ -100,7 +100,7 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "%s VARCHAR(100),"+
                 "%s DOUBLE,"+
                 "%s DOUBLE,"+
-                "%s DOUBLE"+
+                "%s FLOAT"+
                 ");",location_task_table,task_id,task_location_name,task_location_latitude,task_location_longitude,task_location_range);
 
         String time_task_table_query=String.format("" +

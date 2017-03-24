@@ -1,9 +1,12 @@
 package com.example.chamod.smartplanner;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -108,7 +111,45 @@ public class NavigaterActivity extends AppCompatActivity
                     calendar.get(Calendar.YEAR));
             calendar_date_set(today_date);
 
+
+//      ................Permission request.....................................................
+        requestPermissions();
     }
+
+    private void requestPermissions(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+
+            return;
+        }
+    }
+
+    //    ...............................Permission response..........................................
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION:{
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+
+                }
+                else{
+                    requestPermissions();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
 
     private void calendar_date_set(Date date){
         //set list view
