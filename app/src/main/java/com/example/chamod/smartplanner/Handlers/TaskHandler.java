@@ -75,8 +75,8 @@ public class TaskHandler {
 
     private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
-            LocationTask locationTask=(LocationTask)task;
-            setLocationAlarm(locationTask.getId(),locationTask.getType(),locationTask.getLocation(),locationTask.getRange());
+            LocationTask locationTask = (LocationTask) task;
+            setLocationAlarm(locationTask.getId(), locationTask.getType(), locationTask.getLocation(), locationTask.getRange());
 
         } else if (task.getType().equals("TIME")) {
             TimeTask timeTask = (TimeTask) task;
@@ -84,7 +84,7 @@ public class TaskHandler {
         } else {
             FullTask fullTask = (FullTask) task;
             setTimeAlarm(fullTask.getId(), fullTask.getType(), fullTask.getDate(), fullTask.getAlert_time());
-            setLocationAlarm(fullTask.getId(),fullTask.getType(),fullTask.getLocation(),fullTask.getRange());
+            setLocationAlarm(fullTask.getId(), fullTask.getType(), fullTask.getLocation(), fullTask.getRange());
         }
     }
 
@@ -119,54 +119,68 @@ public class TaskHandler {
         intent.putExtra("task_id", task_id);
         intent.putExtra("task_type", task_type);
 
-
-        PendingIntent pendingIntent = PendingIntent.getService(context, task_id, intent, 0);
+        intent.setAction(Constants.ACTION_PROXIMITY_ALERT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task_id, intent, 0);
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((Activity)context, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+            ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
-            ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     Constants.MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
 
             return;
         }
-        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), range, -1, pendingIntent);
+        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), 10, -1, pendingIntent);
     }
 
 
+    //.............get all scheduled tasks for a date...................................................
+    public Task[] getAllTasks(Date date) {
+        ArrayList<Task> tasks = taskDB.getAllTasks(date);
 
-
-//.............get all scheduled tasks for a date...................................................
-    public Task[] getAllTasks(Date date){
-        ArrayList<Task> tasks=taskDB.getAllTasks(date);
-
-        Task[] scheduled_tasks=new Task[tasks.size()];
-        for (int i=0;i<scheduled_tasks.length;i++){
-            scheduled_tasks[i]=tasks.get(scheduled_tasks.length-i-1);
+        Task[] scheduled_tasks = new Task[tasks.size()];
+        for (int i = 0; i < scheduled_tasks.length; i++) {
+            scheduled_tasks[i] = tasks.get(scheduled_tasks.length - i - 1);
         }
         return scheduled_tasks;
     }
-//...................Complete a task................................................................
-    public void completeTask(int task_id,boolean complete){
-        taskDB.setTaskCompleted(task_id,complete);
+
+    //...................Complete a task................................................................
+    public void completeTask(int task_id, boolean complete) {
+        taskDB.setTaskCompleted(task_id, complete);
     }
 
-//..................Remove a scheduled task...................................................................
-    public boolean removeTask(Task task){
+    //..................Remove a scheduled task...................................................................
+    public boolean removeTask(Task task) {
         taskDB.removeTask(task.getId());
         cancelTimeAlarm(task.getId());
+        cancelLocationAlarm(task.getId());
         TaskEvent.getInstance().taskChangedEventOccured();
         return true;
     }
 
-//................Cancel Time alarm
-    private void cancelTimeAlarm(int task_id){
-        Intent intent=new Intent(context,TaskReceiver.class);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,task_id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    //................Cancel Time alarm
+    private void cancelTimeAlarm(int task_id) {
+        Intent intent = new Intent(context, TaskReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+    }
+
+    //................Cancel Location Alarm.
+    public void cancelLocationAlarm(int task_id) {
+
+        Intent intent = new Intent(Constants.ACTION_PROXIMITY_ALERT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task_id, intent, 0);
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        locationManager.removeProximityAlert(pendingIntent);
     }
 }

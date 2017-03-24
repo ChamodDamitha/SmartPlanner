@@ -25,6 +25,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             taskHandler.completeTask(task_id,false);
         }
 
+        taskHandler.cancelLocationAlarm(task_id);
+
         NotificationManager notificationManager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(task_id);
 
