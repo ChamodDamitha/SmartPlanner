@@ -33,7 +33,7 @@ public class TaskDBTest {
         Time time=new Time(14,37);
         Time alert_time=new Time(11,30);
 
-        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5,time,alert_time);
+        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5f,time,alert_time);
 
         taskDB.addFullTask(fullTask);
         taskDB.removeTask(task_id);
@@ -41,7 +41,7 @@ public class TaskDBTest {
         assertEquals(null,fullTask_back);
 
 
-        LocationTask locationTask=new LocationTask(task_id+1,"Test Full Task",date,location,4.5);
+        LocationTask locationTask=new LocationTask(task_id+1,"Test Full Task",date,location,4.5f);
         taskDB.addLocationTask(locationTask);
         LocationTask locationTask_back=taskDB.getLocationTask(task_id);
         assertEquals(null,locationTask_back);
@@ -65,7 +65,7 @@ public class TaskDBTest {
         Time time=new Time(14,37);
         Time alert_time=new Time(11,30);
 
-        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5,time,alert_time);
+        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5f,time,alert_time);
 
         taskDB.addFullTask(fullTask);
 
@@ -105,7 +105,7 @@ public class TaskDBTest {
         Date date=new Date(26,2,2017);
         Location location=new Location("TestLocation",1.8962,45.1236);
 
-        LocationTask locationTask=new LocationTask(task_id,"Test Full Task",date,location,4.5);
+        LocationTask locationTask=new LocationTask(task_id,"Test Full Task",date,location,4.5f);
 
         taskDB.addLocationTask(locationTask);
 
@@ -178,7 +178,7 @@ public class TaskDBTest {
         Time time=new Time(14,37);
         Time alert_time=new Time(11,30);
 
-        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5,time,alert_time);
+        FullTask fullTask=new FullTask(task_id,"Test Full Task",date,location,4.5f,time,alert_time);
 
         taskDB.addFullTask(fullTask);
 
@@ -201,6 +201,30 @@ public class TaskDBTest {
         assertEquals(fullTask1.isCompleted(),true);
         assertEquals(fullTask1.isAlerted(),true);
 
+
+        LocationTask locationTask=new LocationTask(task_id+1,"Test Full Task",date,location,4.5f);
+
+        taskDB.addLocationTask(locationTask);
+
+//        check added task
+
+        assertEquals(locationTask.isAlerted(),false);
+        assertEquals(locationTask.isCompleted(),false);
+        assertEquals(locationTask.isRepeat(),false);
+
+
+
+        taskDB.setTaskAlerted(locationTask.getId(),true);
+        taskDB.setTaskCompleted(locationTask.getId(),true);
+        taskDB.setTaskAlerted(locationTask.getId(),true);
+
+        LocationTask locationTask1=taskDB.getLocationTask(task_id+1);
+
+
+        assertEquals(locationTask1.isAlerted(),true);
+        assertEquals(locationTask1.isCompleted(),true);
+        assertEquals(locationTask1.isAlerted(),true);
+
     }
 
 
@@ -216,9 +240,9 @@ public class TaskDBTest {
         Time time=new Time(14,37);
         Time alert_time=new Time(11,30);
 
-        FullTask fullTask1=new FullTask(987,"Test Full Task 1",date,location,4.5,time,alert_time);
+        FullTask fullTask1=new FullTask(987,"Test Full Task 1",date,location,4.5f,time,alert_time);
 
-        FullTask fullTask2=new FullTask(989,"Test Full Task 2",date,location,4.5,time,alert_time);
+        FullTask fullTask2=new FullTask(989,"Test Full Task 2",date,location,4.5f,time,alert_time);
 
         taskDB.addFullTask(fullTask1);
         taskDB.addFullTask(fullTask2);

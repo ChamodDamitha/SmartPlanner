@@ -230,6 +230,19 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             Toast.makeText(this, "Please select the alert time...!", Toast.LENGTH_SHORT).show();
             return false;
         }
+        else{
+            try{
+                float range=Float.valueOf(txtRange.getText().toString());
+                if(range<1){
+                    Toast.makeText(this,"The minimum range is 1 m ...!",Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+            catch (Exception e){
+                Toast.makeText(this,"Please enter a valid range...!",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
         return true;
     }
 

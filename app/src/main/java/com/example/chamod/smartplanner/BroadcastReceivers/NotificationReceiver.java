@@ -15,6 +15,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         TaskHandler taskHandler=TaskHandler.getInstance(context);
         int task_id=intent.getIntExtra("task_id",-1);
 

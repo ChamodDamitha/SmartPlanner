@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.EventHandlers.TaskEventListner;
@@ -265,6 +266,7 @@ public class NavigaterActivity extends AppCompatActivity
 //    handle task change event
     @Override
     public void taskChanged() {
+
         java.util.Date date=new java.util.Date(calendarView.getDate());
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(date);

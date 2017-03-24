@@ -44,7 +44,7 @@ public class LocationReceiver extends BroadcastReceiver {
             viewNotification(context,task_id,fullTask.getDescription() + "/n"+"on "+fullTask.getTime().getTimeString(),
                     "Arrived at "+fullTask.getLocation().getName());
         }
-
+        taskDB.setTaskAlerted(task_id,true);
 
 //................Check entering or leaving
         if (entering){

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.provider.SyncStateContract;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
 import com.example.chamod.smartplanner.Calculaters.TimeCompare;
@@ -133,7 +134,7 @@ public class TaskHandler {
 
             return;
         }
-        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), 10, -1, pendingIntent);
+        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), range, -1, pendingIntent);
     }
 
 
@@ -177,7 +178,8 @@ public class TaskHandler {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task_id, intent, 0);
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
