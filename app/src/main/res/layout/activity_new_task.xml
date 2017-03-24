@@ -193,53 +193,70 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="TimeClicked"
                     android:background="@android:color/background_light"
-                    android:layout_margin="2dp"
-                    android:id="@+id/time_pad"
-                    >
-
-                    <ImageView
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:id="@+id/imageView5"
-                        android:adjustViewBounds="false"
-                        android:cropToPadding="false"
-                        android:padding="10dp"
-                        android:src="@drawable/time" />
+                    android:layout_margin="2dp">
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:onClick="TimeClicked"
 
-                        <TextView
-                            android:text="TIME"
+                        android:id="@+id/time_pad"
+                        >
+
+                        <ImageView
+                            android:layout_width="46dp"
+                            android:layout_height="46dp"
+                            android:id="@+id/imageView5"
+                            android:adjustViewBounds="false"
+                            android:cropToPadding="false"
+                            android:padding="10dp"
+                            android:src="@drawable/time" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView2"
-                            android:padding="1dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="TIME"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView2"
+                                android:padding="1dp"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
 
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/textViewTime"
-                            android:padding="2dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/textViewTime"
+                                android:padding="2dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                />
 
 
+
+                        </LinearLayout>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:text="on time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewRem"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                        android:paddingLeft="45dp"
+                        android:onClick="viewReminderClicked"
+                        />
 
                 </LinearLayout>
 

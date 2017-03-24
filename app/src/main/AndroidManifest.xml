@@ -19,7 +19,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".NewTaskActivity" />
         <activity android:name=".PredictedScheduleActivity" />
-        <activity android:name=".ReminderActivity" />
         <activity android:name=".MyPlacesActivity" />
         <activity
             android:name=".RepeatingTasksActivity"

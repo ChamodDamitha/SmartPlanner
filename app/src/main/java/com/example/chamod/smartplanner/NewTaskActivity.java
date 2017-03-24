@@ -1,25 +1,12 @@
 package com.example.chamod.smartplanner;
 
-import android.*;
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -29,27 +16,23 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
 import com.example.chamod.smartplanner.Database.MyPlaceDB;
-import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Fragments.DateFragment;
+import com.example.chamod.smartplanner.Fragments.ReminderFragment;
 import com.example.chamod.smartplanner.Fragments.TimeFragment;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Date;
-import com.example.chamod.smartplanner.Models.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
-import com.example.chamod.smartplanner.Models.LocationTask;
 import com.example.chamod.smartplanner.Models.MyPlace;
-import com.example.chamod.smartplanner.Models.Task;
 import com.example.chamod.smartplanner.Models.Time;
-import com.example.chamod.smartplanner.Models.TimeTask;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,DateFragment.DateFragmentListener{
+public class NewTaskActivity extends FragmentActivity implements TimeFragment.TimeFragmentListener,
+        DateFragment.DateFragmentListener,ReminderFragment.ReminderFragmentListener {
 
     TaskHandler taskHandler;
 
@@ -64,6 +47,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 //    Fragments
     TimeFragment timeFragemt;
     DateFragment dateFragment;
+    ReminderFragment reminderFragment;
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -268,6 +252,12 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         }
     }
 
+    public void viewReminderClicked(View v){
+        reminderFragment=new ReminderFragment();
+        // Show DialogFragment
+        reminderFragment.show(fm,"ReminderFragment");
+    }
+
 
 
 
@@ -309,4 +299,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 
 
+    @Override
+    public void setReminderBefore(long miliseconds) {
+
+    }
 }

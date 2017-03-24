@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+
+    <TextView
+        android:text="Select Reminder Time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <RadioButton
+            android:text="On time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBtnOnTime"
+            android:layout_weight="1"
+            android:checked="true"
+            />
+
+        <RadioButton
+            android:text="10 mins before"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/radioBtn10min"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="30 mins before"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBtn30min"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="1 hour before"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBtn1hour"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="1 day before"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBtn1day"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="Customize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBtnCustom"
+            android:layout_weight="1" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="SAVE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSaveRem"
+            android:layout_weight="1"
+            android:background="@color/lgreen"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+            android:layout_margin="5dp"
+            />
+
+        <Button
+            android:text="CANCEL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCancelRem"
+            android:layout_weight="1"
+            android:background="@color/lgreen"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+</LinearLayout>
