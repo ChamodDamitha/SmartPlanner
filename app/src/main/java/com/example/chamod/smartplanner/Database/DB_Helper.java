@@ -44,8 +44,8 @@ public class DB_Helper extends SQLiteOpenHelper {
 //  times table
     public static final String timeset_table ="time_tasks";
     public static final String timeset_id ="timeset_id";
-    public static final String date_alert="date_alert";
-    public static final String time_alert="time_alert";
+    public static final String alert_date ="alert_date";
+    public static final String alert_time ="alert_time";
     public static final String task_time="task_time";
 
 //  locations table
@@ -114,7 +114,7 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "%s DATE,"+
                 "%s TIME,"+
                 "%s TIME"+
-                ");", timeset_table, timeset_id,date_alert,time_alert,task_time);
+                ");", timeset_table, timeset_id, alert_date, alert_time,task_time);
 
         String locations_table_query=String.format("" +
                 "CREATE TABLE %s(" +

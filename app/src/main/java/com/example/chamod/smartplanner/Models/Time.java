@@ -13,6 +13,10 @@ public class Time {
         this.minute = minute;
     }
 
+    public Time(String time_string){
+
+    }
+
     public int get24Hour() {
         return hour;
     }
