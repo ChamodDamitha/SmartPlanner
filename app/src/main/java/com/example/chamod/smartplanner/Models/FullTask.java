@@ -9,13 +9,15 @@ public class FullTask extends Task {
     private float range;
     private Time time;
     private Time alert_time;
+    private Date alert_date;
 
-    public FullTask(int id, String description, Date date, Location location, float range, Time time,Time alert_time) {
+    public FullTask(int id, String description, Date date, Location location, float range, Time time,Date alert_date,Time alert_time) {
         super(id, description, date);
 
         this.location=location;
         this.range=range;
         this.time=time;
+        this.alert_date=alert_date;
         this.alert_time=alert_time;
         this.type="FULL";
     }
@@ -30,6 +32,10 @@ public class FullTask extends Task {
 
     public Time getTime() {
         return time;
+    }
+
+    public Date getAlert_date() {
+        return alert_date;
     }
 
     public Time getAlert_time() {

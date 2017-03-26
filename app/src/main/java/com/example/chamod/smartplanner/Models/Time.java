@@ -44,4 +44,14 @@ public class Time {
 
         return time_string;
     }
+
+    @Override
+    public String toString() {
+        String time_string=get24Hour()+":";
+        if(minute<10){
+            time_string+=0;
+        }
+        time_string+=minute;
+        return time_string;
+    }
 }

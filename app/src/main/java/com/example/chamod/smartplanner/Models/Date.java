@@ -48,4 +48,9 @@ public class Date implements Serializable{
     public String getDateString(){
         return getDayOfWeek()+", "+day+" "+getMonthOfYear()+" "+year;
     }
+
+    @Override
+    public String toString() {
+        return year+"-"+month+"-"+day;
+    }
 }

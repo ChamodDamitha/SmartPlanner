@@ -59,10 +59,9 @@ public class TaskDB {
         ContentValues cv=new ContentValues();
         cv.put(DB_Helper.task_id,fullTask.getId());
 
-        cv.put(DB_Helper.task_hour,fullTask.getTime().get24Hour());
-        cv.put(DB_Helper.task_minute,fullTask.getTime().getMinute());
-        cv.put(DB_Helper.task_alert_hour,fullTask.getAlert_time().get24Hour());
-        cv.put(DB_Helper.task_alert_minute,fullTask.getAlert_time().getMinute());
+        cv.put(DB_Helper.date_alert,fullTask.getDate()toString());
+        cv.put(DB_Helper.time_alert,fullTask.getTime(.toString());
+        cv.put(DB_Helper.task_time,fullTask.getTime(.toString());
 
         cv.put(DB_Helper.task_location_name,fullTask.getLocation().getName());
         cv.put(DB_Helper.task_location_latitude,fullTask.getLocation().getLatitude());
@@ -351,5 +350,7 @@ public class TaskDB {
         db.delete(DB_Helper.time_task_table,DB_Helper.task_id+"="+task_id,null);
         db.delete(DB_Helper.location_task_table,DB_Helper.task_id+"="+task_id,null);
     }
+
+
 
 }
