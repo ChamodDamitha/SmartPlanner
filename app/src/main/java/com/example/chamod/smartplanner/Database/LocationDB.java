@@ -29,7 +29,7 @@ public class LocationDB {
     }
 
 //    ...........Add a location record..............
-    public Location addLocationRecord(Location location){
+    public boolean addLocationRecord(Location location){
         SQLiteDatabase db=db_helper.getWritableDatabase();
 
         ContentValues cv=new ContentValues();
@@ -47,9 +47,9 @@ public class LocationDB {
         if (cursor.moveToNext())
         {
             location.setLoc_id(cursor.getInt(cursor.getColumnIndex("max_id")));
-            return location;
+            return true;
         }
-        return null;
+        return false;
     }
 
     //    ...........Update a Location record..............

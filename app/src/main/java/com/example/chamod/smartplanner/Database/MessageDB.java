@@ -30,7 +30,7 @@ public class MessageDB {
 
 
     //    ...........Add a Message record..............
-    public Message addMessageRecord(Message message){
+    public boolean addMessageRecord(Message message){
         SQLiteDatabase db=db_helper.getWritableDatabase();
 
         ContentValues cv=new ContentValues();
@@ -46,9 +46,9 @@ public class MessageDB {
         if (cursor.moveToNext())
         {
             message.setMsg_id(cursor.getInt(cursor.getColumnIndex("max_id")));
-            return message;
+            return true;
         }
-        return null;
+        return false;
     }
 
     //    ...........Update a Message record..............

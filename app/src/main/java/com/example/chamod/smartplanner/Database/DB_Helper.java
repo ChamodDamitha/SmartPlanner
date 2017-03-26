@@ -42,8 +42,8 @@ public class DB_Helper extends SQLiteOpenHelper {
     public static final String task_repeat="task_repeat";
 
 //  times table
-    public static final String times_table="time_tasks";
-    public static final String time_id="time_id";
+    public static final String timeset_table ="time_tasks";
+    public static final String timeset_id ="timeset_id";
     public static final String date_alert="date_alert";
     public static final String time_alert="time_alert";
     public static final String task_time="task_time";
@@ -103,10 +103,10 @@ public class DB_Helper extends SQLiteOpenHelper {
                     "FOREIGN KEY(%s) REFERENCES %s(%s)," +
                     "FOREIGN KEY(%s) REFERENCES %s(%s)" +
                 ");", tasks_table,task_id,task_type,task_description,task_date,
-                task_alerted,task_completed,task_repeat,loc_id,msg_id,time_id,
+                task_alerted,task_completed,task_repeat,loc_id,msg_id, timeset_id,
                     loc_id,locations_table,loc_id,
                     msg_id,messages_table,msg_id,
-                    time_id,times_table,time_id);
+                timeset_id, timeset_table, timeset_id);
 
         String times_table_query=String.format("" +
                 "CREATE TABLE %s(" +
@@ -114,7 +114,7 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "%s DATE,"+
                 "%s TIME,"+
                 "%s TIME"+
-                ");",times_table,time_id,date_alert,time_alert,task_time);
+                ");", timeset_table, timeset_id,date_alert,time_alert,task_time);
 
         String locations_table_query=String.format("" +
                 "CREATE TABLE %s(" +
@@ -157,7 +157,7 @@ public class DB_Helper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + users_table);
         db.execSQL("DROP TABLE IF EXISTS " + tasks_table);
-        db.execSQL("DROP TABLE IF EXISTS " + times_table);
+        db.execSQL("DROP TABLE IF EXISTS " + timeset_table);
         db.execSQL("DROP TABLE IF EXISTS " + locations_table);
         db.execSQL("DROP TABLE IF EXISTS " + messages_table);
         db.execSQL("DROP TABLE IF EXISTS " + myplaces_table);
