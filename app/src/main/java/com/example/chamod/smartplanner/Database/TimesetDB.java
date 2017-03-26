@@ -5,25 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.chamod.smartplanner.Models.Message;
 import com.example.chamod.smartplanner.Models.TimeSet;
 
 /**
  * Created by chamod on 3/26/17.
  */
 
-public class TimeDB {
-    private static TimeDB dateDB=null;
+public class TimesetDB {
+    private static TimesetDB dateDB=null;
 
     private DB_Helper db_helper;
 
-    private TimeDB(Context context){
+    private TimesetDB(Context context){
         db_helper=DB_Helper.getInstance(context);
     }
 
-    public static TimeDB getInstance(Context context){
+    public static TimesetDB getInstance(Context context){
         if(dateDB==null){
-            dateDB=new TimeDB(context);
+            dateDB=new TimesetDB(context);
         }
         return dateDB;
     }

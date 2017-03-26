@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
-import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
 
 public class RepeatingTasksActivity extends AppCompatActivity {
 

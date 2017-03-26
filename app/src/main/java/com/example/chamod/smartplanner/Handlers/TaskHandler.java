@@ -8,22 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.provider.SyncStateContract;
 import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
 
 import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
-import com.example.chamod.smartplanner.Calculaters.TimeCompare;
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.Models.Date;
-import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Time;
-import com.example.chamod.smartplanner.Models.TimeTask;
+import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;

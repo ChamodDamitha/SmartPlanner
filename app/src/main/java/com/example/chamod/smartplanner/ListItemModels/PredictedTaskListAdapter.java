@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.chamod.smartplanner.Models.FullTask;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.Models.Task;
-import com.example.chamod.smartplanner.Models.TimeTask;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
+import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 import com.example.chamod.smartplanner.R;
 
 /**

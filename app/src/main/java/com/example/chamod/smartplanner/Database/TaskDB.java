@@ -5,13 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Models.Date;
-import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Message;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.MessageTask;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Time;
-import com.example.chamod.smartplanner.Models.TimeTask;
+import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
+import com.example.chamod.smartplanner.Models.TimeSet;
 
 import java.util.ArrayList;
 
@@ -31,89 +35,59 @@ public class TaskDB {
 
     private DB_Helper db_helper;
 
+    private TimesetDB timesetDB;
+    private LocationDB locationDB;
+    private MessageDB messageDB;
+
     private TaskDB(Context context){
+
         db_helper=DB_Helper.getInstance(context);
+        timesetDB=TimesetDB.getInstance(context);
+        locationDB=LocationDB.getInstance(context);
+        messageDB=MessageDB.getInstance(context);
     }
 
 
-    public int getNextTaskId(){
-        SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT MAX(%s) as max_id FROM %s ;",DB_Helper.task_id,DB_Helper.tasks_table);
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToNext())
-        {
-            return cursor.getInt(cursor.getColumnIndex("max_id"))+1;
-        }
-//        when no record in table
-        return 1;
-    }
+//    public int getNextTaskId(){
+//        SQLiteDatabase db=db_helper.getReadableDatabase();
+//        String query = String.format("SELECT MAX(%s) as max_id FROM %s ;",DB_Helper.task_id,DB_Helper.tasks_table);
+//        Cursor cursor = db.rawQuery(query, null);
+//
+//        if (cursor.moveToNext())
+//        {
+//            return cursor.getInt(cursor.getColumnIndex("max_id"))+1;
+//        }
+////        when no record in table
+//        return 1;
+//    }
 
 
 //    adding tasks
-    public void addFullTask(FullTask fullTask){
+    public boolean addFullTask(FullTask fullTask){
         addTask(fullTask);
-
-        SQLiteDatabase db=db_helper.getWritableDatabase();
-
-        ContentValues cv=new ContentValues();
-        cv.put(DB_Helper.task_id,fullTask.getId());
-
-        cv.put(DB_Helper.date_alert,fullTask.getDate()toString());
-        cv.put(DB_Helper.time_alert,fullTask.getTime(.toString());
-        cv.put(DB_Helper.task_time,fullTask.getTime(.toString());
-
-        cv.put(DB_Helper.task_location_name,fullTask.getLocation().getName());
-        cv.put(DB_Helper.task_location_latitude,fullTask.getLocation().getLatitude());
-        cv.put(DB_Helper.task_location_longitude,fullTask.getLocation().getLongitude());
-        cv.put(DB_Helper.task_location_range,fullTask.getRange());
-
-
-        db.insert(DB_Helper.full_task_table,null,cv);
+        timesetDB.addTimeRecord(fullTask.getTimeSet());
+        locationDB.addLocationRecord(fullTask.getLocation());
+        return true;
     }
 
-    public void addLocationTask(LocationTask locationTask) {
+    public boolean addLocationTask(LocationTask locationTask) {
         addTask(locationTask);
-
-        SQLiteDatabase db=db_helper.getWritableDatabase();
-
-        ContentValues cv=new ContentValues();
-        cv.put(DB_Helper.task_id,locationTask.getId());
-
-        cv.put(DB_Helper.task_location_name,locationTask.getLocation().getName());
-        cv.put(DB_Helper.task_location_latitude,locationTask.getLocation().getLatitude());
-        cv.put(DB_Helper.task_location_longitude,locationTask.getLocation().getLongitude());
-        cv.put(DB_Helper.task_location_range,locationTask.getRange());
-
-        db.insert(DB_Helper.location_task_table,null,cv);
+        locationDB.addLocationRecord(locationTask.getLocation());
+        return true;
     }
 
-    public void addTimeTask(TimeTask timeTask){
+    public boolean addTimeTask(TimeTask timeTask){
         addTask(timeTask);
-
-        SQLiteDatabase db=db_helper.getWritableDatabase();
-
-        ContentValues cv=new ContentValues();
-        cv.put(DB_Helper.task_id,timeTask.getId());
-
-        cv.put(DB_Helper.task_hour,timeTask.getTime().get24Hour());
-        cv.put(DB_Helper.task_minute,timeTask.getTime().getMinute());
-        cv.put(DB_Helper.task_alert_hour,timeTask.getAlert_time().get24Hour());
-        cv.put(DB_Helper.task_alert_minute,timeTask.getAlert_time().getMinute());
-
-
-        db.insert(DB_Helper.full_task_table,null,cv);
+        timesetDB.addTimeRecord(timeTask.getTimeSet());
+        return true;
     }
 
-    private void addTask(Task task){
+    private boolean addTask(Task task){
         SQLiteDatabase db=db_helper.getWritableDatabase();
 
         ContentValues cv=new ContentValues();
-        cv.put(DB_Helper.task_id,task.getId());
         cv.put(DB_Helper.task_description,task.getDescription());
-        cv.put(DB_Helper.task_year,task.getDate().getYear());
-        cv.put(DB_Helper.task_month,task.getDate().getMonth());
-        cv.put(DB_Helper.task_day,task.getDate().getDay());
+        cv.put(DB_Helper.task_date,task.getDate().toString());
 
         if(task.isAlerted()) {
             cv.put(DB_Helper.task_alerted, 1);
@@ -136,32 +110,41 @@ public class TaskDB {
         cv.put(DB_Helper.task_type,task.getType());
 
         db.insert(DB_Helper.tasks_table,null,cv);
-    }
 
-//      getting tasks
-    public FullTask getFullTask(int task_id){
-        SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
+//      set task_id
+        db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT MAX(%s) as max_id FROM %s ;",DB_Helper.task_id,DB_Helper.tasks_table);
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
         {
-            Date date=new Date(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_day)),cursor.getInt(cursor.getColumnIndex(DB_Helper.task_month)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_year)));
+            task.setId(cursor.getInt(cursor.getColumnIndex("max_id")));
+            return true;
+        }
+        return false;
+    }
 
-            Location location=new Location(cursor.getString(cursor.getColumnIndex(DB_Helper.task_location_name)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_latitude)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_longitude)));
+//      getting tasks
 
-            Time time=new Time(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_hour)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_minute)));
-            Time alert_time=new Time(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alert_hour)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alert_minute)));
+    public FullTask getFullTask(int task_id){
+        SQLiteDatabase db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+                DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.FULL_TYPE);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToNext())
+        {
+            Date date=new Date(cursor.getString(cursor.getColumnIndex(DB_Helper.task_date)));
+
+            Location location=locationDB.getLocationRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.loc_id)));
+
+            TimeSet timeSet=timesetDB.getTimesetRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
 
 
-            FullTask fullTask=new FullTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,location,cursor.getFloat(cursor.getColumnIndex(DB_Helper.task_location_range)),
-                    time,alert_time);
+            FullTask fullTask=new FullTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
+                    date,location,timeSet);
+            fullTask.setId(task_id);
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
                 fullTask.setAlerted(false);
@@ -190,21 +173,20 @@ public class TaskDB {
 
     public LocationTask getLocationTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.location_task_table,DB_Helper.task_id,task_id);
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+                DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.LOCATION_TYPE);
+
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
         {
-            Date date=new Date(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_day)),cursor.getInt(cursor.getColumnIndex(DB_Helper.task_month)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_year)));
+            Date date=new Date(cursor.getString(cursor.getColumnIndex(DB_Helper.task_date)));
 
-            Location location=new Location(cursor.getString(cursor.getColumnIndex(DB_Helper.task_location_name)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_latitude)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_longitude)));
+            Location location=locationDB.getLocationRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.loc_id)));
 
-
-            LocationTask locationTask=new LocationTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,location,cursor.getFloat(cursor.getColumnIndex(DB_Helper.task_location_range)));
+            LocationTask locationTask=new LocationTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
+                    date,location);
+            locationTask.setId(task_id);
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
                 locationTask.setAlerted(false);
@@ -233,26 +215,21 @@ public class TaskDB {
 
     public TimeTask getTimeTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+                DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.TIME_TYPE);
+
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
         {
-            Date date=new Date(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_day)),cursor.getInt(cursor.getColumnIndex(DB_Helper.task_month)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_year)));
+            Date date=new Date(cursor.getString(cursor.getColumnIndex(DB_Helper.task_date)));
 
-            Location location=new Location(cursor.getString(cursor.getColumnIndex(DB_Helper.task_location_name)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_latitude)),
-                    cursor.getDouble(cursor.getColumnIndex(DB_Helper.task_location_longitude)));
-
-            Time time=new Time(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_hour)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_minute)));
-            Time alert_time=new Time(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alert_hour)),
-                    cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alert_minute)));
+            TimeSet timeSet=timesetDB.getTimesetRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
 
 
-            TimeTask timeTask=new TimeTask(task_id,cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,time,alert_time);
+            TimeTask timeTask=new TimeTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
+                    date,timeSet);
+            timeTask.setId(task_id);
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
                 timeTask.setAlerted(false);
@@ -279,26 +256,73 @@ public class TaskDB {
         return null;
     }
 
+
+    public MessageTask getMessageTask(int task_id){
+        SQLiteDatabase db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+                DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.MESSAGE_TYPE);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToNext())
+        {
+            Date date=new Date(cursor.getString(cursor.getColumnIndex(DB_Helper.task_date)));
+
+            Message message=messageDB.getMessageRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.msg_id)));
+
+
+            MessageTask messageTask=new MessageTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
+                    date,message);
+            messageTask.setId(task_id);
+
+            if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
+                messageTask.setAlerted(false);
+            }
+            else {
+                messageTask.setAlerted(true);
+            }
+            if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_completed))==0){
+                messageTask.setCompleted(false);
+            }
+            else {
+                messageTask.setCompleted(true);
+            }
+            if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_repeat))==0){
+                messageTask.setRepeat(false);
+            }
+            else {
+                messageTask.setRepeat(true);
+            }
+
+            return messageTask;
+
+        }
+        return null;
+    }
+
     public ArrayList<Task> getAllTasks(Date date){
         ArrayList<Task> tasks=new ArrayList<>();
 
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s AND %s=%s AND %s=%s;",
+        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s ;",
                 DB_Helper.task_id,DB_Helper.task_type,DB_Helper.tasks_table,
-                DB_Helper.task_year,date.getYear(),DB_Helper.task_month,date.getMonth(),DB_Helper.task_day,date.getDay());
+                DB_Helper.task_date,date.toString());
 
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext())
         {
-            if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals("FULL")){
+            if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.FULL_TYPE)){
                 tasks.add(getFullTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
             }
-            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals("LOCATION")){
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.LOCATION_TYPE)){
                 tasks.add(getLocationTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
             }
-            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals("TIME")){
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.TIME_TYPE)){
                 tasks.add(getTimeTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.MESSAGE_TYPE)){
+                tasks.add(getMessageTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
             }
         }
 
@@ -343,12 +367,35 @@ public class TaskDB {
     }
 
 //      remove a task
-    public void removeTask(int task_id){
-        SQLiteDatabase db=db_helper.getWritableDatabase();
+    public boolean removeTask(int task_id){
+
+        SQLiteDatabase db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT %s,%s,%s,%s FROM %s WHERE %s=%s ;",
+                DB_Helper.task_type,DB_Helper.timeset_id,DB_Helper.loc_id,DB_Helper.msg_id,
+                DB_Helper.tasks_table,DB_Helper.task_id,task_id);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext())
+        {
+            if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.FULL_TYPE)){
+                timesetDB.deleteTimeRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
+                locationDB.deleteLocationRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.loc_id)));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.LOCATION_TYPE)){
+                locationDB.deleteLocationRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.loc_id)));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.TIME_TYPE)){
+                timesetDB.deleteTimeRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.MESSAGE_TYPE)){
+                messageDB.deleteMessageRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.msg_id)));
+            }
+        }
+
+        db=db_helper.getWritableDatabase();
         db.delete(DB_Helper.tasks_table,DB_Helper.task_id+"="+task_id,null);
-        db.delete(DB_Helper.full_task_table,DB_Helper.task_id+"="+task_id,null);
-        db.delete(DB_Helper.time_task_table,DB_Helper.task_id+"="+task_id,null);
-        db.delete(DB_Helper.location_task_table,DB_Helper.task_id+"="+task_id,null);
+        return true;
     }
 
 

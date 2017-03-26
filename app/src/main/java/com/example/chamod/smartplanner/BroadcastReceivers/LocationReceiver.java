@@ -1,22 +1,15 @@
 package com.example.chamod.smartplanner.BroadcastReceivers;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.LocationManager;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Handlers.NotificationHandler;
-import com.example.chamod.smartplanner.Models.FullTask;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.NotificationActivity;
-import com.example.chamod.smartplanner.R;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
 
 public class LocationReceiver extends BroadcastReceiver {
     TaskDB taskDB;

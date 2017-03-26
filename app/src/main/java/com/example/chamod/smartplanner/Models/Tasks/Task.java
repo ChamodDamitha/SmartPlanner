@@ -1,10 +1,12 @@
-package com.example.chamod.smartplanner.Models;
+package com.example.chamod.smartplanner.Models.Tasks;
+
+import com.example.chamod.smartplanner.Models.Date;
 
 /**
  * Created by chamod on 2/25/17.
  */
 
-public abstract class Task {
+public class Task {
     private int id;
     private String description;
     private Date date;
@@ -14,10 +16,13 @@ public abstract class Task {
 
     protected String type;
 
-    public Task(int id, String description, Date date) {
-        this.id = id;
+    public Task(String description, Date date) {
         this.description = description;
         this.date = date;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

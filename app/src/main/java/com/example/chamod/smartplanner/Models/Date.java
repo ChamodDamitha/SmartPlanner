@@ -19,6 +19,12 @@ public class Date implements Serializable{
         this.year = year;
     }
 
+//    2016-02-15
+    public Date(String date_string){
+
+
+    }
+
     public int getDay() {
         return day;
     }

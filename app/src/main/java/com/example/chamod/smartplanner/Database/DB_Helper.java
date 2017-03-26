@@ -20,7 +20,7 @@ public class DB_Helper extends SQLiteOpenHelper {
         return db_helper;
     }
 
-    public DB_Helper(Context context) {
+    private DB_Helper(Context context) {
         super(context, db_name, null, db_version);
     }
 

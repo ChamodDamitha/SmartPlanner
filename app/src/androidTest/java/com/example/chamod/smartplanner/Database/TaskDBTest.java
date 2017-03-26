@@ -3,12 +3,12 @@ package com.example.chamod.smartplanner.Database;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.chamod.smartplanner.Models.Date;
-import com.example.chamod.smartplanner.Models.FullTask;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
-import com.example.chamod.smartplanner.Models.LocationTask;
-import com.example.chamod.smartplanner.Models.Task;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Time;
-import com.example.chamod.smartplanner.Models.TimeTask;
+import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 
 import org.junit.Test;
 
