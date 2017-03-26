@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.FullTask;
@@ -39,7 +38,7 @@ public class TaskDB {
 
     public int getNextTaskId(){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT MAX(%s) as max_id FROM %s ;",DB_Helper.task_id,DB_Helper.task_table);
+        String query = String.format("SELECT MAX(%s) as max_id FROM %s ;",DB_Helper.task_id,DB_Helper.tasks_table);
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
@@ -137,13 +136,13 @@ public class TaskDB {
         }
         cv.put(DB_Helper.task_type,task.getType());
 
-        db.insert(DB_Helper.task_table,null,cv);
+        db.insert(DB_Helper.tasks_table,null,cv);
     }
 
 //      getting tasks
     public FullTask getFullTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.task_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
+        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
@@ -192,7 +191,7 @@ public class TaskDB {
 
     public LocationTask getLocationTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.task_table,DB_Helper.location_task_table,DB_Helper.task_id,task_id);
+        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.location_task_table,DB_Helper.task_id,task_id);
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
@@ -235,7 +234,7 @@ public class TaskDB {
 
     public TimeTask getTimeTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.task_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
+        String query = String.format("SELECT * FROM %s NATURAL JOIN %s WHERE %s=%s;",DB_Helper.tasks_table,DB_Helper.full_task_table,DB_Helper.task_id,task_id);
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToNext())
@@ -286,7 +285,7 @@ public class TaskDB {
 
         SQLiteDatabase db=db_helper.getReadableDatabase();
         String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s AND %s=%s AND %s=%s;",
-                DB_Helper.task_id,DB_Helper.task_type,DB_Helper.task_table,
+                DB_Helper.task_id,DB_Helper.task_type,DB_Helper.tasks_table,
                 DB_Helper.task_year,date.getYear(),DB_Helper.task_month,date.getMonth(),DB_Helper.task_day,date.getDay());
 
         Cursor cursor = db.rawQuery(query, null);
@@ -312,11 +311,11 @@ public class TaskDB {
         SQLiteDatabase db=db_helper.getWritableDatabase();
         if(alerted) {
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_alerted,1,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_alerted,1,DB_Helper.task_id,task_id));
         }
         else{
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_alerted,0,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_alerted,0,DB_Helper.task_id,task_id));
         }
     }
 
@@ -324,11 +323,11 @@ public class TaskDB {
         SQLiteDatabase db=db_helper.getWritableDatabase();
         if(completed) {
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_completed,1,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_completed,1,DB_Helper.task_id,task_id));
         }
         else{
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_completed,0,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_completed,0,DB_Helper.task_id,task_id));
         }
     }
 
@@ -336,18 +335,18 @@ public class TaskDB {
         SQLiteDatabase db=db_helper.getWritableDatabase();
         if(repeat) {
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_repeat,1,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_repeat,1,DB_Helper.task_id,task_id));
         }
         else{
             db.execSQL(String.format("UPDATE %s SET %s=%s WHERE %s=%s;",
-                    DB_Helper.task_table,DB_Helper.task_repeat,0,DB_Helper.task_id,task_id));
+                    DB_Helper.tasks_table,DB_Helper.task_repeat,0,DB_Helper.task_id,task_id));
         }
     }
 
 //      remove a task
     public void removeTask(int task_id){
         SQLiteDatabase db=db_helper.getWritableDatabase();
-        db.delete(DB_Helper.task_table,DB_Helper.task_id+"="+task_id,null);
+        db.delete(DB_Helper.tasks_table,DB_Helper.task_id+"="+task_id,null);
         db.delete(DB_Helper.full_task_table,DB_Helper.task_id+"="+task_id,null);
         db.delete(DB_Helper.time_task_table,DB_Helper.task_id+"="+task_id,null);
         db.delete(DB_Helper.location_task_table,DB_Helper.task_id+"="+task_id,null);
