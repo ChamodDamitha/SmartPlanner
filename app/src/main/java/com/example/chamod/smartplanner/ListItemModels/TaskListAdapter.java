@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +44,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         LayoutInflater layoutInflater=LayoutInflater.from(getContext());
         final View customView = layoutInflater.inflate(R.layout.task_list_item,parent,false);
 
+        ImageButton btnMore=(ImageButton) customView.findViewById(R.id.btnMore);
 
-        customView.setOnLongClickListener(new View.OnLongClickListener() {
+        btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 android.widget.PopupMenu popupMenu=new android.widget.PopupMenu(customView.getContext(),customView);
                 popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -68,10 +70,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                 popupMenu.inflate(R.menu.task_item_popup_menu);
                 popupMenu.show();
 
-                return true;
             }
         });
-
 
 
         TextView textViewTime=(TextView)customView.findViewById(R.id.textViewTime);

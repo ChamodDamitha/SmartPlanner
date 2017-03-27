@@ -10,14 +10,12 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+        android:layout_height="70dp"
+        android:weightSum="1"
+        android:layout_weight="0.04">
 
-        <ImageButton
-            android:layout_width="127dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/dot"
-            android:id="@+id/imageButton" />
+
+
 
         <LinearLayout
             android:orientation="vertical"
@@ -35,11 +33,12 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="213dp"
-            android:layout_height="59dp"
+            android:layout_width="193dp"
+            android:layout_height="match_parent"
             android:weightSum="1"
             android:layout_marginLeft="5dp"
-            >
+            android:layout_weight="0.55">
+
 
             <TextView
                 android:text="Meeting with X"
@@ -53,6 +52,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewLocation"
+                />
+
+            <ImageButton
+                android:layout_width="41dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/dot"
+                android:id="@+id/btnMore"
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:background="@null"
                 />
 
         </LinearLayout>
@@ -84,7 +93,7 @@
                 android:layout_alignParentRight="true"
                 android:tint="@color/common_google_signin_btn_text_light_disabled"
                 app:elevation="0dp"
-                android:layout_width="match_parent" /><![CDATA[
+                android:layout_width="wrap_content" /><![CDATA[
 
 
 
