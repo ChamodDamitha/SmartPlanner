@@ -206,6 +206,7 @@ public class TaskDB {
 
             Location location=locationDB.getLocationRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.loc_id)));
 
+
             LocationTask locationTask=new LocationTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
                     date,location);
             locationTask.setId(task_id);

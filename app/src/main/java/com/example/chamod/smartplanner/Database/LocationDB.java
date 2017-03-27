@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.Message;
@@ -80,6 +81,7 @@ public class LocationDB {
                     cursor.getFloat(cursor.getColumnIndex(DB_Helper.task_location_range)));
 
             location.setLoc_id(loc_id);
+            return location;
         }
         return null;
     }

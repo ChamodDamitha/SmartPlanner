@@ -1,5 +1,6 @@
 package com.example.chamod.smartplanner.Models.Tasks;
 
+import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Message;
 
@@ -13,6 +14,7 @@ public class MessageTask extends Task {
     public MessageTask(String description, Date date,Message message) {
         super(description, date);
         this.message=message;
+        this.type= Constants.MESSAGE_TYPE;
     }
 
     public Message getMessage() {

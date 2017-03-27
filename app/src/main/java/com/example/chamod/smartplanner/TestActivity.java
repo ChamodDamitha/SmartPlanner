@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Models.Date;
+import com.example.chamod.smartplanner.Models.Location;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeSet;
@@ -25,28 +27,20 @@ public class TestActivity extends AppCompatActivity {
 
         TaskDB taskDB= TaskDB.getInstance(this);
 
+
         Date date=new Date(26,2,2017);
-        Date alert_date=new Date(26,2,2017);
+        Location location=new Location("TestLocation",1.8962,45.1236,4.59f);
 
+        LocationTask locationTask=new LocationTask("Test Full Task",date,location);
 
-
-        Time task_time=new Time(14,37);
-        Time alert_time=new Time(11,30);
-        TimeSet timeSet=new TimeSet(alert_date,alert_time,task_time);
-
-
-        TimeTask timeTask=new TimeTask("Test Full Task",date,timeSet);
-
-        taskDB.addTimeTask(timeTask);
-
+        taskDB.addLocationTask(locationTask);
 
 //        check added task
 
-        TimeTask timeTask_back=taskDB.getTimeTask(timeTask.getId());
+        LocationTask locationTask_back=taskDB.getLocationTask(locationTask.getId());
 
-//        Toast.makeText(this,timeTask_back.getTimeSet().getTask_time().time_string,Toast.LENGTH_LONG).show();
 
-        Toast.makeText(this,Integer.valueOf("05")+"",Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,,Toast.LENGTH_LONG).show();
 
     }
 }
