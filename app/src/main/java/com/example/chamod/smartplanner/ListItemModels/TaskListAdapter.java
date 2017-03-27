@@ -5,12 +5,15 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
@@ -38,7 +41,38 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater=LayoutInflater.from(getContext());
-        View customView = layoutInflater.inflate(R.layout.task_list_item,parent,false);
+        final View customView = layoutInflater.inflate(R.layout.task_list_item,parent,false);
+
+
+        customView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                android.widget.PopupMenu popupMenu=new android.widget.PopupMenu(customView.getContext(),customView);
+                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id=item.getItemId();
+                        switch (id){
+                            case R.id.action_edit_task:
+                                Toast.makeText(customView.getContext(),"edit",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.action_repeat_task:
+                                Toast.makeText(customView.getContext(),"repeat",Toast.LENGTH_LONG).show();
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+
+                popupMenu.inflate(R.menu.task_item_popup_menu);
+                popupMenu.show();
+
+                return true;
+            }
+        });
+
+
 
         TextView textViewTime=(TextView)customView.findViewById(R.id.textViewTime);
         TextView textViewDescription=(TextView)customView.findViewById(R.id.textViewDescription);

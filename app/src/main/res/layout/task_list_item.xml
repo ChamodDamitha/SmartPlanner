@@ -13,6 +13,12 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
+        <ImageButton
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dot"
+            android:id="@+id/imageButton" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -37,15 +43,14 @@
 
             <TextView
                 android:text="Meeting with X"
-                android:layout_width="251dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewDescription"
-                android:textAppearance="@style/TextAppearance.CastMiniController.Title"
-                android:layout_weight="0.52" />
+                android:textAppearance="@style/TextAppearance.CastMiniController.Title" />
 
             <TextView
                 android:text="At Colombo"
-                android:layout_width="254dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewLocation"
                 />
@@ -66,7 +71,6 @@
                 android:id="@+id/textViewTime"
                 android:layout_weight="0.00"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored" />
-            />
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_height="wrap_content"
@@ -80,8 +84,16 @@
                 android:layout_alignParentRight="true"
                 android:tint="@color/common_google_signin_btn_text_light_disabled"
                 app:elevation="0dp"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent" /><![CDATA[
 
+
+
+
+            />
+
+
+
+        ]]>
         </LinearLayout>
 
     </LinearLayout>
