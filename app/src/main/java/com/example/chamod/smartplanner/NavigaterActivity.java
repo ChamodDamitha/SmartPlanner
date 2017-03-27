@@ -1,5 +1,8 @@
 package com.example.chamod.smartplanner;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,8 +22,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +54,8 @@ public class NavigaterActivity extends AppCompatActivity
 
     TaskHandler taskHandler;
 
+    LinearLayout floatingBtnPad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,8 @@ public class NavigaterActivity extends AppCompatActivity
 //      Start listening to task change event
         TaskEvent.getInstance().addNewTaskEventListner(this);
 
+
+        floatingBtnPad=(LinearLayout)findViewById(R.id.floatingBtnPad);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +299,7 @@ public class NavigaterActivity extends AppCompatActivity
                 case 1:
 //                    Toast.makeText(NavigaterActivity.this,"top",Toast.LENGTH_LONG).show();
                     calendarView.setVisibility(View.GONE);
-
+                    fadeInOutAnimation(floatingBtnPad,false);
                     return true;
                 case 2:
 //                    Toast.makeText(NavigaterActivity.this,"left",Toast.LENGTH_LONG).show();
@@ -296,12 +307,58 @@ public class NavigaterActivity extends AppCompatActivity
                 case 3:
 //                    Toast.makeText(NavigaterActivity.this,"down",Toast.LENGTH_LONG).show();
                     calendarView.setVisibility(View.VISIBLE);
+                    fadeInOutAnimation(floatingBtnPad,true);
                     return true;
                 case 4:
 //                    Toast.makeText(NavigaterActivity.this,"right",Toast.LENGTH_LONG).show();
                     return true;
             }
             return false;
+        }
+
+        private void fadeInOutAnimation(final View view, final boolean isFadeIn){
+            ObjectAnimator objectAnimator;
+            if(isFadeIn) {
+                objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+            }
+            else{
+                objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            }
+
+            objectAnimator.setDuration(1000);
+            final AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.play(objectAnimator);
+
+            animatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if(isFadeIn){
+                        view.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if(!isFadeIn){
+                        view.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+            animatorSet.start();
         }
 
         private int getSlope(float x1, float y1, float x2, float y2) {
