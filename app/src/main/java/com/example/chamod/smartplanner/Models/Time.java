@@ -8,13 +8,16 @@ public class Time {
     private int hour;
     private int minute;
 
+
     public Time(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
     }
 
     public Time(String time_string){
-
+        String[] times=time_string.trim().split(":");
+        this.hour=Integer.valueOf(times[0]);
+        this.minute=Integer.valueOf(times[1]);
     }
 
     public int get24Hour() {

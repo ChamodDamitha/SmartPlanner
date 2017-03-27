@@ -28,7 +28,7 @@ public class TimeHandler {
 
     public Time getAlertTime(Time time,long before_miliseconds){
 
-
+        return null;
     }
 
 }

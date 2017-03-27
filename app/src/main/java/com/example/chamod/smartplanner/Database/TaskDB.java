@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Models.Date;
@@ -64,21 +65,26 @@ public class TaskDB {
 
 //    adding tasks
     public boolean addFullTask(FullTask fullTask){
-        addTask(fullTask);
         timesetDB.addTimeRecord(fullTask.getTimeSet());
         locationDB.addLocationRecord(fullTask.getLocation());
+        addTask(fullTask);
         return true;
     }
 
     public boolean addLocationTask(LocationTask locationTask) {
-        addTask(locationTask);
         locationDB.addLocationRecord(locationTask.getLocation());
+        addTask(locationTask);
         return true;
     }
 
     public boolean addTimeTask(TimeTask timeTask){
-        addTask(timeTask);
         timesetDB.addTimeRecord(timeTask.getTimeSet());
+        addTask(timeTask);
+        return true;
+    }
+    public boolean addMessageTask(MessageTask messageTask){
+        messageDB.addMessageRecord(messageTask.getMessage());
+        addTask(messageTask);
         return true;
     }
 
@@ -109,6 +115,22 @@ public class TaskDB {
         }
         cv.put(DB_Helper.task_type,task.getType());
 
+
+        if(task.getType().equals(Constants.TIME_TYPE)){
+            cv.put(DB_Helper.timeset_id,((TimeTask)task).getTimeSet().getTimeset_id());
+        }
+        else if(task.getType().equals(Constants.LOCATION_TYPE)){
+            cv.put(DB_Helper.loc_id,((LocationTask)task).getLocation().getLoc_id());
+        }
+        else if(task.getType().equals(Constants.FULL_TYPE)){
+            FullTask fullTask=(FullTask)task;
+            cv.put(DB_Helper.loc_id,fullTask.getLocation().getLoc_id());
+            cv.put(DB_Helper.timeset_id,fullTask.getTimeSet().getTimeset_id());
+        }
+        else if(task.getType().equals(Constants.MESSAGE_TYPE)){
+            cv.put(DB_Helper.msg_id,((MessageTask)task).getMessage().getMsg_id());
+        }
+
         db.insert(DB_Helper.tasks_table,null,cv);
 
 //      set task_id
@@ -128,7 +150,7 @@ public class TaskDB {
 
     public FullTask getFullTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s='%s';",
                 DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.FULL_TYPE);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -173,7 +195,7 @@ public class TaskDB {
 
     public LocationTask getLocationTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s='%s';",
                 DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.LOCATION_TYPE);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -215,7 +237,7 @@ public class TaskDB {
 
     public TimeTask getTimeTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s='%s';",
                 DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.TIME_TYPE);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -259,7 +281,7 @@ public class TaskDB {
 
     public MessageTask getMessageTask(int task_id){
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s=%s;",
+        String query = String.format("SELECT * FROM %s WHERE %s=%s AND %s='%s';",
                 DB_Helper.tasks_table, DB_Helper.task_id,task_id,DB_Helper.task_type, Constants.MESSAGE_TYPE);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -304,7 +326,7 @@ public class TaskDB {
         ArrayList<Task> tasks=new ArrayList<>();
 
         SQLiteDatabase db=db_helper.getReadableDatabase();
-        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s ;",
+        String query = String.format("SELECT %s,%s FROM %s WHERE %s='%s' ;",
                 DB_Helper.task_id,DB_Helper.task_type,DB_Helper.tasks_table,
                 DB_Helper.task_date,date.toString());
 

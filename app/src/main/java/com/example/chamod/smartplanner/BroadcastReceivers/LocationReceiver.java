@@ -35,7 +35,7 @@ public class LocationReceiver extends BroadcastReceiver {
         }
         else if(task_type.equals("FULL")){
             FullTask fullTask=taskDB.getFullTask(task_id);
-            NotificationHandler.viewNotification(context,task_id,fullTask.getDescription() + "/n"+"on "+fullTask.getTime().getTimeString(),
+            NotificationHandler.viewNotification(context,task_id,fullTask.getDescription() + "/n"+"on "+fullTask.getTimeSet().getTask_time().getTimeString(),
                     "Arrived at "+fullTask.getLocation().getName());
         }
         taskDB.setTaskAlerted(task_id,true);

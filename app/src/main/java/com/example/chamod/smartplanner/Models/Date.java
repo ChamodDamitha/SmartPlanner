@@ -13,6 +13,7 @@ public class Date implements Serializable{
     private int year;
     private String monthOfyear;
 
+
     public Date(int day, int month, int year) {
         this.day = day;
         this.month = month;
@@ -21,8 +22,10 @@ public class Date implements Serializable{
 
 //    2016-02-15
     public Date(String date_string){
-
-
+        String[] dates=date_string.trim().split("-");
+        this.year=Integer.valueOf(dates[0]);
+        this.month=Integer.valueOf(dates[1]);
+        this.day=Integer.valueOf(dates[2]);
     }
 
     public int getDay() {

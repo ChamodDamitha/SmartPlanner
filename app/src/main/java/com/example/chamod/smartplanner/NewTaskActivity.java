@@ -25,6 +25,7 @@ import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.MyPlace;
 import com.example.chamod.smartplanner.Models.Time;
+import com.example.chamod.smartplanner.Models.TimeSet;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
@@ -54,7 +55,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 //    task model references
     Date date=null;
     Location location=null;
-    Time time=null,alert_time=null;
+    Time time=null;
+    long rem_before=0;
+    TimeSet timeSet=null;
 
     MyPlaceDB myPlaceDB;
 
@@ -147,7 +150,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 .setItems(myPlaces, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         MyPlace myPlace=myPlaces_list.get(which);
-                        setLocation(new Location(myPlace.getName(),myPlace.getLatitude(),myPlace.getLongitude()));
+                        setLocation(new Location(myPlace.getName(),myPlace.getLatitude(),myPlace.getLongitude(),
+                                Float.valueOf(txtRange.getText().toString())));
                     }
                 });
          builder.create().show();
@@ -169,20 +173,20 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         else {
             if (!checkBoxTime.isChecked()) {
                 //            Create a location task
-                task_type="LOCATION";
+                task_type=Constants.LOCATION_TYPE;
             }
             //        only time ticked
             else if (!checkBoxLocation.isChecked()) {
                 //            create a time task
-                task_type="TIME";
+                task_type=Constants.TIME_TYPE;
             }
             //        both time and location ticked
             else {
-                task_type="FULL";
+                task_type=Constants.FULL_TYPE;
             }
             if(isValidEntries()) {
                 boolean success=taskHandler.saveNewTask(task_type, txtDesc.getText().toString().trim(), date, location,
-                        Float.valueOf(txtRange.getText().toString().trim()), time, alert_time, checkBoxRepeatTask.isChecked());
+                        timeSet, checkBoxRepeatTask.isChecked());
                 if(success){
                     Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 
@@ -209,9 +213,6 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
             return false;
         } else if (checkBoxTime.isChecked() && time == null) {
             Toast.makeText(this, "Please select a time...!", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (checkBoxTime.isChecked() && alert_time == null) {
-            Toast.makeText(this, "Please select the alert time...!", Toast.LENGTH_SHORT).show();
             return false;
         }
         else{
@@ -269,7 +270,8 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 Place place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("MyPlace: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                setLocation(new Location(place.getName().toString(),place.getLatLng().latitude,place.getLatLng().longitude));
+                setLocation(new Location(place.getName().toString(),place.getLatLng().latitude,
+                        place.getLatLng().longitude,Float.valueOf(txtRange.getText().toString())));
             }
         }
     }
@@ -285,22 +287,32 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     @Override
     public void setTime(int hour, int min) {
         time=new Time(hour,min);
-//        need to replace logically
-        alert_time=new Time(hour,min);
-
+        setRem();
         textViewTime.setText(time.getTimeString());
     }
 
     @Override
     public void setDate(int year, int month, int day) {
         date=new Date(day,month,year);
-
+        setRem();
         textViewDate.setText(date.getDateString());
     }
 
 
     @Override
     public void setReminderBefore(long miliseconds) {
+        rem_before=miliseconds;
+        setRem();
+    }
 
+//    calculate alert date and time
+    private void setRem(){
+        if(date!=null && time!=null){
+            Date alert_date=date;
+            Time alert_time=time;
+
+//        need to replace
+            timeSet=new TimeSet(alert_date,alert_time,time);
+        }
     }
 }

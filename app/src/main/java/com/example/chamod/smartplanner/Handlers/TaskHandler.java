@@ -21,6 +21,7 @@ import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
+import com.example.chamod.smartplanner.Models.TimeSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,21 +49,21 @@ public class TaskHandler {
     }
 
     //..............Save a new task.....................................................................
-    public boolean saveNewTask(String type, String desc, Date date, Location location, float range,
-                               Time time, Time alert_time, boolean repeat) {
+    public boolean saveNewTask(String type, String desc, Date date, Location location,
+                               TimeSet timeSet, boolean repeat) {
         Task task;
         if (type.equals("LOCATION")) {
-            LocationTask locationTask = new LocationTask(taskDB.getNextTaskId(), desc, date, location, range);
+            LocationTask locationTask = new LocationTask(desc, date, location);
             locationTask.setRepeat(repeat);
             taskDB.addLocationTask(locationTask);
             task = locationTask;
         } else if (type.equals("TIME")) {
-            TimeTask timeTask = new TimeTask(taskDB.getNextTaskId(), desc, date, time, alert_time);
+            TimeTask timeTask = new TimeTask(desc, date, timeSet);
             timeTask.setRepeat(repeat);
             taskDB.addTimeTask(timeTask);
             task = timeTask;
         } else {
-            FullTask fullTask = new FullTask(taskDB.getNextTaskId(), desc, date, location, range, time, alert_time);
+            FullTask fullTask = new FullTask(desc, date, location, timeSet);
             fullTask.setRepeat(repeat);
             taskDB.addFullTask(fullTask);
             task = fullTask;
@@ -74,26 +75,26 @@ public class TaskHandler {
     private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
             LocationTask locationTask = (LocationTask) task;
-            setLocationAlarm(locationTask.getId(), locationTask.getType(), locationTask.getLocation(), locationTask.getRange());
+            setLocationAlarm(locationTask.getId(), locationTask.getType(), locationTask.getLocation());
 
         } else if (task.getType().equals("TIME")) {
             TimeTask timeTask = (TimeTask) task;
-            setTimeAlarm(timeTask.getId(), timeTask.getType(), timeTask.getDate(), timeTask.getAlert_time());
+            setTimeAlarm(timeTask.getId(), timeTask.getType(), timeTask.getTimeSet());
         } else {
             FullTask fullTask = (FullTask) task;
-            setTimeAlarm(fullTask.getId(), fullTask.getType(), fullTask.getDate(), fullTask.getAlert_time());
-            setLocationAlarm(fullTask.getId(), fullTask.getType(), fullTask.getLocation(), fullTask.getRange());
+            setTimeAlarm(fullTask.getId(), fullTask.getType(), fullTask.getTimeSet());
+            setLocationAlarm(fullTask.getId(), fullTask.getType(), fullTask.getLocation());
         }
     }
 
-    private void setTimeAlarm(int task_id, String task_type, Date date, Time alert_time) {
+    private void setTimeAlarm(int task_id, String task_type,TimeSet timeSet) {
         Calendar cal = Calendar.getInstance();
 
-        cal.set(Calendar.YEAR, date.getYear());
-        cal.set(Calendar.MONTH, date.getMonth() - 1);
-        cal.set(Calendar.DAY_OF_MONTH, date.getDay());
-        cal.set(Calendar.HOUR_OF_DAY, alert_time.get24Hour());
-        cal.set(Calendar.MINUTE, alert_time.getMinute());
+        cal.set(Calendar.YEAR, timeSet.getAlert_date().getYear());
+        cal.set(Calendar.MONTH, timeSet.getAlert_date().getMonth() - 1);
+        cal.set(Calendar.DAY_OF_MONTH, timeSet.getAlert_date().getDay());
+        cal.set(Calendar.HOUR_OF_DAY, timeSet.getAlert_time().get24Hour());
+        cal.set(Calendar.MINUTE, timeSet.getAlert_time().getMinute());
 
 
         Intent intent = new Intent(context, TaskReceiver.class);
@@ -110,7 +111,7 @@ public class TaskHandler {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
-    private void setLocationAlarm(int task_id, String task_type, Location location, float range) {
+    private void setLocationAlarm(int task_id, String task_type, Location location) {
 
         Intent intent = new Intent(Constants.ACTION_PROXIMITY_ALERT);
 
@@ -131,7 +132,7 @@ public class TaskHandler {
 
             return;
         }
-        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), range, -1, pendingIntent);
+        locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), location.getRange(), -1, pendingIntent);
     }
 
 

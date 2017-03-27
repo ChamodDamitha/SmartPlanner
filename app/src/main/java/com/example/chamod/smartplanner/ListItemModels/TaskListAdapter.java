@@ -52,7 +52,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         textViewDescription.setText(task.getDescription());
 
         if(task.getType().equals("TIME")){
-            textViewTime.setText(((TimeTask)task).getTime().getTimeString());
+            textViewTime.setText(((TimeTask)task).getTimeSet().getTask_time().getTimeString());
             textViewLocation.setText(null);
         }
         else if(task.getType().equals("LOCATION")){
@@ -61,7 +61,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         }
         else {
             FullTask fullTask=(FullTask)task;
-            textViewTime.setText(fullTask.getTime().getTimeString());
+            textViewTime.setText(fullTask.getTimeSet().getTask_time().getTimeString());
             textViewLocation.setText("At " + fullTask.getLocation().getName());
         }
 

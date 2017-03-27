@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Time;
@@ -71,6 +73,7 @@ public class TimesetDB {
         SQLiteDatabase db=db_helper.getReadableDatabase();
         String query = String.format("SELECT * FROM %s WHERE %s=%s;",DB_Helper.timeset_table,DB_Helper.timeset_id,timeset_id);
         Cursor cursor = db.rawQuery(query, null);
+
 
         if (cursor.moveToNext())
         {
