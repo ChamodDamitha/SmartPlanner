@@ -150,8 +150,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 .setItems(myPlaces, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         MyPlace myPlace=myPlaces_list.get(which);
-                        setLocation(new Location(myPlace.getName(),myPlace.getLatitude(),myPlace.getLongitude(),
-                                Float.valueOf(txtRange.getText().toString())));
+                        setLocation(myPlace.getName(), myPlace.getLatitude(), myPlace.getLongitude());
                     }
                 });
          builder.create().show();
@@ -268,10 +267,9 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("MyPlace: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                setLocation(new Location(place.getName().toString(),place.getLatLng().latitude,
-                        place.getLatLng().longitude,Float.valueOf(txtRange.getText().toString())));
+                setLocation(place.getName().toString(), place.getLatLng().latitude,
+                            place.getLatLng().longitude);
+
             }
         }
     }
@@ -279,8 +277,22 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     //Fragment listeners
 
-    private  void setLocation(Location location){
-        this.location=location;
+    private  void setLocation(String name,double latitude,double longitude){
+        float range;
+
+        try{
+            range=Float.valueOf(txtRange.getText().toString().trim());
+            if(range<1){
+                range=1;
+                txtRange.setText(range+"");
+            }
+        }
+        catch (NumberFormatException e){
+            range=1;
+            txtRange.setText(range+"");
+        }
+
+        this.location=new Location(name,latitude,longitude,range);
         textViewLocation.setText(location.getName());
     }
 

@@ -345,7 +345,7 @@
                             android:ems="10"
                             android:id="@+id/editTextRange"
                             android:gravity="center"
-                            />
+                            android:text="1" />
 
                     </LinearLayout>
 
