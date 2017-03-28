@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    >
+
+    <TextView
+        android:text="MONDAY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDay"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:background="@color/colorLightGray"
+        android:padding="2dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:padding="5dp"
+        >
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="193dp"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.97">
+
+
+            <TextView
+                android:text="Meeting with X"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDescription"
+                android:textAppearance="@style/TextAppearance.CastMiniController.Title"
+                android:layout_weight="0.84"
+                />
+
+            <TextView
+                android:text="At Colombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewLocation"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.29">
+
+
+            <TextView
+                android:text="3.00 PM"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewTime"
+                android:layout_weight="0.00"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/cross"
+                android:id="@+id/btnCancelRepeat"
+                android:layout_weight="0.00"
+                app:backgroundTint="@android:color/white"
+                app:elevation="0dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

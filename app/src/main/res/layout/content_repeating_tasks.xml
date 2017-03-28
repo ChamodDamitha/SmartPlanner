@@ -25,8 +25,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:id="@+id/ListViewRepeatingTasks"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10sp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"
             android:layout_weight="0.99" />
     </LinearLayout>
 

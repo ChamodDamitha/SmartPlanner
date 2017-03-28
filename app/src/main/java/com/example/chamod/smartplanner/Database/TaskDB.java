@@ -351,6 +351,37 @@ public class TaskDB {
 
         return tasks;
     }
+//    get all repeating tasks
+    public  ArrayList<Task> getAllRepeatingTasks(){
+        ArrayList<Task> tasks=new ArrayList<>();
+
+        SQLiteDatabase db=db_helper.getReadableDatabase();
+        String query = String.format("SELECT %s,%s FROM %s WHERE %s=%s ;",
+                DB_Helper.task_id,DB_Helper.task_type,DB_Helper.tasks_table,
+                DB_Helper.task_repeat,1);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext())
+        {
+            if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.FULL_TYPE)){
+                tasks.add(getFullTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.LOCATION_TYPE)){
+                tasks.add(getLocationTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.TIME_TYPE)){
+                tasks.add(getTimeTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+            else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.MESSAGE_TYPE)){
+                tasks.add(getMessageTask(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_id))));
+            }
+        }
+
+        return tasks;
+    }
+
+
 
 //      setting task states
     public void setTaskAlerted(int task_id,boolean alerted){

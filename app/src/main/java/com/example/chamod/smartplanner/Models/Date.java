@@ -48,6 +48,14 @@ public class Date implements Serializable{
         return days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1];
     }
 
+    public String getFullDayOfWeek() {
+        String[] days={"MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"};
+
+        GregorianCalendar gregorianCalendar=new GregorianCalendar(year,month-1,day-1);
+
+        return days[gregorianCalendar.get(gregorianCalendar.DAY_OF_WEEK)-1];
+    }
+
     public String getMonthOfYear(){
         String[] months={"JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"};
         monthOfyear=months[month-1];

@@ -14,6 +14,7 @@ import com.example.chamod.smartplanner.BroadcastReceivers.TaskReceiver;
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
+import com.example.chamod.smartplanner.ListItemModels.RepeatTaskItem;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
@@ -146,6 +147,100 @@ public class TaskHandler {
         }
         return scheduled_tasks;
     }
+
+//    .............get All repeat tasks.............................................................
+    public RepeatTaskItem[] getAllRepeatTasks(){
+        ArrayList<Task> tasks = taskDB.getAllRepeatingTasks();
+
+        ArrayList<RepeatTaskItem> m_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> t_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> w_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> th_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> f_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> s_tasks = new ArrayList<>();
+        ArrayList<RepeatTaskItem> su_tasks = new ArrayList<>();
+
+        for(Task task:tasks){
+            if(task.getDate().getDayOfWeek().equals("MON")){
+                m_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("TUE")){
+                t_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("WED")){
+                w_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("THU")){
+                th_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("FRI")){
+                f_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("SAT")){
+                s_tasks.add(new RepeatTaskItem(task));
+            }
+            else if(task.getDate().getDayOfWeek().equals("SUN")){
+                su_tasks.add(new RepeatTaskItem(task));
+            }
+        }
+
+        if(m_tasks.size()>0){
+            m_tasks.get(0).setFirstItem(true);
+        }
+        if(t_tasks.size()>0){
+            t_tasks.get(0).setFirstItem(true);
+        }
+        if(w_tasks.size()>0){
+            w_tasks.get(0).setFirstItem(true);
+        }
+        if(th_tasks.size()>0){
+            th_tasks.get(0).setFirstItem(true);
+        }
+        if(f_tasks.size()>0){
+            f_tasks.get(0).setFirstItem(true);
+        }
+        if(s_tasks.size()>0){
+            s_tasks.get(0).setFirstItem(true);
+        }
+        if(su_tasks.size()>0){
+            su_tasks.get(0).setFirstItem(true);
+        }
+
+        RepeatTaskItem[] repeatTaskItems=new RepeatTaskItem[tasks.size()];
+
+        int i=0;
+
+        for (RepeatTaskItem r:m_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:t_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:w_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:th_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:f_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:s_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        for (RepeatTaskItem r:su_tasks) {
+            repeatTaskItems[i]=r;
+            i++;
+        }
+        return repeatTaskItems;
+    }
+
 
     //...................Complete a task................................................................
     public void completeTask(int task_id, boolean complete) {
