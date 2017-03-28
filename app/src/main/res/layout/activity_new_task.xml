@@ -55,13 +55,13 @@
         </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="445dp">
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                >
+                android:weightSum="1">
 
                 <CheckBox
                     android:text="Schedule for every week"
@@ -152,22 +152,20 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="152dp"
                     android:onClick="dateClicked"
                     android:background="@android:color/background_light"
-                    android:layout_margin="2dp">
-
-                    <ImageView
-                        android:layout_height="46dp"
-                        android:id="@+id/imageView7"
-                        android:padding="5dp"
-                        android:layout_width="46dp"
-                        android:src="@drawable/date" />
+                    android:layout_margin="2dp"
+                    android:id="@+id/time_pad">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:background="@color/colorLightGreen"
+                        >
 
                         <TextView
                             android:text="DATE"
@@ -175,10 +173,15 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/textView"
                             android:padding="1dp"
+                            android:gravity="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
 
-                        />
-
+                        <ImageView
+                            android:layout_height="84dp"
+                            android:id="@+id/imageView7"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:src="@drawable/date" />
                         <TextView
                             android:text="FRI, 10 FEB 2017"
                             android:layout_width="match_parent"
@@ -187,178 +190,167 @@
                             android:padding="2dp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
+                            android:gravity="center"
                             ></TextView>
                     </LinearLayout>
 
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/background_light"
-                    android:layout_margin="2dp">
-
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:onClick="TimeClicked"
-
-                        android:id="@+id/time_pad"
+                        android:background="@color/wallet_highlighted_text_holo_light"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:onClick="timeClicked"
                         >
 
+                        <TextView
+                            android:text="TIME"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView10"
+                            android:padding="1dp"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+
                         <ImageView
-                            android:layout_width="46dp"
-                            android:layout_height="46dp"
-                            android:id="@+id/imageView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:id="@+id/imageView11"
                             android:adjustViewBounds="false"
                             android:cropToPadding="false"
                             android:padding="10dp"
                             android:src="@drawable/time" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:id="@+id/textViewTime"
+                            android:padding="2dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center"
+                            android:text="12.00 PM" />
 
-                            <TextView
-                                android:text="TIME"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/textView2"
-                                android:padding="1dp"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
-
-
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:id="@+id/textViewTime"
-                                android:padding="2dp"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentEnd="true"
-                                />
-
-
-
-                        </LinearLayout>
+                        <TextView
+                            android:text="on time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewRem"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                            android:paddingLeft="45dp"
+                            android:onClick="viewReminderClicked"
+                            />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:text="on time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textViewRem"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                        android:paddingLeft="45dp"
-                        android:onClick="viewReminderClicked"
-                        />
-
                 </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/locationPAd">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="locationClicked"
+                    android:layout_height="152dp"
                     android:background="@android:color/background_light"
                     android:layout_margin="2dp"
-                    >
-
-                    <ImageView
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:src="@drawable/location"
-                        android:id="@+id/imageView4"
-                        android:padding="10dp"
-                        />
+                    android:id="@+id/locationPad"
+                    android:layout_weight="1.38">
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="19.69">
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:background="@color/colorLightBrown"
+                        >
 
                         <TextView
                             android:text="LOCATION"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView3"
-                            android:padding="2dp"
+                            android:padding="1dp"
+                            android:gravity="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
 
-                        />
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="93dp">
+
+                            <ImageView
+                                android:layout_height="84dp"
+                                android:id="@+id/imageView9"
+                                android:padding="5dp"
+                                android:layout_width="143dp"
+                                android:src="@drawable/location"
+                                android:layout_weight="1"
+                                android:onClick="locationClicked"
+                                />
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:layout_width="match_parent"
+                                android:layout_height="82dp"
+                                android:clickable="true"
+                                app:fabSize="mini"
+                                app:srcCompat="@android:drawable/ic_dialog_map"
+                                android:id="@+id/floatingActionButton"
+                                app:backgroundTint="@android:color/black"
+                                android:onClick="showMyPlaces"
+                                />
+                        </LinearLayout>
 
                         <TextView
+                            android:text="MATARA"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:id="@+id/textViewLocation"
-                            android:padding="1dp"
+                            android:padding="2dp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
-                            />
-
-
+                            android:gravity="center"
+                            ></TextView>
                     </LinearLayout>
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        app:fabSize="mini"
-                        app:srcCompat="@android:drawable/ic_dialog_map"
-                        android:id="@+id/btnMyPlaces"
-                        android:layout_weight="1"
-                        android:onClick="showMyPlaces"
-                        />
-
-                </LinearLayout>
-
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dp"-->
-                    <!--android:background="@android:color/darker_gray"-->
-                    <!--android:layout_marginBottom="10dp"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--/>-->
 
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
-                        >
+                        android:background="@android:color/darker_gray"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:weightSum="1">
 
                         <TextView
-                            android:text="Range (in metres) :"
+                            android:text="RANGE"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView5"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                            android:layout_weight="1" />
+                            android:id="@+id/textView2"
+                            android:padding="1dp"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="73dp"
+                            android:id="@+id/imageView5"
+                            android:adjustViewBounds="false"
+                            android:cropToPadding="false"
+                            android:src="@drawable/range" />
 
                         <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:ems="10"
-                        android:id="@+id/editTextRange"
-                        android:hint="Enter the range (in metres)"
-                            android:text="1"
-                            android:layout_weight="1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:hint="(in metres)"
+                            android:ems="10"
+                            android:id="@+id/editTextRange"
+                            android:gravity="center"
+                            />
+
                     </LinearLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

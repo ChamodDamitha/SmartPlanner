@@ -84,7 +84,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
 
         timePad=(LinearLayout)findViewById(R.id.time_pad);
-        locationPAd=(LinearLayout)findViewById(R.id.locationPAd);
+        locationPAd=(LinearLayout)findViewById(R.id.locationPad);
 //        set check boxes
         checkBoxTime=(CheckBox)findViewById(R.id.checkBoxTime);
         checkBoxLocation=(CheckBox)findViewById(R.id.checkBoxLocation);
@@ -232,7 +232,7 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
     }
 
 //    Dialog Fragment showing
-    public void TimeClicked(View v){
+    public void timeClicked(View v){
          timeFragemt = new TimeFragment();
         // Show DialogFragment
         timeFragemt.show(fm,"TimeFragment");

@@ -151,6 +151,10 @@ public class TaskHandler {
     public void completeTask(int task_id, boolean complete) {
         taskDB.setTaskCompleted(task_id, complete);
     }
+    //...................Repeat a task................................................................
+    public void setRepeatTask(int task_id, boolean repeat) {
+        taskDB.setTaskRepeat(task_id, repeat);
+    }
 
     //..................Remove a scheduled task...................................................................
     public boolean removeTask(Task task) {

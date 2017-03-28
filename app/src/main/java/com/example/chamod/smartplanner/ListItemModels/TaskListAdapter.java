@@ -46,34 +46,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         ImageButton btnMore=(ImageButton) customView.findViewById(R.id.btnMore);
 
-        btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                android.widget.PopupMenu popupMenu=new android.widget.PopupMenu(customView.getContext(),customView);
-                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int id=item.getItemId();
-                        switch (id){
-                            case R.id.action_edit_task:
-                                Toast.makeText(customView.getContext(),"edit",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.action_repeat_task:
-                                Toast.makeText(customView.getContext(),"repeat",Toast.LENGTH_LONG).show();
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-
-                popupMenu.inflate(R.menu.task_item_popup_menu);
-                popupMenu.show();
-
-            }
-        });
-
-
         TextView textViewTime=(TextView)customView.findViewById(R.id.textViewTime);
         TextView textViewDescription=(TextView)customView.findViewById(R.id.textViewDescription);
         TextView textViewLocation=(TextView)customView.findViewById(R.id.textViewLocation);
@@ -109,7 +81,37 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
            }
         }
 
+//      More button functionality
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.widget.PopupMenu popupMenu=new android.widget.PopupMenu(customView.getContext(),customView);
+                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id=item.getItemId();
+                        switch (id){
+                            case R.id.action_edit_task:
+                                Toast.makeText(customView.getContext(),"edit",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.action_repeat_task:
+                                taskHandler.setRepeatTask(task.getId(),true);
+                                Toast.makeText(customView.getContext(),"Task scheduled for every week",Toast.LENGTH_LONG).show();
+                                break;
+                        }
 
+                        return true;
+                    }
+                });
+
+                popupMenu.inflate(R.menu.task_item_popup_menu);
+                popupMenu.show();
+
+            }
+        });
+
+
+//      delete button functionality
         btnDelTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
