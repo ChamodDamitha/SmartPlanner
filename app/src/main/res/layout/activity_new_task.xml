@@ -300,7 +300,6 @@
                         </LinearLayout>
 
                         <TextView
-                            android:text="MATARA"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:id="@+id/textViewLocation"
@@ -345,7 +344,7 @@
                             android:ems="10"
                             android:id="@+id/editTextRange"
                             android:gravity="center"
-                            android:text="1" />
+                            android:text="1.0" />
 
                     </LinearLayout>
 
