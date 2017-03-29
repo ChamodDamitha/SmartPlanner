@@ -2,11 +2,13 @@ package com.example.chamod.smartplanner.ListItemModels;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
+import com.example.chamod.smartplanner.NewTaskActivity;
 import com.example.chamod.smartplanner.R;
 
 /**
@@ -92,7 +95,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                         int id=item.getItemId();
                         switch (id){
                             case R.id.action_edit_task:
-                                Toast.makeText(customView.getContext(),"edit",Toast.LENGTH_LONG).show();
+                                Intent i=new Intent(context, NewTaskActivity.class);
+                                i.putExtra("task_id",task.getId());
+                                i.putExtra("task_type",task.getType());
+
+                                context.startActivity(i);
                                 break;
                             case R.id.action_repeat_task:
                                 taskHandler.setRepeatTask(task.getId(),true);
@@ -104,7 +111,12 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                     }
                 });
 
-                popupMenu.inflate(R.menu.task_item_popup_menu);
+                if(task.isAlerted()){
+                    popupMenu.inflate(R.menu.alerted_task_popup_menu);
+                }
+                else {
+                    popupMenu.inflate(R.menu.task_item_popup_menu);
+                }
                 popupMenu.show();
 
             }

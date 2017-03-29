@@ -73,6 +73,49 @@ public class TaskHandler {
         return true;
     }
 
+//    ................Update a task.................................................................
+public boolean updateTask(int task_id,String type, String desc, Date date, Location location,
+                           TimeSet timeSet, boolean repeat) {
+    Task task;
+    if (type.equals("LOCATION")) {
+        LocationTask templocationTask=taskDB.getLocationTask(task_id);
+
+        LocationTask locationTask = new LocationTask(desc, date, location);
+        locationTask.setId(task_id);
+        locationTask.setRepeat(repeat);
+        locationTask.getLocation().setLoc_id(templocationTask.getLocation().getLoc_id());
+
+        taskDB.updateLocationTask(locationTask);
+        task = locationTask;
+    } else if (type.equals("TIME")) {
+        TimeTask tempTimeTask=taskDB.getTimeTask(task_id);
+
+        TimeTask timeTask = new TimeTask(desc, date, timeSet);
+        timeTask.setId(task_id);
+        timeTask.setRepeat(repeat);
+        timeTask.getTimeSet().setTimeset_id(tempTimeTask.getTimeSet().getTimeset_id());
+        taskDB.updateTimeTask(timeTask);
+        task = timeTask;
+    } else {
+        FullTask tempFullTask=taskDB.getFullTask(task_id);
+
+        FullTask fullTask = new FullTask(desc, date, location, timeSet);
+        fullTask.setId(task_id);
+        fullTask.setRepeat(repeat);
+        fullTask.getLocation().setLoc_id(tempFullTask.getLocation().getLoc_id());
+        fullTask.getTimeSet().setTimeset_id(tempFullTask.getTimeSet().getTimeset_id());
+        taskDB.updateFullTask(fullTask);
+        task = fullTask;
+    }
+//    cancel previous alarms
+    cancelLocationAlarm(task_id);
+    cancelTimeAlarm(task_id);
+//    set new alarm
+    setTaskAlarm(task);
+    return true;
+}
+
+
     private void setTaskAlarm(Task task) {
         if (task.getType().equals("LOCATION")) {
             LocationTask locationTask = (LocationTask) task;
@@ -239,6 +282,20 @@ public class TaskHandler {
             i++;
         }
         return repeatTaskItems;
+    }
+
+//    .............get a task.......................................................................
+    public Task getTask(int task_id,String type){
+        if(type.equals(Constants.LOCATION_TYPE)){
+            return taskDB.getLocationTask(task_id);
+        }
+        if(type.equals(Constants.TIME_TYPE)){
+            return taskDB.getTimeTask(task_id);
+        }
+        if(type.equals(Constants.FULL_TYPE)){
+            return taskDB.getFullTask(task_id);
+        }
+        return null;
     }
 
 

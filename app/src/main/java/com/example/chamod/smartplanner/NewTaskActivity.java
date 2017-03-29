@@ -24,6 +24,10 @@ import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.MyPlace;
+import com.example.chamod.smartplanner.Models.Tasks.FullTask;
+import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.Task;
+import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.TimeSet;
 import com.google.android.gms.location.places.Place;
@@ -52,7 +56,10 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
     FragmentManager fm = getSupportFragmentManager();
 
+
 //    task model references
+    int task_id=-1;
+
     Date date=null;
     Location location=null;
     Time time=null;
@@ -129,10 +136,57 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
 
         textViewDate.setText(date.getDateString());
 
+//        set received intent variables
+        task_id=getIntent().getIntExtra("task_id",-1);
+        if(task_id!=-1){
+            setInitialData(task_id,getIntent().getStringExtra("task_type"));
+        }
 
     }
 
 
+    private void setInitialData(int task_id,String type){
+        Task task=taskHandler.getTask(task_id, type);
+
+        txtDesc.setText(task.getDescription());
+
+        if(task.getType().equals(Constants.FULL_TYPE)){
+            FullTask fullTask=(FullTask)task;
+
+            location=fullTask.getLocation();
+            textViewLocation.setText(location.getName());
+            txtRange.setText(location.getRange()+"");
+
+            time=fullTask.getTimeSet().getTask_time();
+            textViewTime.setText(time.getTimeString());
+
+            checkBoxTime.setChecked(true);
+            checkBoxLocation.setChecked(true);
+        }
+        else if(task.getType().equals(Constants.LOCATION_TYPE)){
+            LocationTask locationTask=(LocationTask) task;
+            location=locationTask.getLocation();
+            textViewLocation.setText(location.getName());
+            txtRange.setText(location.getRange()+"");
+
+            checkBoxTime.setChecked(false);
+            checkBoxLocation.setChecked(true);
+            timePad.setVisibility(View.GONE);
+        }
+        else if(task.getType().equals(Constants.TIME_TYPE)){
+            TimeTask timeTask=(TimeTask) task;
+            time=timeTask.getTimeSet().getTask_time();
+            textViewTime.setText(time.getTimeString());
+
+            checkBoxTime.setChecked(true);
+            checkBoxLocation.setChecked(false);
+            locationPAd.setVisibility(View.GONE);
+        }
+        date=task.getDate();
+        textViewDate.setText(date.getDateString());
+
+        checkBoxRepeatTask.setChecked(task.isRepeat());
+    }
 
 
 
@@ -184,8 +238,15 @@ public class NewTaskActivity extends FragmentActivity implements TimeFragment.Ti
                 task_type=Constants.FULL_TYPE;
             }
             if(isValidEntries()) {
-                boolean success=taskHandler.saveNewTask(task_type, txtDesc.getText().toString().trim(), date, location,
-                        timeSet, checkBoxRepeatTask.isChecked());
+                boolean success;
+                if(task_id==-1) {
+                    success = taskHandler.saveNewTask(task_type, txtDesc.getText().toString().trim(), date, location,
+                            timeSet, checkBoxRepeatTask.isChecked());
+                }
+                else{
+                    success=taskHandler.updateTask(task_id,task_type, txtDesc.getText().toString().trim(), date, location,
+                            timeSet, checkBoxRepeatTask.isChecked());
+                }
                 if(success){
                     Toast.makeText(this, "ALARM SET ...", Toast.LENGTH_LONG).show();
 

@@ -146,6 +146,80 @@ public class TaskDB {
         return false;
     }
 
+//    updating tasks
+    public boolean updateFullTask(FullTask fullTask){
+        timesetDB.updateTimesetRecord(fullTask.getTimeSet());
+        locationDB.updateLocationRecord(fullTask.getLocation());
+        updateTask(fullTask);
+        return true;
+    }
+
+    public boolean updateLocationTask(LocationTask locationTask) {
+        locationDB.updateLocationRecord(locationTask.getLocation());
+        updateTask(locationTask);
+        return true;
+    }
+
+    public boolean updateTimeTask(TimeTask timeTask){
+        timesetDB.updateTimesetRecord(timeTask.getTimeSet());
+        updateTask(timeTask);
+        return true;
+    }
+    public boolean updateMessageTask(MessageTask messageTask){
+        messageDB.updateMessageRecord(messageTask.getMessage());
+        updateTask(messageTask);
+        return true;
+    }
+
+    public boolean updateTask(Task task){
+        SQLiteDatabase db=db_helper.getWritableDatabase();
+
+        ContentValues cv=new ContentValues();
+        cv.put(DB_Helper.task_description,task.getDescription());
+        cv.put(DB_Helper.task_date,task.getDate().toString());
+
+        if(task.isAlerted()) {
+            cv.put(DB_Helper.task_alerted, 1);
+        }
+        else {
+            cv.put(DB_Helper.task_alerted, 0);
+        }
+        if(task.isCompleted()) {
+            cv.put(DB_Helper.task_completed, 1);
+        }
+        else {
+            cv.put(DB_Helper.task_completed, 0);
+        }
+        if(task.isRepeat()) {
+            cv.put(DB_Helper.task_repeat, 1);
+        }
+        else {
+            cv.put(DB_Helper.task_repeat, 0);
+        }
+        cv.put(DB_Helper.task_type,task.getType());
+
+
+        if(task.getType().equals(Constants.TIME_TYPE)){
+            cv.put(DB_Helper.timeset_id,((TimeTask)task).getTimeSet().getTimeset_id());
+        }
+        else if(task.getType().equals(Constants.LOCATION_TYPE)){
+            cv.put(DB_Helper.loc_id,((LocationTask)task).getLocation().getLoc_id());
+        }
+        else if(task.getType().equals(Constants.FULL_TYPE)){
+            FullTask fullTask=(FullTask)task;
+            cv.put(DB_Helper.loc_id,fullTask.getLocation().getLoc_id());
+            cv.put(DB_Helper.timeset_id,fullTask.getTimeSet().getTimeset_id());
+        }
+        else if(task.getType().equals(Constants.MESSAGE_TYPE)){
+            cv.put(DB_Helper.msg_id,((MessageTask)task).getMessage().getMsg_id());
+        }
+
+        db.update(DB_Helper.tasks_table,cv,DB_Helper.task_id+"="+task.getId(),null);
+
+        return true;
+    }
+
+
 //      getting tasks
 
     public FullTask getFullTask(int task_id){
