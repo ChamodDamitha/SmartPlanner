@@ -220,18 +220,15 @@ public class NavigaterActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_my_places) {
+            Intent i=new Intent(this,MyPlacesActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_repeating_tasks) {
+            Intent i=new Intent(this,RepeatingTasksActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_find_route) {
+            Intent i=new Intent(this,MapsActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

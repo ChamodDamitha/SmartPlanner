@@ -19,35 +19,36 @@ public class LocationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context,"Loc Receiver works",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Loc Receiver works", Toast.LENGTH_SHORT).show();
 
 
-        taskDB=TaskDB.getInstance(context);
+        taskDB = TaskDB.getInstance(context);
 
-        final boolean entering=intent.getBooleanExtra(LocationManager.KEY_PROXIMITY_ENTERING,false);
+        final boolean entering = intent.getBooleanExtra(LocationManager.KEY_PROXIMITY_ENTERING, false);
 
-        int task_id=intent.getIntExtra("task_id",-1);
-        String task_type=intent.getStringExtra("task_type");
+        int task_id = intent.getIntExtra("task_id", -1);
+        String task_type = intent.getStringExtra("task_type");
 
-        if(task_type.equals("LOCATION")){
-            LocationTask locationTask=taskDB.getLocationTask(task_id);
-            NotificationHandler.viewNotification(context,task_id,locationTask.getDescription(),"Arrived at "+locationTask.getLocation().getName());
-        }
-        else if(task_type.equals("FULL")){
-            FullTask fullTask=taskDB.getFullTask(task_id);
-            NotificationHandler.viewNotification(context,task_id,fullTask.getDescription() + "/n"+"on "+fullTask.getTimeSet().getTask_time().getTimeString(),
-                    "Arrived at "+fullTask.getLocation().getName());
-        }
-        taskDB.setTaskAlerted(task_id,true);
+        if (task_type != null) {
+
+            if (task_type.equals("LOCATION")) {
+                LocationTask locationTask = taskDB.getLocationTask(task_id);
+                NotificationHandler.viewNotification(context, task_id, locationTask.getDescription(), "Arrived at " + locationTask.getLocation().getName());
+            } else if (task_type.equals("FULL")) {
+                FullTask fullTask = taskDB.getFullTask(task_id);
+                NotificationHandler.viewNotification(context, task_id, fullTask.getDescription() + "/n" + "on " + fullTask.getTimeSet().getTask_time().getTimeString(),
+                        "Arrived at " + fullTask.getLocation().getName());
+            }
+            taskDB.setTaskAlerted(task_id, true);
 
 //................Check entering or leaving
-        if (entering){
+            if (entering) {
 
-        }
-        else{
+            } else {
+
+            }
 
         }
     }
-
 
 }

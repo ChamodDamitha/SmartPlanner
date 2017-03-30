@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/cross"
+                app:srcCompat="@drawable/delete"
                 android:id="@+id/btnCancelRepeat"
                 android:layout_weight="0.00"
                 app:backgroundTint="@android:color/white"
