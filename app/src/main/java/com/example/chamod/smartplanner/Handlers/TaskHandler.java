@@ -317,6 +317,12 @@ public boolean updateTask(int task_id,String type, String desc, Date date, Locat
         return true;
     }
 
+//    .........................Cancel Alarm..................................................
+    public void cancelTaskAlarm(int task_id){
+        cancelLocationAlarm(task_id);
+        cancelTimeAlarm(task_id);
+    }
+
     //................Cancel Time alarm
     private void cancelTimeAlarm(int task_id) {
         Intent intent = new Intent(context, TaskReceiver.class);
@@ -326,7 +332,7 @@ public boolean updateTask(int task_id,String type, String desc, Date date, Locat
     }
 
     //................Cancel Location Alarm.
-    public void cancelLocationAlarm(int task_id) {
+    private void cancelLocationAlarm(int task_id) {
 
         Intent intent = new Intent(Constants.ACTION_PROXIMITY_ALERT);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task_id, intent, 0);

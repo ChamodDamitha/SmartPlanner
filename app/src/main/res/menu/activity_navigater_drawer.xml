@@ -14,6 +14,10 @@
             android:id="@+id/nav_find_route"
             android:icon="@drawable/range"
             android:title="Find Route" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/note"
+            android:title="Reports" />
     </group>
 
     <!--<item android:title="Communicate">-->

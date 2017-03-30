@@ -8,25 +8,28 @@ import android.widget.Toast;
 
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Handlers.NotificationHandler;
+import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
 
 public class LocationReceiver extends BroadcastReceiver {
     TaskDB taskDB;
+    TaskHandler taskHandler;
     public LocationReceiver() {
 
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Loc Receiver works", Toast.LENGTH_SHORT).show();
 
+        taskHandler=TaskHandler.getInstance(context);
 
         taskDB = TaskDB.getInstance(context);
 
         final boolean entering = intent.getBooleanExtra(LocationManager.KEY_PROXIMITY_ENTERING, false);
 
         int task_id = intent.getIntExtra("task_id", -1);
+        Toast.makeText(context, "Loc Receiver works", Toast.LENGTH_SHORT).show();
         String task_type = intent.getStringExtra("task_type");
 
         if (task_type != null) {

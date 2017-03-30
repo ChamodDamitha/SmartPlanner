@@ -25,6 +25,86 @@ import static org.junit.Assert.*;
  * Created by chamod on 2/26/17.
  */
 public class TaskDBTest {
+    @Test
+    public void updateFullTask() throws Exception {
+        taskDB=TaskDB.getInstance(InstrumentationRegistry.getTargetContext());
+
+
+        Date date=new Date(26,2,2017);
+        Date alert_date=new Date(2,12,2018);
+        Location location=new Location("TestLocation",1.8962,45.1236,1.5f);
+        Time time=new Time(14,37);
+        Time alert_time=new Time(11,30);
+        TimeSet timeSet=new TimeSet(alert_date,alert_time,time);
+
+        FullTask fullTask=new FullTask("Test Full Task",date,location,timeSet);
+
+        taskDB.addFullTask(fullTask);
+
+        Date date2=new Date(26,2,2027);
+        Date alert_date2=new Date(2,1,2018);
+        Location location2=new Location("TestLocation2",1.896,4.1236,2.5f);
+        location2.setLoc_id(location.getLoc_id());
+        Time time2=new Time(1,3);
+        Time alert_time2=new Time(1,3);
+        TimeSet timeSet2=new TimeSet(alert_date2,alert_time2,time2);
+        timeSet2.setTimeset_id(timeSet.getTimeset_id());
+
+        FullTask fullTask2=new FullTask("Test Full Task2",date2,location2,timeSet2);
+        fullTask2.setId(fullTask.getId());
+
+        taskDB.updateFullTask(fullTask2);
+
+
+        FullTask fullTask_back=taskDB.getFullTask(fullTask2.getId());
+
+        assertEquals(fullTask2.getId(),fullTask_back.getId());
+        assertEquals(fullTask2.getDescription(),fullTask_back.getDescription());
+
+        assertEquals(fullTask2.getDate().getDay(),fullTask_back.getDate().getDay());
+        assertEquals(fullTask2.getDate().getDayOfWeek(),fullTask_back.getDate().getDayOfWeek());
+        assertEquals(fullTask2.getDate().getMonth(),fullTask_back.getDate().getMonth());
+        assertEquals(fullTask2.getDate().getMonthOfYear(),fullTask_back.getDate().getMonthOfYear());
+        assertEquals(fullTask2.getDate().getYear(),fullTask_back.getDate().getYear());
+
+        assertEquals(fullTask2.getTimeSet().getAlert_date().getDay(),fullTask_back.getTimeSet().getAlert_date().getDay());
+        assertEquals(fullTask2.getTimeSet().getAlert_date().getDayOfWeek(),fullTask_back.getTimeSet().getAlert_date().getDayOfWeek());
+        assertEquals(fullTask2.getTimeSet().getAlert_date().getMonth(),fullTask_back.getTimeSet().getAlert_date().getMonth());
+        assertEquals(fullTask2.getTimeSet().getAlert_date().getMonthOfYear(),fullTask_back.getTimeSet().getAlert_date().getMonthOfYear());
+        assertEquals(fullTask2.getTimeSet().getAlert_date().getYear(),fullTask_back.getTimeSet().getAlert_date().getYear());
+
+        assertEquals(fullTask2.getLocation().getName(),fullTask_back.getLocation().getName());
+        assertEquals(fullTask2.getLocation().getLatitude(),fullTask_back.getLocation().getLatitude(),0.00001);
+        assertEquals(fullTask2.getLocation().getLongitude(),fullTask_back.getLocation().getLongitude(),0.00001);
+        assertEquals(fullTask2.getLocation().getRange(),fullTask_back.getLocation().getRange(),0.01);
+
+        assertEquals(fullTask2.getTimeSet().getTask_time().get24Hour(),fullTask_back.getTimeSet().getTask_time().get24Hour());
+        assertEquals(fullTask2.getTimeSet().getTask_time().getMinute(),fullTask_back.getTimeSet().getTask_time().getMinute());
+        assertEquals(fullTask2.getTimeSet().getAlert_time().get24Hour(),fullTask_back.getTimeSet().getAlert_time().get24Hour());
+        assertEquals(fullTask2.getTimeSet().getAlert_time().getMinute(),fullTask_back.getTimeSet().getAlert_time().getMinute());
+
+
+    }
+
+    @Test
+    public void updateLocationTask() throws Exception {
+
+    }
+
+    @Test
+    public void updateTimeTask() throws Exception {
+
+    }
+
+    @Test
+    public void updateMessageTask() throws Exception {
+
+    }
+
+    @Test
+    public void updateTask() throws Exception {
+
+    }
 
     TaskDB taskDB;
 

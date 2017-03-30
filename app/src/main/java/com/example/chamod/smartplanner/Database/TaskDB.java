@@ -317,11 +317,18 @@ public class TaskDB {
 
         Cursor cursor = db.rawQuery(query, null);
 
+
+
         if (cursor.moveToNext())
         {
+
             Date date=new Date(cursor.getString(cursor.getColumnIndex(DB_Helper.task_date)));
 
             TimeSet timeSet=timesetDB.getTimesetRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
+
+
+
+            Log.e("xxx",timeSet.getTask_time().toString());
 
 
             TimeTask timeTask=new TimeTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),

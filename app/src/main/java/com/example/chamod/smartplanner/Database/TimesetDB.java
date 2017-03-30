@@ -81,8 +81,10 @@ public class TimesetDB {
             Time alert_time=new Time(cursor.getString(cursor.getColumnIndex(DB_Helper.alert_time)));
             Time task_time=new Time(cursor.getString(cursor.getColumnIndex(DB_Helper.task_time)));
 
-            return new TimeSet(alert_date,alert_time,task_time);
+            TimeSet timeSet= new TimeSet(alert_date,alert_time,task_time);
+            timeSet.setTimeset_id(timeset_id);
 
+            return timeSet;
         }
         return null;
     }

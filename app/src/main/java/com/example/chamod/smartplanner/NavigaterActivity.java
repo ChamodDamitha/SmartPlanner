@@ -229,7 +229,11 @@ public class NavigaterActivity extends AppCompatActivity
         } else if (id == R.id.nav_find_route) {
             Intent i=new Intent(this,MapsActivity.class);
             startActivity(i);
+        } else if (id == R.id.nav_reports) {
+            Intent i=new Intent(this,ReportsActivity.class);
+            startActivity(i);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
