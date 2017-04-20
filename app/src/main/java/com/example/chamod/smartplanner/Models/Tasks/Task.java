@@ -2,11 +2,13 @@ package com.example.chamod.smartplanner.Models.Tasks;
 
 import com.example.chamod.smartplanner.Models.Date;
 
+import org.json.JSONObject;
+
 /**
  * Created by chamod on 2/25/17.
  */
 
-public class Task {
+public abstract class Task {
     private int id;
     private String description;
     private Date date;
@@ -20,6 +22,9 @@ public class Task {
         this.description = description;
         this.date = date;
     }
+
+
+    public abstract JSONObject toJSON();
 
     public void setId(int id) {
         this.id = id;

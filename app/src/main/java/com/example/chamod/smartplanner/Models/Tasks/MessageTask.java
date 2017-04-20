@@ -4,6 +4,8 @@ import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Message;
 
+import org.json.JSONObject;
+
 /**
  * Created by chamod on 3/26/17.
  */
@@ -19,5 +21,10 @@ public class MessageTask extends Task {
 
     public Message getMessage() {
         return message;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
     }
 }

@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.EventHandlers.TaskEventListner;
+import com.example.chamod.smartplanner.Handlers.ReportHandler;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.ListItemModels.TaskListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
@@ -123,6 +124,8 @@ public class NavigaterActivity extends AppCompatActivity
                     calendar.get(Calendar.YEAR));
             calendar_date_set(today_date);
 
+
+        ReportHandler.getInstance(this).sendDailyTasks(today_date);
 
 //      ................Permission request.....................................................
         requestPermissions();

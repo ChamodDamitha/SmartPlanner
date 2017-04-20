@@ -1,5 +1,8 @@
 package com.example.chamod.smartplanner.Models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by chamod on 2/25/17.
  */
@@ -16,6 +19,20 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
         this.range=range;
+    }
+
+    public JSONObject toJSON(){
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("name", this.name);
+            jsonObject.put("latitude", this.latitude);
+            jsonObject.put("longitude", this.longitude);
+            jsonObject.put("range", this.range);
+            return jsonObject;
+        }
+        catch (JSONException e){
+            return null;
+        }
     }
 
     public String getName() {
