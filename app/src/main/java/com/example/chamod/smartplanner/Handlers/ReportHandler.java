@@ -1,7 +1,9 @@
 package com.example.chamod.smartplanner.Handlers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,10 +11,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
+import com.example.chamod.smartplanner.Database.UserDB;
 import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -28,10 +32,13 @@ public class ReportHandler {
 
     private ReportHandler(Context context){
         taskDB=TaskDB.getInstance(context);
+        userDB=UserDB.getInstance(context);
+
         this.context=context;
     }
 
     TaskDB taskDB;
+    UserDB userDB;
 
     public static ReportHandler getInstance(Context context){
         if(reportHandler==null){
@@ -60,14 +67,20 @@ public class ReportHandler {
             }
         }
 
+
         JSONObject jsonObject=new JSONObject();
+
+
         try {
+
             jsonObject.put("date",date.toString());
             jsonObject.put("day",date.getDayOfWeek());
 
             jsonObject.put("fulltasks",jsonObjectFullTasks);
             jsonObject.put("locationtasks",jsonObjectLocationTasks);
             jsonObject.put("timetasks",jsonObjectTimeTasks);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,23 +91,45 @@ public class ReportHandler {
     }
 
 
-    public void requestReport(){
+    public void requestReport(Date date){
 
-        String url="http://192.168.43.35:3000/";
+        final ProgressDialog progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage("Data is sending...");
+        progressDialog.show();
 
-        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        String url="http://192.168.43.35:3000/saveDailyData";
+
+        JSONObject params=new JSONObject();
+
+        try {
+            params.put("user_email",userDB.getUser().getEmail());
+            params.put("daily_data",generateDailyData(date));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.e("ORM",response.toString());
+                progressDialog.hide();
+                try {
+                    if((boolean)response.get("success")) {
+                        Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ORM",error.toString());
+                progressDialog.hide();
+                Toast.makeText(context, "Sending data failed...!", Toast.LENGTH_LONG).show();
             }
         });
-
-
 
         AppController.getInstance(context).addToRequestQueue(jsonObjectRequest,"json_req_tag");
 
