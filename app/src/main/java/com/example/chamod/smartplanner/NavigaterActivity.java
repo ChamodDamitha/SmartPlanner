@@ -22,15 +22,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chamod.smartplanner.EventHandlers.TaskEvent;
 import com.example.chamod.smartplanner.EventHandlers.TaskEventListner;
@@ -125,7 +121,7 @@ public class NavigaterActivity extends AppCompatActivity
             calendar_date_set(today_date);
 
 
-        ReportHandler.getInstance(this).sendDailyTasks(today_date);
+        ReportHandler.getInstance(this).generateDailyData(today_date);
 
 //      ................Permission request.....................................................
         requestPermissions();

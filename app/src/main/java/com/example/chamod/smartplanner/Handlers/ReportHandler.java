@@ -3,6 +3,10 @@ package com.example.chamod.smartplanner.Handlers;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Models.Date;
@@ -18,10 +22,13 @@ import java.util.ArrayList;
  */
 
 public class ReportHandler {
+    private Context context;
+
     private static ReportHandler reportHandler=null;
 
     private ReportHandler(Context context){
         taskDB=TaskDB.getInstance(context);
+        this.context=context;
     }
 
     TaskDB taskDB;
@@ -34,7 +41,7 @@ public class ReportHandler {
     }
 
 
-    public void sendDailyTasks(Date date){
+    public JSONObject generateDailyData(Date date){
         ArrayList<Task> tasks=taskDB.getAllTasks(date);
 
         JSONArray jsonObjectFullTasks=new JSONArray();
@@ -55,6 +62,9 @@ public class ReportHandler {
 
         JSONObject jsonObject=new JSONObject();
         try {
+            jsonObject.put("date",date.toString());
+            jsonObject.put("day",date.getDayOfWeek());
+
             jsonObject.put("fulltasks",jsonObjectFullTasks);
             jsonObject.put("locationtasks",jsonObjectLocationTasks);
             jsonObject.put("timetasks",jsonObjectTimeTasks);
@@ -63,6 +73,30 @@ public class ReportHandler {
         }
 
         Log.e("ORM",jsonObject.toString());
+
+        return jsonObject;
+    }
+
+
+    public void requestReport(){
+
+        String url="http://192.168.43.35:3000/";
+
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("ORM",response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ORM",error.toString());
+            }
+        });
+
+
+
+        AppController.getInstance(context).addToRequestQueue(jsonObjectRequest,"json_req_tag");
 
     }
 

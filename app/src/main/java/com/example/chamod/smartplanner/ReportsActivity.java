@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.chamod.smartplanner.Fragments.DateFragment;
+import com.example.chamod.smartplanner.Handlers.ReportHandler;
 import com.example.chamod.smartplanner.ListItemModels.ReportsListAdapter;
 import com.example.chamod.smartplanner.Models.Date;
 
@@ -43,5 +44,10 @@ public class ReportsActivity extends AppCompatActivity implements DateFragment.D
         dateTextView.setText(date.getDateString());
 
 
+    }
+
+
+    public void getReport(View view){
+        ReportHandler.getInstance(this).requestReport();
     }
 }
