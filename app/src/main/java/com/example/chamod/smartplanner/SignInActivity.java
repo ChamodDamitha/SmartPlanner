@@ -46,6 +46,7 @@ public class SignInActivity extends AppCompatActivity {
 
         String url="http://192.168.43.35:3000/addUser";
 
+
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Connecting to server");
         progressDialog.show();
@@ -54,7 +55,16 @@ public class SignInActivity extends AppCompatActivity {
         final String email="chamod@gmail.com";
         final String name="chamod";
 
-        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url,null,new Response.Listener<JSONObject>() {
+
+        JSONObject params=new JSONObject();
+        try {
+            params.put("name", name);
+            params.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url,params,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressDialog.hide();
@@ -73,6 +83,7 @@ public class SignInActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,16 +92,8 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this,"Signing falied...!",Toast.LENGTH_LONG).show();
                 Log.e("ORM", error.toString());
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("name", "chamod");
-                params.put("email", "chamod@gmail.com");
+        });
 
-                return params;
-            }
-        };
         AppController.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 }
