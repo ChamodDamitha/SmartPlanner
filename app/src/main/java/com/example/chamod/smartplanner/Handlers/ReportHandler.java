@@ -12,7 +12,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Database.TaskDB;
 import com.example.chamod.smartplanner.Database.UserDB;
+import com.example.chamod.smartplanner.EventHandlers.ReportArrivedListner;
 import com.example.chamod.smartplanner.Models.Date;
+import com.example.chamod.smartplanner.Models.Report;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 
 import org.json.JSONArray;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
  */
 
 public class ReportHandler {
+    ArrayList<ReportArrivedListner> reportArrivedListners=new ArrayList<>();
+
     private Context context;
 
     private static ReportHandler reportHandler=null;
@@ -92,6 +96,54 @@ public class ReportHandler {
 
 
     public void requestReport(Date date){
+        final ProgressDialog progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage("Data is sending...");
+        progressDialog.show();
+
+        String url="http://192.168.43.35:3000/getDailyReport";
+
+        JSONObject params=new JSONObject();
+
+        try {
+            params.put("user_email",userDB.getUser().getEmail());
+            params.put("date",date.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.hide();
+                try {
+                    if((boolean)response.get("success")) {
+//                        Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                        if(response.get("msg")!=null) {
+                            notifyReportArrived(new JSONObject(response.get("msg").toString()));
+                        }
+                    }
+                    else{
+                        Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(context, "No data available...!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+                Toast.makeText(context, "Getting report failed...!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance(context).addToRequestQueue(jsonObjectRequest,"json_req_tag");
+
+    }
+
+
+    public void sendDailyData(Date date){
 
         final ProgressDialog progressDialog=new ProgressDialog(context);
         progressDialog.setMessage("Data is sending...");
@@ -133,6 +185,19 @@ public class ReportHandler {
 
         AppController.getInstance(context).addToRequestQueue(jsonObjectRequest,"json_req_tag");
 
+    }
+
+
+    public void addReportArriveListner(ReportArrivedListner reportArrivedListner){
+        reportArrivedListners.add(reportArrivedListner);
+    }
+
+    private void notifyReportArrived(JSONObject report_json){
+//        Toast.makeText(context,report_json.toString(),Toast.LENGTH_LONG).show();
+        Report report=new Report(report_json);
+        for(ReportArrivedListner reportArrivedListner:reportArrivedListners){
+            reportArrivedListner.reportArrived(report);
+        }
     }
 
 }

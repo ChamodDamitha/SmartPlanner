@@ -6,16 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chamod.smartplanner.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by chamod on 2/12/17.
  */
 
-public class ReportsListAdapter extends ArrayAdapter<String> {
-    public ReportsListAdapter(Context context, String[] items) {
+public class ReportsListAdapter extends ArrayAdapter<ReportTask> {
+    public ReportsListAdapter(Context context, ArrayList<ReportTask> items) {
         super(context, R.layout.report_list_item,items);
     }
 
@@ -25,8 +28,17 @@ public class ReportsListAdapter extends ArrayAdapter<String> {
         LayoutInflater layoutInflater=LayoutInflater.from(getContext());
         View customView = layoutInflater.inflate(R.layout.report_list_item,parent,false);
 
-        TextView textViewTitle=(TextView)customView.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getItem(position));
+        TextView textDesc=(TextView)customView.findViewById(R.id.textDesc);
+        textDesc.setText(getItem(position).getDesc());
+
+        ImageView imageView=(ImageView)customView.findViewById(R.id.imageView);
+        if(getItem(position).isCompleted()){
+            imageView.setImageDrawable(customView.getResources().getDrawable(R.drawable.tick_green));
+        }
+        else{
+            imageView.setImageDrawable(customView.getResources().getDrawable(R.drawable.cross));
+        }
+
         return customView;
     }
 }
