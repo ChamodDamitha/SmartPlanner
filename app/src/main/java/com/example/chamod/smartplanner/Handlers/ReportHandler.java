@@ -97,7 +97,7 @@ public class ReportHandler {
 
     public void requestReport(Date date){
         final ProgressDialog progressDialog=new ProgressDialog(context);
-        progressDialog.setMessage("Data is sending...");
+        progressDialog.setMessage("Report is loading...");
         progressDialog.show();
 
         String url="http://192.168.43.35:3000/getDailyReport";
@@ -125,9 +125,11 @@ public class ReportHandler {
                     }
                     else{
                         Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                        notifyNoReport();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(context, "No data available...!", Toast.LENGTH_LONG).show();
+                    notifyNoReport();
                 }
             }
         }, new Response.ErrorListener() {
@@ -190,6 +192,12 @@ public class ReportHandler {
 
     public void addReportArriveListner(ReportArrivedListner reportArrivedListner){
         reportArrivedListners.add(reportArrivedListner);
+    }
+
+    private void notifyNoReport(){
+        for(ReportArrivedListner reportArrivedListner:reportArrivedListners){
+            reportArrivedListner.reportArrived(null);
+        }
     }
 
     private void notifyReportArrived(JSONObject report_json){

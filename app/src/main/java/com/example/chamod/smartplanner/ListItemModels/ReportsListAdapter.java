@@ -28,6 +28,17 @@ public class ReportsListAdapter extends ArrayAdapter<ReportTask> {
         LayoutInflater layoutInflater=LayoutInflater.from(getContext());
         View customView = layoutInflater.inflate(R.layout.report_list_item,parent,false);
 
+        if(getItem(position).isFirstOne()) {
+            TextView textViewTitle = (TextView) customView.findViewById(R.id.textViewReportTaskTitle);
+            textViewTitle.setVisibility(View.VISIBLE);
+            if(getItem(position).isCompleted()) {
+                textViewTitle.setText("COMPLETED TASKS");
+            }
+            else{
+                textViewTitle.setText("INCOMPLETED TASKS");
+            }
+        }
+
         TextView textDesc=(TextView)customView.findViewById(R.id.textDesc);
         textDesc.setText(getItem(position).getDesc());
 

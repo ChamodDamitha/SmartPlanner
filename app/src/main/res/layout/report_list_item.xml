@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg"
 
-    <ImageView
-        android:layout_width="59dp"
-        android:layout_height="43dp"
-        app:srcCompat="@drawable/tick_green"
-        android:id="@+id/imageView" />
+    >
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:id="@+id/textDesc"
-        android:layout_weight="1"
+        android:text="COMPLETED TASKS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewReportTaskTitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:background="@color/colorLightGray"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:padding="5dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        >
+
+        <ImageView
+            android:layout_width="59dp"
+            android:layout_height="43dp"
+            app:srcCompat="@drawable/tick_green"
+            android:id="@+id/imageView"
+            android:layout_weight="1" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:id="@+id/textDesc"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.CastMiniController.Title"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </LinearLayout>
