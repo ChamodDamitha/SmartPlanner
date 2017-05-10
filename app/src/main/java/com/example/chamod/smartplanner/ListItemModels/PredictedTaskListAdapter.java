@@ -14,13 +14,15 @@ import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 import com.example.chamod.smartplanner.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by chamod on 2/11/17.
  */
 
 public class PredictedTaskListAdapter extends ArrayAdapter<Task> {
 
-    public PredictedTaskListAdapter(Context context, Task[] items) {
+    public PredictedTaskListAdapter(Context context, ArrayList<Task> items) {
         super(context, R.layout.predicted_list_item,items);
     }
 

@@ -88,6 +88,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 android.widget.PopupMenu popupMenu=new android.widget.PopupMenu(customView.getContext(),customView);
                 popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
                     @Override

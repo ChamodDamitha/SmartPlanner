@@ -44,4 +44,9 @@ dependencies {
 
 
     compile 'com.android.volley:volley:1.0.0'
+
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+
+
 }

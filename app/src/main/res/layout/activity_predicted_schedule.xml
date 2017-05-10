@@ -10,40 +10,82 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.chamod.smartplanner.PredictedScheduleActivity">
 
-    <Button
-        android:text="CANCEL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/button3" />
-
-    <Button
-        android:text="ACCEPT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button3"
-        android:layout_marginStart="23dp"
-        android:id="@+id/button4" />
-
-    <CheckBox
-        android:text="SELECT ALL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:id="@+id/checkBox4"
-        android:layout_below="@+id/button3"
-        android:layout_alignParentStart="true" />
-
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/checkBox4"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/predictedTasksListView"
-        android:dividerHeight="10sp"
-        android:divider="@android:color/transparent"
-        />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="CANCEL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/button3"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="ACCEPT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/button3"
+                android:layout_marginStart="23dp"
+                android:id="@+id/button4"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:onClick="showDatePicker">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/date"
+                android:id="@+id/imageView4" />
+
+            <TextView
+                android:text="MON,14 FEB 2017 "
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textViewDate"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:gravity="center_vertical"
+                />
+
+            <Button
+                android:text="V"
+                android:layout_width="59dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnRequestSchedule"
+                android:onClick="requestSchedule"
+                />
+        </LinearLayout>
+        <CheckBox
+            android:text="SELECT ALL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:id="@+id/checkBox4"
+            android:layout_below="@+id/button3"
+            android:layout_alignParentStart="true" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:id="@+id/predictedTasksListView"
+            android:dividerHeight="10sp"
+            android:divider="@android:color/transparent"
+            />
+    </LinearLayout>
+
 </RelativeLayout>

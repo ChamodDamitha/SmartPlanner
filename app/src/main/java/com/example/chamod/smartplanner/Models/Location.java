@@ -21,6 +21,19 @@ public class Location {
         this.range=range;
     }
 
+
+    public Location(JSONObject jsonObject){
+
+        try {
+            this.name = jsonObject.getString("name");
+            this.latitude = jsonObject.getDouble("latitude");
+            this.longitude = jsonObject.getDouble("longitude");
+            this.range=Float.valueOf(jsonObject.getString("range"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public JSONObject toJSON(){
         JSONObject jsonObject=new JSONObject();
         try {
