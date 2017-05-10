@@ -10,4 +10,5 @@ import java.util.ArrayList;
 
 public interface PredictedTasksListener {
     void predictedTasksReceived(ArrayList<Task> tasks);
+    void notifyNoSchedule();
 }

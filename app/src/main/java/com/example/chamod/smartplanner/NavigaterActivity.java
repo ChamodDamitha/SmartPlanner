@@ -78,6 +78,8 @@ public class NavigaterActivity extends AppCompatActivity
 
 //........................................................................................................................................................
 
+        floatingBtnPad=(LinearLayout)findViewById(R.id.floatingBtnPad);
+
         mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
 

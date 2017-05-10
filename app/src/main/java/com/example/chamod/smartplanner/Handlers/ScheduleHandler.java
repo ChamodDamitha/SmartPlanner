@@ -91,9 +91,11 @@ public class ScheduleHandler {
                     }
                     else{
                         Toast.makeText(context, response.get("msg").toString(), Toast.LENGTH_LONG).show();
+                        notifyNoSchedule();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(context, "No data available...!", Toast.LENGTH_LONG).show();
+                    notifyNoSchedule();
                 }
             }
         }, new Response.ErrorListener() {
@@ -101,6 +103,7 @@ public class ScheduleHandler {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.hide();
                 Toast.makeText(context, "Getting schedule failed...!", Toast.LENGTH_LONG).show();
+                notifyNoSchedule();
             }
         });
 
@@ -160,6 +163,10 @@ public class ScheduleHandler {
 
     }
 
-
+    private void notifyNoSchedule(){
+        for (PredictedTasksListener predictedTasksListener : predictedTasksListeners) {
+            predictedTasksListener.notifyNoSchedule();
+        }
+    }
 
 }

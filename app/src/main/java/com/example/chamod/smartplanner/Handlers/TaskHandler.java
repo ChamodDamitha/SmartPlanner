@@ -73,6 +73,24 @@ public class TaskHandler {
         return true;
     }
 
+    public boolean saveNewTask(Task task) {
+        if (task.getType().equals("LOCATION")) {
+            LocationTask locationTask = (LocationTask)task;
+            taskDB.addLocationTask(locationTask);
+            task = locationTask;
+        } else if (task.getType().equals("TIME")) {
+            TimeTask timeTask = (TimeTask)task;
+            taskDB.addTimeTask(timeTask);
+            task = timeTask;
+        } else {
+            FullTask fullTask = (FullTask)task;
+            taskDB.addFullTask(fullTask);
+            task = fullTask;
+        }
+        setTaskAlarm(task);
+        return true;
+    }
+
 //    ................Update a task.................................................................
 public boolean updateTask(int task_id,String type, String desc, Date date, Location location,
                            TimeSet timeSet, boolean repeat) {

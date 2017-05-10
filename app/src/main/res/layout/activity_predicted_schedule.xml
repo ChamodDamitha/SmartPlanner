@@ -18,30 +18,6 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:text="CANCEL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/button3"
-                android:layout_weight="1" />
-
-            <Button
-                android:text="ACCEPT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/button3"
-                android:layout_marginStart="23dp"
-                android:id="@+id/button4"
-                android:layout_weight="1" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
             android:layout_height="62dp"
             android:onClick="showDatePicker">
 
@@ -69,23 +45,64 @@
                 android:onClick="requestSchedule"
                 />
         </LinearLayout>
-        <CheckBox
-            android:text="SELECT ALL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:id="@+id/checkBox4"
-            android:layout_below="@+id/button3"
-            android:layout_alignParentStart="true" />
 
-        <ListView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:id="@+id/predictedTasksListView"
-            android:dividerHeight="10sp"
-            android:divider="@android:color/transparent"
-            />
+            android:id="@+id/predictedListPad"
+            android:visibility="gone"
+            >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:text="CANCEL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/button3"
+                    android:layout_weight="1"
+                    android:onClick="CancelPredictedSchedule"
+                    />
+
+                <Button
+                    android:text="ACCEPT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/button3"
+                    android:layout_marginStart="23dp"
+                    android:id="@+id/button4"
+                    android:layout_weight="1"
+                    android:onClick="savePredictedTasks"
+                    />
+            </LinearLayout>
+
+            <CheckBox
+                android:text="SELECT ALL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:id="@+id/checkBoxSelectAllTaks"
+                android:layout_below="@+id/button3"
+                android:layout_alignParentStart="true" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:id="@+id/predictedTasksListView"
+                android:dividerHeight="10sp"
+                android:divider="@android:color/transparent"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
