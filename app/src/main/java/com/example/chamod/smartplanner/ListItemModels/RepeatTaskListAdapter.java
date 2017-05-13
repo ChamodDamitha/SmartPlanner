@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.EventHandlers.RepeatTaskChangeEvent;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
@@ -86,7 +87,7 @@ public class RepeatTaskListAdapter extends ArrayAdapter<RepeatTaskItem> {
             textViewLocation.setText("At " + ((LocationTask)task).getLocation().getName());
             textViewTime.setText(null);
         }
-        else {
+        else if(task.getType().equals(Constants.FULL_TYPE)){
             FullTask fullTask=(FullTask)task;
             textViewTime.setText(fullTask.getTimeSet().getTask_time().getTimeString());
             textViewLocation.setText("At " + fullTask.getLocation().getName());

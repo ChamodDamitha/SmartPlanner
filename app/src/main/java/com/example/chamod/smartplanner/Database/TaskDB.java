@@ -83,6 +83,7 @@ public class TaskDB {
         return true;
     }
     public boolean addMessageTask(MessageTask messageTask){
+        timesetDB.addTimeRecord(messageTask.getTimeSet());
         messageDB.addMessageRecord(messageTask.getMessage());
         addTask(messageTask);
         return true;
@@ -129,6 +130,7 @@ public class TaskDB {
         }
         else if(task.getType().equals(Constants.MESSAGE_TYPE)){
             cv.put(DB_Helper.msg_id,((MessageTask)task).getMessage().getMsg_id());
+            cv.put(DB_Helper.timeset_id,((MessageTask)task).getTimeSet().getTimeset_id());
         }
 
         db.insert(DB_Helper.tasks_table,null,cv);
@@ -328,7 +330,6 @@ public class TaskDB {
 
 
 
-            Log.e("xxx",timeSet.getTask_time().toString());
 
 
             TimeTask timeTask=new TimeTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
@@ -376,9 +377,9 @@ public class TaskDB {
 
             TimeSet timeSet=timesetDB.getTimesetRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
 
+            Log.e("xxx",cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id))+"");
 
-
-            MessageTask messageTask=new MessageTask(message,date,timeSet.getTask_time());
+            MessageTask messageTask=new MessageTask(message,date,timeSet);
 
             messageTask.setId(task_id);
 

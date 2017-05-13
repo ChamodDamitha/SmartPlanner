@@ -21,6 +21,7 @@ import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Message;
 import com.example.chamod.smartplanner.Models.Tasks.MessageTask;
 import com.example.chamod.smartplanner.Models.Time;
+import com.example.chamod.smartplanner.Models.TimeSet;
 
 import java.util.Calendar;
 
@@ -72,8 +73,9 @@ public class MessageActivity extends AppCompatActivity implements DateFragment.D
     public void saveMessageTask(View view){
         if(isValidInputs()){
             Message message=new Message(txtMessagge.getText().toString().trim(),contact);
-            MessageTask messageTask=new MessageTask(message,date,time);
+            MessageTask messageTask=new MessageTask(message,date,new TimeSet(date,time,time));
             taskHandler.saveNewTask(messageTask);
+            startActivity(new Intent(this,NavigaterActivity.class));
         }
     }
 

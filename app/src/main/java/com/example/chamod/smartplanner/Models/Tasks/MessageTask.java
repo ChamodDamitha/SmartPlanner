@@ -16,20 +16,17 @@ public class MessageTask extends Task {
     private Message message;
     private TimeSet timeSet;
 
-    public MessageTask(Message message,Date date,Time time) {
+    public MessageTask(Message message,Date date,TimeSet timeSet) {
         super(message.getContent(), date);
         this.message=message;
         this.type= Constants.MESSAGE_TYPE;
-        this.timeSet=new TimeSet(date,time,time);
+        this.timeSet=timeSet;
     }
 
     public Message getMessage() {
         return message;
     }
 
-    public Time getTime() {
-        return timeSet.getTask_time();
-    }
 
     public TimeSet getTimeSet() {
         return timeSet;
