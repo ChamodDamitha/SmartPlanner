@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.chamod.smartplanner.NavigaterActivity;
 import com.example.chamod.smartplanner.NotificationActivity;
 import com.example.chamod.smartplanner.R;
 
@@ -17,8 +18,9 @@ import com.example.chamod.smartplanner.R;
 
 public class NotificationHandler {
 
+
     public static void viewNotification(Context context, int task_id, String desc, String info) {
-        Intent resultIntent = new Intent(context, NotificationActivity.class);
+        Intent resultIntent = new Intent(context, NavigaterActivity.class);
 
 
 // Because clicking the notification opens a new ("special") activity, there's
@@ -57,6 +59,48 @@ public class NotificationHandler {
                         .setDefaults(Notification.DEFAULT_ALL)
                         .addAction(0, "COMPLETE",completePendingIntent)
                         .addAction(0,"FORGET", forgetPendingIntent)
+                ;
+
+
+
+
+        mBuilder.setContentIntent(resultPendingIntent);
+
+// Sets an ID for the notification
+        int mNotificationId = task_id;
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) context.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
+
+
+//    no respond buttons
+    public static void viewSimpleNotification(Context context, int task_id, String desc, String info) {
+        Intent resultIntent = new Intent(context, NavigaterActivity.class);
+
+
+// Because clicking the notification opens a new ("special") activity, there's
+// no need to create an artificial back stack.
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        task_id,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.notify_icon)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.notify_icon))
+                        .setContentTitle("SMART PLANNER")
+                        .setContentText(desc)
+                        .setContentInfo(info)
+                        .setPriority(Notification.PRIORITY_MAX)
+                        .setDefaults(Notification.DEFAULT_ALL)
                 ;
 
 
