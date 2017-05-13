@@ -60,6 +60,16 @@
             app:backgroundTint="@color/lgreen" />
 
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/alert_light_frame"
+            android:id="@+id/floatingActionButton4"
+            android:onClick="messagesButtonClicked"
+            />
     </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB_Helper extends SQLiteOpenHelper {
     private static DB_Helper db_helper = null;
-    private static final int db_version = 16;
+    private static final int db_version = 17;
     protected static final String db_name = "smart_planner_db";
 
     //singleton for DB_helper class
@@ -61,6 +61,7 @@ public class DB_Helper extends SQLiteOpenHelper {
     public static final String messages_table="messages";
     public static final String msg_id="msg_id";
     public static final String msg_content ="msg_content";
+    public static final String receiver_name="receiver_name";
     public static final String receiver_no="receiver_no";
 
 
@@ -129,8 +130,9 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                 "%s INTEGER PRIMARY KEY," +
                 "%s VARCHAR(300),"+
+                "%s VARCHAR(100),"+
                 "%s VARCHAR(10)"+
-                ");",messages_table,msg_id, msg_content,receiver_no);
+                ");",messages_table,msg_id, msg_content,receiver_name,receiver_no);
 
 
 

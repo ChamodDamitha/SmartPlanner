@@ -18,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chamod.smartplanner.Constants;
 import com.example.chamod.smartplanner.Handlers.TaskHandler;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.MessageTask;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
 import com.example.chamod.smartplanner.NewTaskActivity;
@@ -60,18 +62,23 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         final Task task=getItem(position);
         textViewDescription.setText(task.getDescription());
 
-        if(task.getType().equals("TIME")){
+        if(task.getType().equals(Constants.TIME_TYPE)){
             textViewTime.setText(((TimeTask)task).getTimeSet().getTask_time().getTimeString());
             textViewLocation.setText(null);
         }
-        else if(task.getType().equals("LOCATION")){
+        else if(task.getType().equals(Constants.LOCATION_TYPE)){
             textViewLocation.setText("At " + ((LocationTask)task).getLocation().getName());
             textViewTime.setText(null);
         }
-        else {
+        else if(task.getType().equals(Constants.FULL_TYPE)){
             FullTask fullTask=(FullTask)task;
             textViewTime.setText(fullTask.getTimeSet().getTask_time().getTimeString());
             textViewLocation.setText("At " + fullTask.getLocation().getName());
+        }
+        else if(task.getType().equals(Constants.MESSAGE_TYPE)){
+            MessageTask messageTask=(MessageTask) task;
+            textViewTime.setText(messageTask.getTimeSet().getTask_time().getTimeString());
+            textViewLocation.setText("To " + messageTask.getMessage().getReceiver().getName());
         }
 
         if(task.isAlerted()){

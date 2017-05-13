@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.chamod.smartplanner.Models.Contact;
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.Message;
 
@@ -35,7 +36,8 @@ public class MessageDB {
 
         ContentValues cv=new ContentValues();
         cv.put(DB_Helper.msg_content,message.getContent());
-        cv.put(DB_Helper.receiver_no,message.getReceiver_no());
+        cv.put(DB_Helper.receiver_name,message.getReceiver().getName());
+        cv.put(DB_Helper.receiver_no,message.getReceiver().getPhone_no());
 
         db.insert(DB_Helper.messages_table,null,cv);
 
@@ -57,7 +59,8 @@ public class MessageDB {
 
         ContentValues cv=new ContentValues();
         cv.put(DB_Helper.msg_content,message.getContent());
-        cv.put(DB_Helper.receiver_no,message.getReceiver_no());
+        cv.put(DB_Helper.receiver_name,message.getReceiver().getName());
+        cv.put(DB_Helper.receiver_no,message.getReceiver().getPhone_no());
         db.update(DB_Helper.messages_table,cv,DB_Helper.msg_id+"="+message.getMsg_id(),null);
 
         return true;
@@ -72,7 +75,11 @@ public class MessageDB {
         if (cursor.moveToNext())
         {
             Message message= new Message(cursor.getString(cursor.getColumnIndex(DB_Helper.msg_content)),
-                    cursor.getString(cursor.getColumnIndex(DB_Helper.receiver_no)));
+                    new Contact(
+                            cursor.getString(cursor.getColumnIndex(DB_Helper.receiver_name))
+                            ,cursor.getString(cursor.getColumnIndex(DB_Helper.receiver_no))
+                    )
+                    );
             message.setMsg_id(msg_id);
             return message;
         }

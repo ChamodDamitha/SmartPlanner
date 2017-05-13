@@ -374,9 +374,12 @@ public class TaskDB {
 
             Message message=messageDB.getMessageRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.msg_id)));
 
+            TimeSet timeSet=timesetDB.getTimesetRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
 
-            MessageTask messageTask=new MessageTask(cursor.getString(cursor.getColumnIndex(DB_Helper.task_description)),
-                    date,message);
+
+
+            MessageTask messageTask=new MessageTask(message,date,timeSet.getTask_time());
+
             messageTask.setId(task_id);
 
             if(cursor.getInt(cursor.getColumnIndex(DB_Helper.task_alerted))==0){
@@ -524,6 +527,7 @@ public class TaskDB {
                 timesetDB.deleteTimeRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
             }
             else if(cursor.getString(cursor.getColumnIndex(DB_Helper.task_type)).equals(Constants.MESSAGE_TYPE)){
+                timesetDB.deleteTimeRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.timeset_id)));
                 messageDB.deleteMessageRecord(cursor.getInt(cursor.getColumnIndex(DB_Helper.msg_id)));
             }
         }

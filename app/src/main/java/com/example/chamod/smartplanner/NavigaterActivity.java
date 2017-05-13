@@ -150,11 +150,6 @@ public class NavigaterActivity extends AppCompatActivity
     }
 
 
-
-
-
-
-
     private void calendar_date_set(Date date){
         //set list view
         taskListAdapter=new TaskListAdapter(NavigaterActivity.this,taskHandler.getAllTasks(date));
@@ -246,6 +241,11 @@ public class NavigaterActivity extends AppCompatActivity
     }
     public void reportsButtonClicked(View v){
         Intent i=new Intent(this,ReportsActivity.class);
+        startActivity(i);
+    }
+
+    public void messagesButtonClicked(View v){
+        Intent i=new Intent(this,MessageActivity.class);
         startActivity(i);
     }
 

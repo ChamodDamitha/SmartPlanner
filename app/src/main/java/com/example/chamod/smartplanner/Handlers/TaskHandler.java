@@ -19,6 +19,7 @@ import com.example.chamod.smartplanner.Models.Date;
 import com.example.chamod.smartplanner.Models.Tasks.FullTask;
 import com.example.chamod.smartplanner.Models.Location;
 import com.example.chamod.smartplanner.Models.Tasks.LocationTask;
+import com.example.chamod.smartplanner.Models.Tasks.MessageTask;
 import com.example.chamod.smartplanner.Models.Tasks.Task;
 import com.example.chamod.smartplanner.Models.Time;
 import com.example.chamod.smartplanner.Models.Tasks.TimeTask;
@@ -74,18 +75,22 @@ public class TaskHandler {
     }
 
     public boolean saveNewTask(Task task) {
-        if (task.getType().equals("LOCATION")) {
+        if (task.getType().equals(Constants.LOCATION_TYPE)) {
             LocationTask locationTask = (LocationTask)task;
             taskDB.addLocationTask(locationTask);
             task = locationTask;
-        } else if (task.getType().equals("TIME")) {
+        } else if (task.getType().equals(Constants.TIME_TYPE)) {
             TimeTask timeTask = (TimeTask)task;
             taskDB.addTimeTask(timeTask);
             task = timeTask;
-        } else {
+        } else if (task.getType().equals(Constants.FULL_TYPE)){
             FullTask fullTask = (FullTask)task;
             taskDB.addFullTask(fullTask);
             task = fullTask;
+        } else if (task.getType().equals(Constants.MESSAGE_TYPE)){
+            MessageTask messageTask=(MessageTask)task;
+            taskDB.addMessageTask(messageTask);
+            task = messageTask;
         }
         setTaskAlarm(task);
         return true;
@@ -135,14 +140,17 @@ public boolean updateTask(int task_id,String type, String desc, Date date, Locat
 
 
     private void setTaskAlarm(Task task) {
-        if (task.getType().equals("LOCATION")) {
+        if (task.getType().equals(Constants.LOCATION_TYPE)) {
             LocationTask locationTask = (LocationTask) task;
             setLocationAlarm(locationTask.getId(), locationTask.getType(), locationTask.getLocation());
 
-        } else if (task.getType().equals("TIME")) {
+        } else if (task.getType().equals(Constants.TIME_TYPE)) {
             TimeTask timeTask = (TimeTask) task;
             setTimeAlarm(timeTask.getId(), timeTask.getType(), timeTask.getTimeSet());
-        } else {
+        } else if (task.getType().equals(Constants.MESSAGE_TYPE)) {
+            MessageTask messageTask = (MessageTask) task;
+            setTimeAlarm(messageTask.getId(), messageTask.getType(), messageTask.getTimeSet());
+        } else if(task.getType().equals(Constants.FULL_TYPE)){
             FullTask fullTask = (FullTask) task;
             setTimeAlarm(fullTask.getId(), fullTask.getType(), fullTask.getTimeSet());
             setLocationAlarm(fullTask.getId(), fullTask.getType(), fullTask.getLocation());

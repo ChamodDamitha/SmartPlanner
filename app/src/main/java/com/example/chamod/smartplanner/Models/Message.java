@@ -7,19 +7,19 @@ package com.example.chamod.smartplanner.Models;
 public class Message {
     private int msg_id;
     private String content;
-    private String receiver_no;
+    private Contact receiver;
 
-    public Message(String content, String receiver_no) {
+    public Message(String content, Contact receiver) {
         this.content = content;
-        this.receiver_no = receiver_no;
+        this.receiver=receiver;
     }
 
     public String getContent() {
         return content;
     }
 
-    public String getReceiver_no() {
-        return receiver_no;
+    public Contact getReceiver() {
+        return receiver;
     }
 
     public int getMsg_id() {
