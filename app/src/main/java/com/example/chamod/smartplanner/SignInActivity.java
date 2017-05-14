@@ -1,6 +1,5 @@
 package com.example.chamod.smartplanner;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,22 +18,22 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.chamod.smartplanner.Database.UserDB;
 import com.example.chamod.smartplanner.Handlers.AppController;
 import com.example.chamod.smartplanner.Models.User;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
-public class SignInActivity extends AppCompatActivity {
-
+    private static final int GOOGLE_REQUEST_CODE = 100;
     private GoogleApiClient googleApiClient=null;
     private GoogleSignInOptions signInOptions;
 
@@ -101,6 +100,10 @@ public class SignInActivity extends AppCompatActivity {
 
 
     public void Signin(View view){
+        googleSignIn();
+    }
+
+    public void addSignedUser(final String name,final String email){
 
         String url="http://192.168.43.35:3000/addUser";
 
@@ -108,10 +111,6 @@ public class SignInActivity extends AppCompatActivity {
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Connecting to server");
         progressDialog.show();
-
-//google signin
-        final String email="chamod@gmail.com";
-        final String name="chamod";
 
 
         JSONObject params=new JSONObject();
@@ -155,5 +154,60 @@ public class SignInActivity extends AppCompatActivity {
         AppController.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
+    private void googleSignIn(){
+        //for google sign in
 
+        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+//                .requestIdToken(getString(R.string.client_id))
+                .build();
+
+        if(googleApiClient==null) {
+            googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).build();
+        }
+
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, GOOGLE_REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            googleApiClient.stopAutoManage(this);
+            googleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GOOGLE_REQUEST_CODE) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            if (result.isSuccess()) {
+                GoogleSignInAccount acct = result.getSignInAccount();
+//                idToken = acct.getIdToken();
+//                personEmail = acct.getEmail();
+                System.out.println("Your Email is: " + acct.getEmail());
+                Toast.makeText(getApplicationContext(), acct.getEmail() + "", Toast.LENGTH_SHORT).show();
+
+//                USE acct TO SET DETails
+                addSignedUser(acct.getDisplayName(),acct.getEmail());
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Sign in failed...!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
 }
